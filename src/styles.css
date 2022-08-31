@@ -160,29 +160,60 @@ body {
     border-radius: 16px;
 }
 
-.rigth {
+.right {
     margin-left: 32px;
 }
 
-.rigth {
+.right {
     margin-left: 32px;
-    color: aquamarine;
-    height: 100%;
+    color: white;
 }
+.carousel-images {
+    margin-bottom: 50px;
+}
+
+.carousel-games > img {
+    width: 44px;
+    margin: 0px 15px;
+    border-radius: 8px;
+}
+
 .carousel-games {
-    transition: opacity 350ms cubic-bezier(0.17, 0.17, 0.23, 1) 200ms;
-
+    transition: background-color 200ms cubic-bezier(0.17, 0.17, 0.23, 1) 0s;
+    height: 16.6667%;
+    border-radius: 16px;
+    cursor: pointer;
+    padding-right: 10px;
+    display: flex;
+    align-items: center;
+    line-clamp: 2;
+    overflow: hidden;
+    word-break: break-word;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 }
-.rigth.carousel-games:hover{
-    height: 100%;
-    position: absolute;
-    left: 0px;
-    right: 0px;
+.carousel-games:hover{
     background-color: rgb(255 255 255 / 8%);
-    width: 100%;
     /* animation: 7000ms linear 0s 1 normal none running animation-1e8au9p; */
 }
 
 .cursor-pointer {
     cursor: pointer;
+}
+
+h2.highlight {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    color: rgb(245, 245, 245);
+    font-size: 18px;
+    line-height: 1.4;
+    text-decoration: none;
+    margin: 0px 0px 18px;
+    font-weight: normal;
+}
+
+.highlight-images > img{
+    width: 203.667px;
+    margin-right: 32px;
 }
