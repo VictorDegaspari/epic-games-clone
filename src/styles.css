@@ -8,7 +8,7 @@ body {
     background-color: #121212;
     min-height: 100vh;
     width: 100%;
-    font-family: Brutal, sans-serif;
+    font-family: 'Brutal', sans-serif;
     margin: 0;
     padding-top: 52px;
 }
@@ -137,13 +137,7 @@ button {
     color: rgb(245, 245, 245, 45%);
 }
 
-.fixed-header div:hover a{
-    cursor: pointer;
-    color: white;
-}
-
-.fixed-header div:focus a {
-    cursor: default;
+.fixed-header div:hover a {
     color: white;
 }
 
@@ -202,6 +196,7 @@ button {
 
 .left {
     max-width: 80%;
+    position: relative;
 }
 
 .left picture, .left img {
@@ -272,6 +267,10 @@ button {
     align-items: center;
 }
 
+h2 {
+    margin: 0;
+}
+
 h2.highlight > a {
     display: flex;
     -webkit-box-align: center;
@@ -298,22 +297,23 @@ h2.highlight:hover > a > span > svg {
 }
 
 .highlight-images > img {
+    margin-bottom: 10px;
     width: 100%;
     margin-right: 32px;
     max-width: 190px;
     border-radius: 4px;
 }
-.highlight-images:last-child {
-    margin-right: 0;
+
+.highlight-images, .highlight-images > img {
+    max-width: 190px;
 }
 
 .highlight-images-main {
     justify-content: space-between;
-    flex-wrap: nowrap;
     overflow-x: auto;
     max-width: 100%;
     -webkit-overflow-scrolling: touch;
-    white-space: nowrap;
+    margin-bottom: 50px;
 }
 
 .highlight-images-main::-webkit-scrollbar {
@@ -364,11 +364,10 @@ h2.highlight:hover > a > span > svg {
     transition: top .15s ease-in-out 0s, transform .07s ease-in-out,-webkit-transform .07s ease-in-out;
     width: 32px;
     background-color: white;
-    
 }
 
 .burger-menu::after {
-    top: -9px
+    top: -9px;
 }
 
 .burger-menu::before {
@@ -385,6 +384,113 @@ h2.highlight:hover > a > span > svg {
     width: 0px;
     animation: progress 8s infinite linear;
     z-index: 999;
+}
+
+.left > .current-carousel-info {
+    position: absolute;
+    width: 80%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.6;
+    top: 0;
+    background: linear-gradient(270deg, rgba(11, 11, 11, 0) 0%, #0B0B0B 100%, #0B0B0B 100%);
+    border-radius: 16px;
+}
+
+.left > .current-carousel-button > button {
+    position: absolute;
+    bottom: 50px;
+    left: 55px;
+    border-radius: 4px;
+    background-color: white;
+    padding: 0 20px;
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    height: 50px;
+    font-size: 14px;
+    letter-spacing: 1px;
+    z-index: 999999;
+    font-weight: 600;
+    line-height: 15px;
+}
+.left > .current-carousel-button h3 {
+    color: white;
+    font-size: 18px;
+    letter-spacing: -0.2px;
+    line-height: 1.625;
+    position: absolute;
+    text-shadow: 0.5px 0.5px 0.5px rgb(0 0 0 / 25%);
+    bottom: 110px;
+    z-index: 9999;
+    max-width: 300px;
+    left: 55px;
+    overflow: hidden;
+    word-break: break-word;
+}
+.discount {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(0, 116, 228);
+    color: white;
+    padding: 5px 8px;
+    position: relative;
+    font-weight: 600;
+    border-radius: 4px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    height: 13px;
+    line-height: 15px;
+    text-transform: uppercase;
+    margin-right: 10px;
+}
+
+.old-price {
+    text-decoration: line-through;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+    color: rgba(245, 245, 245, 0.6);
+}
+
+.price {
+    margin-top: 10px;
+}
+
+.current-price {
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0;
+    transition: color 125ms ease-in-out;
+    color: white;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 20px;
+    letter-spacing: 0.2px;
+}
+
+.game-name {
+    color: white;
+    text-size-adjust: 100%;
+    overflow: hidden;
+    word-break: break-word;
+    font-size: 15px;
+    line-height: 1.4;
+    letter-spacing: 0.2px;
+    font-weight: 400;
+}
+
+.base-game {
+    font-size: 11px;
+    letter-spacing: 1px;
+    transition: color 125ms ease-in-out;
+    color: rgba(245, 245, 245, 0.6);
+    font-size: 9px;
+    line-height: 15px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 5px;
 }
 
 @keyframes progress {
@@ -436,12 +542,13 @@ h2.highlight:hover > a > span > svg {
     transform: rotateZ(180deg);
 }
 
+/* Responsividade */
 @media (max-width: 1600px) {
     .highlight-images:last-child {
         display: none;
     }
 
-    .highlight-images > img {
+    .highlight-images, .highlight-images > img {
         margin-right: 16px;
         max-width: 189px;
     }
@@ -456,13 +563,13 @@ h2.highlight:hover > a > span > svg {
         margin-left: 20px;
     }
 
-    .right > .carousel-games {
+    .right > .carousel-games, .game-name {
         font-size: 14px;
         letter-spacing: 0.2px;
         line-height: 1.4;
     }
 
-    .highlight-images > img {
+    .highlight-images, .highlight-images > img {
         margin-right: 16px;
         max-width: 199px;
     }
@@ -473,7 +580,7 @@ h2.highlight:hover > a > span > svg {
         margin-left: 16px;
     }
 
-    .right > .carousel-games {
+    .right > .carousel-games, .game-name {
         font-size: 11px;
         letter-spacing: 0.17px;
         line-height: 1.5;
@@ -483,7 +590,7 @@ h2.highlight:hover > a > span > svg {
         width: 28px;
     }
 
-    .highlight-images > img {
+    .highlight-images, .highlight-images > img {
         margin-right: 16px;
         max-width: 179px;
     }
@@ -506,7 +613,7 @@ h2.highlight:hover > a > span > svg {
         width: 96%;
     }
 
-    .right > .carousel-games {
+    .right > .carousel-games, .game-name {
         font-size: 10px;
         letter-spacing: 0.17px;
         line-height: 1.5;
@@ -538,7 +645,7 @@ h2.highlight:hover > a > span > svg {
         overflow-x: scroll;
     }
 
-    .highlight-images > img {
+    .highlight-images, .highlight-images > img {
         margin-right: 16px;
         width: 179px;
     }
@@ -567,6 +674,7 @@ h2.highlight:hover > a > span > svg {
         width: 400px;
         height: 100%;
         position: relative;
+        border-radius: 16px;
     }
 
     .right > .carousel-games > .games-info {
@@ -606,5 +714,10 @@ h2.highlight:hover > a > span > svg {
         line-height: 0px;
         padding: 0px 9px;
     }
-    
+
+    .icon-search > svg {
+        width: 17px;
+        height: 17px;
+        left: 30px;
+    }
 }
