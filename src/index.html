@@ -5,8 +5,9 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="../src/styles.css">
+        <link rel="stylesheet" href="styles.css">
         <link rel="shortcut icon" href="https://static-assets-prod.epicgames.com/epic-store/static/webpack/../favicon.ico" type="image/x-icon">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
 
     <body>
@@ -32,28 +33,36 @@
             </div>
 
             <div>
-                <span>
+                <button class="icon-user">
+                    <i></i>
                     ENTRAR
-                    <div class="inactive"></div>
-                </span>
-                <button class="download">BAIXAR EPIC GAMES</button>
+                </button>
+                <button class="download">
+                    <div>BAIXAR EPIC GAMES</div>
+                    <div class="burger-menu"></div>
+                </button>
             </div>            
         </nav>
         <div class="main">
 
             <div class="fixed-header">
                 <div class="icon-search">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="svg css-uwwqev" viewBox="0 0 21 20" preserveAspectRatio="xMidYMid meet"><g transform="scale(1 -1) rotate(-45 -11.93502884 -2)" stroke="currentColor" stroke-width="1.65" fill="none" fill-rule="evenodd"><circle cx="7.70710678" cy="7.70710678" r="7"></circle><path d="M15.2071068 8.62132034h5.6923881" stroke-linecap="square"></path></g></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 20" preserveAspectRatio="xMidYMid meet"><g transform="scale(1 -1) rotate(-45 -11.93502884 -2)" stroke="currentColor" stroke-width="1.65" fill="none" fill-rule="evenodd"><circle cx="7.70710678" cy="7.70710678" r="7"></circle><path d="M15.2071068 8.62132034h5.6923881" stroke-linecap="square"></path></g></svg>
                     <input type="text" placeholder="Pesquisar loja">
                 </div>
-                <div>
+                <div class="flex">
                     <a href="">Descobrir</a>
+                    <span class="down-arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 9">
+                            <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fill-rule="evenodd"></path>
+                        </svg>
+                    </span>
                 </div>
                 <div>
-                    <a href="">Navegar</a>
+                    <a class="hidden-header" href="">Navegar</a>
                 </div>
                 <div>
-                    <a href="">Novidades</a>
+                    <a class="hidden-header" href="">Novidades</a>
                 </div>
             </div>
 
@@ -64,40 +73,58 @@
                         <source media="(min-width: 768px)" srcset="https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-desktop-1280x702-e2b42d436367.jpg?h=720&amp;resize=1&amp;w=1280" data-image="https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-desktop-1280x702-e2b42d436367.jpg?h=720&amp;resize=1&amp;w=1280">
                         <img alt="Play Saints Row on Epic Games Store" src="https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-desktop-1280x702-e2b42d436367.jpg?h=1080&amp;resize=1&amp;w=1920" class="css-1w9gkua" data-image="https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-desktop-1280x702-e2b42d436367.jpg?h=1080&amp;resize=1&amp;w=1920" data-testid="picture-image">
                     </picture>
-                    <div>
+                    <!-- <div>
                         <button>JOGUE DE GRAÇA</button>
                         <button>PARA A LISTA DE DESEJOS</button>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="right">
-                    <div class="carousel-games">
+                    <div class="carousel-games active">
                         <img src="https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-thumb-1200x1600-f5ca5531d94e.jpg?h=1280&resize=1&w=960" alt="Saints Row" />
-                        Saints Row
+                        <div class="games-info">
+                            Saints Row
+                        </div>
+                        <div class="carousel-progress"></div>
+                    </div>
+                    <div class="carousel-games">
+                        <img src="https://cdn2.unrealengine.com/egs-cotw-angler-carousel-thumb-1200x1600-b6cd84f848f3.jpg?h=1280&resize=1&w=960" alt="Promoção do Evento de Setembro" />
+                        <div class="games-info">
+                            Promoção do Evento de Setembro
+                        </div>
                     </div>
                     <div class="carousel-games">
                         <img src="https://cdn2.unrealengine.com/egs-uncharted-carousel-thumbnail-1200x1600-94a84847c592.jpg?h=1280&resize=1&w=960" alt="Destiny 2" />
-                        Destiny 2
-                    </div>
-                    <div class="carousel-games">
-                        <img 
-                            src="https://cdn2.unrealengine.com/egs-cotw-angler-carousel-thumb-1200x1600-b6cd84f848f3.jpg?h=1280&resize=1&w=960" 
-                            alt="Promoção do Evento de Setembro"
-                        />
-                        Promoção do Evento de Setembro
+                        <div class="games-info">
+                            Destiny 2
+                        </div>
                     </div>
                     <div class="carousel-games">
                         <img src="https://cdn2.unrealengine.com/egs-d2-event-sale-carousel-thumbnail-1200x1600-cadf8880dc1c.jpg?h=1280&resize=1&w=960" alt="Dead Island 2" />
-                        Dead Island 2
+                        <div class="games-info">
+                            Dead Island 2
+                        </div>
                     </div>
                     <div class="carousel-games">
                         <img src="https://cdn2.unrealengine.com/egs-pcbs2-carousel-thumb-315x399-827b723dd428.jpg?h=1280&resize=1&w=960" alt="PC Building Simulator 2">
-                        PC Building Simulator 2
+                        <div class="games-info">
+                            PC Building Simulator 2
+                        </div>
                     </div>
                     <div class="carousel-games">
                         <img src="https://cdn2.unrealengine.com/languagecode-developer-gametitle-s2-1200x1600-alt-1200x1600-cd29354f1130.jpg?h=1280&resize=1&w=960" alt="Rumbleverse" />
-                        Rumbleverse
+                        <div class="games-info">
+                            Rumbleverse
+                        </div>
                     </div>
                 </div>
+            </div>
+            <div class="flex centralize">
+                <div class="balls active"></div>
+                <div class="balls"></div>
+                <div class="balls"></div>
+                <div class="balls"></div>
+                <div class="balls"></div>
+                <div class="balls"></div>
             </div>
 
             <div class="flex align-center">
@@ -105,7 +132,7 @@
                     <a role="link" href="/pt-BR/browse?tag=Promoção%20do%20Evento%20de%20Agosto&amp;category=Game&amp;count=40">
                         Destaques: Promoção do Evento de Agosto
                         <span aria-hidden="true" data-testid="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="svg css-uwwqev" viewBox="0 0 5 9">
+                            <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 5 9">
                                 <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fill-rule="evenodd"></path>
                             </svg>
                         </span>
@@ -113,24 +140,24 @@
                 </h2>
             </div>
 
-            <div class="flex">
-                <div class="highlight-images">
+            <div class="highlight-images-main flex w-100">
+                <div class="highlight-images w-100">
                     <img alt="Grand Theft Auto V: Premium Edition" src="https://cdn1.epicgames.com/0584d2013f0149a791e7b9bad0eec102/offer/GTAV_EGS_Artwork_1200x1600_Portrait Store Banner-1200x1600-382243057711adf80322ed2aeea42191.jpg?h=854&amp;resize=1&amp;w=640" class="css-1nbweuk" data-image="https://cdn1.epicgames.com/0584d2013f0149a791e7b9bad0eec102/offer/GTAV_EGS_Artwork_1200x1600_Portrait Store Banner-1200x1600-382243057711adf80322ed2aeea42191.jpg?h=854&amp;resize=1&amp;w=640" data-testid="picture-image">
                 </div>
-                <div class="highlight-images">
+                <div class="highlight-images w-100">
                     <img alt="Far Cry" src="https://cdn1.epicgames.com/b4565296c22549e4830c13bc7506642d/offer/TETRA_PREORDER_STANDARD%20EDITION_EPIC_Store_Portrait_1200x1600-1200x1600-ca8b802ff13813c37a44ebf68d0946a2.png?h=854&resize=1&w=640" />
                 </div>
-                <div class="highlight-images">
+                <div class="highlight-images w-100">
                     <img alt="Red Dead Redemption II" src="https://cdn1.epicgames.com/epic/offer/RDR2PC1227_Epic%20Games_860x1148-860x1148-b4c2210ee0c3c3b843a8de399bfe7f5c.jpg?h=854&resize=1&w=640" />
                 </div>
-                <div class="highlight-images">
-                    <img alt="Grand Theft Auto V: Premium Edition" src="https://cdn1.epicgames.com/0584d2013f0149a791e7b9bad0eec102/offer/GTAV_EGS_Artwork_1200x1600_Portrait Store Banner-1200x1600-382243057711adf80322ed2aeea42191.jpg?h=854&amp;resize=1&amp;w=640" class="css-1nbweuk" data-image="https://cdn1.epicgames.com/0584d2013f0149a791e7b9bad0eec102/offer/GTAV_EGS_Artwork_1200x1600_Portrait Store Banner-1200x1600-382243057711adf80322ed2aeea42191.jpg?h=854&amp;resize=1&amp;w=640" data-testid="picture-image">
+                <div class="highlight-images w-100">
+                    <img alt="The Witcher 3" src="https://cdn1.epicgames.com/14ee004dadc142faaaece5a6270fb628/offer/EGS_TheWitcher3WildHuntGameoftheYear_CDPROJEKTRED_S2-1200x1600-d887e1b749d11e8876996227e4de5c89.jpg?h=854&resize=1&w=640" />
                 </div>
-                <div class="highlight-images">
-                    <img alt="Grand Theft Auto V: Premium Edition" src="https://cdn1.epicgames.com/0584d2013f0149a791e7b9bad0eec102/offer/GTAV_EGS_Artwork_1200x1600_Portrait Store Banner-1200x1600-382243057711adf80322ed2aeea42191.jpg?h=854&amp;resize=1&amp;w=640" class="css-1nbweuk" data-image="https://cdn1.epicgames.com/0584d2013f0149a791e7b9bad0eec102/offer/GTAV_EGS_Artwork_1200x1600_Portrait Store Banner-1200x1600-382243057711adf80322ed2aeea42191.jpg?h=854&amp;resize=1&amp;w=640" data-testid="picture-image">
+                <div class="highlight-images w-100">
+                    <img alt="Riders" src="https://cdn1.epicgames.com/salesEvent/salesEvent/EN_MAD_STD_GAME_EPIC_Store_Portrait_1200x1600_EN_1200x1600-ddd4f456e3035ce50ddfa0d358efa208?h=854&resize=1&w=640" />
                 </div>
-                <div class="highlight-images">
-                    <img alt="Grand Theft Auto V: Premium Edition" src="https://cdn1.epicgames.com/0584d2013f0149a791e7b9bad0eec102/offer/GTAV_EGS_Artwork_1200x1600_Portrait Store Banner-1200x1600-382243057711adf80322ed2aeea42191.jpg?h=854&amp;resize=1&amp;w=640" class="css-1nbweuk" data-image="https://cdn1.epicgames.com/0584d2013f0149a791e7b9bad0eec102/offer/GTAV_EGS_Artwork_1200x1600_Portrait Store Banner-1200x1600-382243057711adf80322ed2aeea42191.jpg?h=854&amp;resize=1&amp;w=640" data-testid="picture-image">
+                <div class="highlight-images w-100">
+                    <img alt="Horizon" src="https://cdn1.epicgames.com/3328b08ac1c14540aa265a1a85c07839/offer/hzd_tall-1200x1600-d4b1057afd47f9256d8da71f2f187be4.jpg?h=854&resize=1&w=640">
                 </div>
             </div>
         </div>
