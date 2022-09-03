@@ -92,6 +92,7 @@ button {
 }
 
 .fixed-header {
+    font-size: 14px;
     height: 100px;
     width: 100%;
     position: sticky;
@@ -189,6 +190,10 @@ button {
     justify-content: end;
 }
 
+.justify-between{
+    justify-content: space-between;
+}
+
 .centralize {
     display: flex;
     justify-content: center;
@@ -242,7 +247,7 @@ button {
     margin-top: 3px;
 }
 
-.carousel-games:hover{
+.carousel-games:hover, .arrow-button-rotate:hover, .arrow-button:hover {
     background-color: rgb(255 255 255 / 8%);
 }
 .right > .carousel-games.active {
@@ -404,6 +409,33 @@ h2.highlight:hover > a > span > svg {
     opacity: 1;
 }
 
+.arrow-button, .arrow-button-rotate {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    background-color: rgb(32, 32, 32);
+    margin: 0 0 18px 0;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.arrow-button {
+    margin-left: 10px;
+}
+
+.arrow-button > svg, .arrow-button-rotate > svg {
+    color: white;
+    width: 12px;
+    height: 12px;
+}
+
+.arrow-button-rotate > svg {
+    opacity: 0.5;
+    transform: rotateZ(180deg);
+}
+
 @media (max-width: 1600px) {
     .highlight-images:last-child {
         display: none;
@@ -556,7 +588,12 @@ h2.highlight:hover > a > span > svg {
         margin: 0;
     }
 
-    .navigation span, .navigation .icon-user, .left, .carousel-games .carousel-progress  {
+    .navigation span, 
+    .navigation .icon-user, 
+    .left, 
+    .carousel-games .carousel-progress,
+    .arrow-button, 
+    .arrow-button-rotate  {
         display: none;
     }
 
