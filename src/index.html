@@ -2,12 +2,14 @@
 <html lang="pt-BR">
     <head>
         <title>Epic Games Store | Baixe e jogue jogos para PC, mods, DLCs e muito mais - Epic Games</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="styles.css">
-        <link rel="shortcut icon" href="https://static-assets-prod.epicgames.com/epic-store/static/webpack/../favicon.ico" type="image/x-icon">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" href="https://static-assets-prod.epicgames.com/epic-store/static/webpack/../favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="styles.css">
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="https://static-assets-prod.epicgames.com/epic-store/static/webpack/21.egstore-site.4bdc6582aa0fb78eb5b5.css">
     </head>
 
     <body>
@@ -34,7 +36,13 @@
 
             <div>
                 <span>
-                    ENTRAR
+                    <img src="assets/icons/globe-grid-svgrepo-com.svg" width="17" height="17" alt="globe_icon">
+                </span>
+                <span>
+                    <div class="flex">
+                        <img src="assets/icons/user-svgrepo-com.svg" width="17" height="17" alt="user_icon">
+                        <span>ENTRAR</span> 
+                    </div>
                     <div class="inactive"></div>
                 </span>
                 <button class="download">
@@ -55,7 +63,7 @@
                     <input type="text" placeholder="Pesquisar loja">
                 </div>
                 <div class="flex centralize">
-                    <a href="">Descobrir</a>
+                    <a href="" class="active">Descobrir</a>
                     <span class="down-arrow">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 9">
                             <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fill-rule="evenodd"></path>
@@ -73,7 +81,7 @@
             <div class="flex carousel-images">
                 <div class="left cursor-pointer">
                     <picture>
-                        <img alt="Play Saints Row on Epic Games Store" src="https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-desktop-1280x702-e2b42d436367.jpg?h=1080&amp;resize=1&amp;w=1920" class="css-1w9gkua" data-image="https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-desktop-1280x702-e2b42d436367.jpg?h=1080&amp;resize=1&amp;w=1920" data-testid="picture-image">
+                        <img alt="Play Saints Row on Epic Games Store" src="https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-desktop-1280x702-e2b42d436367.jpg?h=1080&amp;resize=1&amp;w=1920" class="css-1w9gkua" data-image="https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-desktop-1280x702-e2b42d436367.jpg?h=1080&amp;resize=1&amp;w=1920">
                     </picture>
                     <div class="current-carousel-button flex">
                         <h3>O tempo está acabando. Economize até 75% em jogos e complementos durante a Promoção do Evento de Agosto. Acaba em 6 de setembro.</h3>
@@ -84,6 +92,7 @@
                 <div class="right">
                     <div class="carousel-games active">
                         <img src="https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-thumb-1200x1600-f5ca5531d94e.jpg?h=1280&resize=1&w=960" alt="Saints Row" />
+                        <h3>O tempo está acabando. Economize até 75% em jogos e complementos durante a Promoção do Evento de Agosto. Acaba em 6 de setembro.</h3>
                         <div class="games-info">
                             Saints Row
                         </div>
@@ -132,9 +141,9 @@
 
             <div class="flex align-center justify-between">
                 <h2 class="flex highlight">
-                    <a role="link" href="/pt-BR/browse?tag=Promoção%20do%20Evento%20de%20Agosto&amp;category=Game&amp;count=40">
+                    <a href="">
                         Destaques: Promoção do Evento de Agosto
-                        <span aria-hidden="true">
+                        <span>
                             <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 5 9">
                                 <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fill-rule="evenodd"></path>
                             </svg>
@@ -157,12 +166,12 @@
 
             <div class="highlight-images-main flex w-100">
                 <div class="highlight-images w-100">
-                    <img alt="Grand Theft Auto V: Premium Edition" src="https://cdn1.epicgames.com/0584d2013f0149a791e7b9bad0eec102/offer/GTAV_EGS_Artwork_1200x1600_Portrait Store Banner-1200x1600-382243057711adf80322ed2aeea42191.jpg?h=854&amp;resize=1&amp;w=640" class="css-1nbweuk" data-image="https://cdn1.epicgames.com/0584d2013f0149a791e7b9bad0eec102/offer/GTAV_EGS_Artwork_1200x1600_Portrait Store Banner-1200x1600-382243057711adf80322ed2aeea42191.jpg?h=854&amp;resize=1&amp;w=640" data-testid="picture-image">
+                    <img alt="Grand Theft Auto V: Premium Edition" src="https://cdn1.epicgames.com/0584d2013f0149a791e7b9bad0eec102/offer/GTAV_EGS_Artwork_1200x1600_Portrait Store Banner-1200x1600-382243057711adf80322ed2aeea42191.jpg?h=854&amp;resize=1&amp;w=640" class="css-1nbweuk" data-image="https://cdn1.epicgames.com/0584d2013f0149a791e7b9bad0eec102/offer/GTAV_EGS_Artwork_1200x1600_Portrait Store Banner-1200x1600-382243057711adf80322ed2aeea42191.jpg?h=854&amp;resize=1&amp;w=640">
                     <div class="base-game">JOGO BASE</div>
                     <div class="game-name">Grand Theft Auto V: Premium Edition</div>
-                    <div class="flex price">
+                    <div class="flex">
                         <div class="discount">-50%</div>
-                        <div>
+                        <div class="price">
                             <span class="old-price">R$ 69,99</span>
                             <span class="current-price">R$ 34,99</span>
                         </div>
@@ -172,9 +181,9 @@
                     <img alt="Far Cry" src="https://cdn1.epicgames.com/b4565296c22549e4830c13bc7506642d/offer/TETRA_PREORDER_STANDARD%20EDITION_EPIC_Store_Portrait_1200x1600-1200x1600-ca8b802ff13813c37a44ebf68d0946a2.png?h=854&resize=1&w=640" />
                     <div class="base-game">JOGO BASE</div>
                     <div class="game-name">Far Cry 6 Standard Edition</div>
-                    <div class="flex price">
+                    <div class="flex">
                         <div class="discount">-60%</div>
-                        <div>
+                        <div class="price">
                             <span class="old-price">R$ 249,99</span>
                             <span class="current-price">R$ 99,99</span>
                         </div>
@@ -184,9 +193,9 @@
                     <img alt="Red Dead Redemption II" src="https://cdn1.epicgames.com/epic/offer/RDR2PC1227_Epic%20Games_860x1148-860x1148-b4c2210ee0c3c3b843a8de399bfe7f5c.jpg?h=854&resize=1&w=640" />
                     <div class="base-game">JOGO BASE</div>
                     <div class="game-name">Red Dead Redemption 2</div>
-                    <div class="flex price">
+                    <div class="flex">
                         <div class="discount">-50%</div>
-                        <div>
+                        <div class="price">
                             <span class="old-price">R$ 239</span>
                             <span class="current-price">R$ 119,50</span>
                         </div>
@@ -196,7 +205,7 @@
                     <img alt="The Witcher 3" src="https://cdn1.epicgames.com/14ee004dadc142faaaece5a6270fb628/offer/EGS_TheWitcher3WildHuntGameoftheYear_CDPROJEKTRED_S2-1200x1600-d887e1b749d11e8876996227e4de5c89.jpg?h=854&resize=1&w=640" />
                     <div class="base-game">JOGO BASE</div>
                     <div class="game-name">The Witcher 3: Wild Hunt - Game of the Year Edition</div>
-                    <div class="flex price">
+                    <div class="flex">
                         <div>
                             <span class="current-price">R$ 99,96</span>
                         </div>
@@ -206,9 +215,9 @@
                     <img alt="Riders" src="https://cdn1.epicgames.com/salesEvent/salesEvent/EN_MAD_STD_GAME_EPIC_Store_Portrait_1200x1600_EN_1200x1600-ddd4f456e3035ce50ddfa0d358efa208?h=854&resize=1&w=640" />
                     <div class="base-game">JOGO BASE</div>
                     <div class="game-name">Riders Republic</div>
-                    <div class="flex price">
+                    <div class="flex">
                         <div class="discount">-60%</div>
-                        <div>
+                        <div class="price">
                             <span class="old-price">R$ 249,90</span>
                             <span class="current-price">R$ 99,96</span>
                         </div>
@@ -218,7 +227,7 @@
                     <img alt="Horizon" src="https://cdn1.epicgames.com/3328b08ac1c14540aa265a1a85c07839/offer/hzd_tall-1200x1600-d4b1057afd47f9256d8da71f2f187be4.jpg?h=854&resize=1&w=640">
                     <div class="base-game">JOGO BASE</div>
                     <div class="game-name">Horizon Zero Dawn™ Complete Edition</div>
-                    <div class="flex price">
+                    <div class="flex">
                         <div>
                             <span class="current-price">R$ 199,90</span>
                         </div>

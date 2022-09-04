@@ -56,7 +56,7 @@ button {
     font-family: 'Open Sans', sans-serif, arial;
     letter-spacing: .075em;
     position: relative;
-    padding: 0 16px;
+    padding: 0 15px;
     height: 100%;
     flex-direction: column;
     display: flex;
@@ -92,7 +92,7 @@ button {
 }
 
 .fixed-header {
-    font-size: 14px;
+    font-size: 16px;
     height: 100px;
     width: 100%;
     position: sticky;
@@ -133,12 +133,14 @@ button {
     transition: color 125ms ease-in-out;
     text-decoration: none;
     transition: color 125ms ease-in-out;
-    margin-left: 20px;
+    margin-left: 10px;
     color: rgb(245, 245, 245, 45%);
 }
 
-.fixed-header div:hover a {
+.fixed-header div:hover a, 
+.fixed-header div a.active {
     color: white;
+    background-color: transparent;
 }
 
 .fixed-header > div > .down-arrow {
@@ -209,10 +211,6 @@ button {
 
 .right {
     margin-left: 32px;
-}
-
-.right {
-    margin-left: 32px;
     color: white;
 }
 
@@ -273,14 +271,12 @@ h2 {
 
 h2.highlight > a {
     display: flex;
-    -webkit-box-align: center;
     align-items: center;
     color: white;
     font-size: 18px;
     line-height: 1.4;
     text-decoration: none;
     margin: 0 0 18px 0;
-    font-weight: normal;
 }
 
 h2.highlight > a > span > svg {
@@ -300,12 +296,11 @@ h2.highlight:hover > a > span > svg {
     margin-bottom: 10px;
     width: 100%;
     margin-right: 32px;
-    max-width: 190px;
     border-radius: 4px;
 }
 
 .highlight-images, .highlight-images > img {
-    max-width: 190px;
+    max-width: 210px;
 }
 
 .highlight-images-main {
@@ -316,7 +311,7 @@ h2.highlight:hover > a > span > svg {
     margin-bottom: 50px;
 }
 
-.highlight-images-main::-webkit-scrollbar {
+.highlight-images-main::-webkit-scrollbar, body::-webkit-scrollbar {
     display: none;
 }
 
@@ -324,8 +319,8 @@ h2.highlight:hover > a > span > svg {
     color: rgba(245, 245, 245, 0.6);
     width: 12.75px;
     position: absolute;
-    top: 45px;
-    left: 15px;
+    top: 44px;
+    left: 14px;
 }
 
 .balls {
@@ -336,7 +331,7 @@ h2.highlight:hover > a > span > svg {
     border-radius: 50%;
     position: relative;
     opacity: 1;
-    margin: 0 0 18px 14px;
+    margin: 0 0 50px 14px;
     cursor: pointer;
     background-color: white;
     opacity: 0.3;
@@ -413,7 +408,8 @@ h2.highlight:hover > a > span > svg {
     font-weight: 600;
     line-height: 15px;
 }
-.left > .current-carousel-button h3 {
+
+.left > .current-carousel-button h3, .carousel-games h3 {
     color: white;
     font-size: 18px;
     letter-spacing: -0.2px;
@@ -427,6 +423,7 @@ h2.highlight:hover > a > span > svg {
     overflow: hidden;
     word-break: break-word;
 }
+
 .discount {
     display: flex;
     justify-content: center;
@@ -434,7 +431,6 @@ h2.highlight:hover > a > span > svg {
     background-color: rgb(0, 116, 228);
     color: white;
     padding: 5px 8px;
-    position: relative;
     font-weight: 600;
     border-radius: 4px;
     font-size: 10px;
@@ -447,25 +443,27 @@ h2.highlight:hover > a > span > svg {
 
 .old-price {
     text-decoration: line-through;
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0;
     color: rgba(245, 245, 245, 0.6);
 }
 
+.old-price, .current-price {
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: 20px;
+    margin-right: 10px;
+}
+
 .price {
-    margin-top: 10px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
 }
 
 .current-price {
-    font-size: 16px;
-    line-height: 20px;
-    letter-spacing: 0;
     transition: color 125ms ease-in-out;
     color: white;
-    font-size: 14px;
-    font-weight: normal;
-    line-height: 20px;
     letter-spacing: 0.2px;
 }
 
@@ -478,6 +476,7 @@ h2.highlight:hover > a > span > svg {
     line-height: 1.4;
     letter-spacing: 0.2px;
     font-weight: 400;
+    margin-bottom: 10px;
 }
 
 .base-game {
@@ -552,6 +551,12 @@ h2.highlight:hover > a > span > svg {
         margin-right: 16px;
         max-width: 189px;
     }
+
+    .current-price, .old-price {
+        font-size: 14px;
+        line-height: 20px;
+        letter-spacing: 0.2px;
+    }
 }
 
 @media (max-width: 1440px) {
@@ -563,15 +568,47 @@ h2.highlight:hover > a > span > svg {
         margin-left: 20px;
     }
 
-    .right > .carousel-games, .game-name {
+    .right > .carousel-games, 
+    .game-name, 
+    .fixed-header {
         font-size: 14px;
         letter-spacing: 0.2px;
         line-height: 1.4;
     }
 
+    .current-price, .old-price {
+        font-size: 12px;
+        line-height: 15px;
+    }
+
     .highlight-images, .highlight-images > img {
         margin-right: 16px;
         max-width: 199px;
+    }
+
+    h2.highlight > a {
+        font-size: 12px;
+        letter-spacing: 0.5px;
+        line-height: 1.3333;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+
+    .left > .current-carousel-button h3, .carousel-games h3 {
+        display: block;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+        line-height: 1.3333;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+
+    .left > .current-carousel-button button {
+        height: 40px;
+        font-size: 10px;
+        letter-spacing: 1px;
+        font-weight: 500;
+        line-height: 15px;
     }
 }
 
@@ -580,7 +617,9 @@ h2.highlight:hover > a > span > svg {
         margin-left: 16px;
     }
 
-    .right > .carousel-games, .game-name {
+    .right > .carousel-games, 
+    .game-name, 
+    .fixed-header  {
         font-size: 11px;
         letter-spacing: 0.17px;
         line-height: 1.5;
@@ -613,7 +652,8 @@ h2.highlight:hover > a > span > svg {
         width: 96%;
     }
 
-    .right > .carousel-games, .game-name {
+    .right > .carousel-games, 
+    .game-name {
         font-size: 10px;
         letter-spacing: 0.17px;
         line-height: 1.5;
@@ -625,6 +665,7 @@ h2.highlight:hover > a > span > svg {
 
     .fixed-header {
         justify-content: center;
+        font-size: 14px;
     }
 
     .fixed-header > div > a {
@@ -661,9 +702,8 @@ h2.highlight:hover > a > span > svg {
         object-fit: cover;
         opacity: 1;
         position: relative;
-        min-width: 420px;
+        min-width: 83%;
         padding: 0;
-        
     }
 
     .fixed-header, body {
@@ -671,7 +711,7 @@ h2.highlight:hover > a > span > svg {
     }
 
     .right > .carousel-games > img {
-        width: 400px;
+        width: 70vw;
         height: 100%;
         position: relative;
         border-radius: 16px;
@@ -701,7 +741,8 @@ h2.highlight:hover > a > span > svg {
     .left, 
     .carousel-games .carousel-progress,
     .arrow-button, 
-    .arrow-button-rotate  {
+    .arrow-button-rotate,
+    .games-info  {
         display: none;
     }
 
@@ -719,5 +760,14 @@ h2.highlight:hover > a > span > svg {
         width: 17px;
         height: 17px;
         left: 30px;
+    }
+
+    .current-price, .old-price {
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .carousel-games h3 {
+        left: 25px;
     }
 }
