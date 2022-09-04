@@ -311,7 +311,9 @@ h2.highlight:hover > a > span > svg {
     margin-bottom: 50px;
 }
 
-.highlight-images-main::-webkit-scrollbar, body::-webkit-scrollbar {
+.highlight-images-main::-webkit-scrollbar, 
+body::-webkit-scrollbar, 
+.right::-webkit-scrollbar {
     display: none;
 }
 
@@ -728,7 +730,7 @@ h2.highlight:hover > a > span > svg {
         display: flex;
         height: 100%;
         max-width: 100%;
-        overflow-x: hidden;
+        overflow-x: auto;
         -webkit-overflow-scrolling: touch;
     }
 
@@ -769,5 +771,11 @@ h2.highlight:hover > a > span > svg {
 
     .carousel-games h3 {
         left: 25px;
+        bottom: 50px;
+        padding-right: 25px;
+    }
+
+    h2.highlight > a {
+        margin-left: 16px;
     }
 }
