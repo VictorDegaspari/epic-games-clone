@@ -240,9 +240,9 @@ button {
     margin-top: 3px;
 }
 
-.carousel-games:hover, .arrow-button-rotate:hover, .arrow-button:hover {
-    background-color: rgb(255 255 255 / 8%);
-}
+.carousel-games:hover, 
+.arrow-button-rotate:hover, 
+.arrow-button:hover,
 .right > .carousel-games.active {
     background-color: rgb(255 255 255 / 8%);
 }
@@ -312,7 +312,6 @@ h2.highlight:hover > a > span > svg {
 }
 
 .highlight-images-main::-webkit-scrollbar, 
-body::-webkit-scrollbar, 
 .right::-webkit-scrollbar {
     display: none;
 }
