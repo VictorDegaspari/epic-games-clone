@@ -61,6 +61,7 @@
                         </g>
                     </svg>
                     <input type="text" placeholder="Pesquisar loja">
+                    <div id="data-rows"></div>
                 </div>
                 <div class="flex centralize">
                     <a href="" class="active">Descobrir</a>
@@ -236,4 +237,31 @@
             </div>
         </div>
     </body>
+
+    <script type="module">
+        import { get } from "./index.js";
+
+        let dataRows = document.getElementById("data-rows");
+        
+        document.querySelector("input").addEventListener("input", event => {
+            dataRows.classList.add("show");
+            console.log(event)
+            get(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${event.target.value}&format=json&origin=*`)
+                .then(result => {
+                    let containers = "";
+                    result.query?.search?.forEach(item => {
+                        containers += `<div> ${ item?.title } </div>`;
+                    });
+                    dataRows.innerHTML = containers;
+                })
+                .catch((e) => {
+                    console.error(e);
+                });
+        });
+
+        document.querySelector("input").addEventListener("focusout", () => { 
+            dataRows.classList.remove("show")
+        });
+
+    </script>
 </html>

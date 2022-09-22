@@ -543,6 +543,27 @@ body::-webkit-scrollbar,
     transform: rotateZ(180deg);
 }
 
+#data-rows {
+    background: rgb(32, 32, 32);
+    position: absolute;
+    z-index: 9999;
+    color: white;
+    padding: 15px;
+    border-radius: 4px;
+    max-width: 460px;
+    width: 100%;
+    display: none;
+}
+
+#data-rows.show {
+    display: block;
+}
+
+#data-rows > div {
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+
 /* Responsividade */
 @media (max-width: 1600px) {
     .highlight-images:last-child {
