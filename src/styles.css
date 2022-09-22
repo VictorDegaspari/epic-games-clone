@@ -312,7 +312,9 @@ h2.highlight:hover > a > span > svg {
 }
 
 .highlight-images-main::-webkit-scrollbar, 
-.right::-webkit-scrollbar {
+.right::-webkit-scrollbar,
+#data-rows > #data-rows-content, 
+#data-rows > #loader-background {
     display: none;
 }
 
@@ -547,20 +549,56 @@ h2.highlight:hover > a > span > svg {
     position: absolute;
     z-index: 9999;
     color: white;
-    padding: 15px;
     border-radius: 4px;
     max-width: 460px;
     width: 100%;
-    display: none;
 }
 
-#data-rows.show {
+#data-rows > #data-rows-content.show, 
+#data-rows > #loader-background.show  {
     display: block;
 }
 
-#data-rows > div {
-    margin-bottom: 15px;
+#data-rows > #data-rows-content > div {
+    margin: 15px;
     cursor: pointer;
+}
+
+.loader {
+    border: 5px solid #ffffff; /* Light grey */
+    border-top: 5px solid #000000; /* Blue */
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    animation: spin 2s linear infinite;
+    position: relative;
+    left: calc(50% - 25px);
+    top: calc(50% - 25px);
+}
+
+#loader-background {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #55555586;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    border-radius: 4px;
+    max-width: 460px;
+    width: 100%;
+    min-height: 50px;
+
+}
+
+@keyframes spin {
+    0% { 
+        transform: rotate(0deg); 
+    }
+    100% { 
+        transform: rotate(360deg); 
+    }
 }
 
 /* Responsividade */
@@ -685,6 +723,36 @@ h2.highlight:hover > a > span > svg {
         display: none;
     }
 
+    .fixed-header #input-search.show {
+        display: flex;
+        border-radius: 0;
+        position: fixed;
+        right: 0;
+        left: 0;
+        max-width: 100%;
+        height: 100px;
+        top: -10px;
+        z-index: 9999;
+    }
+    #input-search.show:focus {
+        background: rgb(36, 36, 36);
+    }
+    #input-background.show {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: 0;
+        background-color: rgba(20, 20, 20, 0.63);
+        z-index: 99;
+    }
+    #data-rows, #loader-background {
+        position: fixed;
+        top: 100px;
+        left: 0;
+        right: 0;
+        max-width: 100%;
+    }
     .fixed-header {
         justify-content: center;
         font-size: 14px;

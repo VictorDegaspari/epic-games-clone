@@ -53,15 +53,23 @@
         </nav>
         <div class="main">
             <div class="fixed-header">
-                <div class="icon-search">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 20" preserveAspectRatio="xMidYMid meet">
+                <div class="icon-search" id="div-search">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 20" preserveAspectRatio="xMidYMid meet" id="svg-search">
                         <g transform="scale(1 -1) rotate(-45 -11.93502884 -2)" stroke="currentColor" stroke-width="1.65" fill="none" fill-rule="evenodd">
                             <circle cx="7.70710678" cy="7.70710678" r="7"></circle>
                             <path d="M15.2071068 8.62132034h5.6923881" stroke-linecap="square"></path>
                         </g>
                     </svg>
-                    <input type="text" placeholder="Pesquisar loja">
-                    <div id="data-rows"></div>
+
+                    <input type="text" placeholder="Pesquisar loja" id="input-search" autocomplete="off">
+                    <div id="input-background"></div>
+
+                    <div id="data-rows">
+                        <div id="loader-background">
+                            <div class="loader"></div>
+                        </div>
+                        <div id="data-rows-content"></div>
+                    </div>
                 </div>
                 <div class="flex centralize">
                     <a href="" class="active">Descobrir</a>
@@ -241,27 +249,46 @@
     <script type="module">
         import { get } from "./index.js";
 
-        let dataRows = document.getElementById("data-rows");
-        
-        document.querySelector("input").addEventListener("input", event => {
+        const dataRows = document.getElementById("data-rows-content");
+        const inputSearch = document.getElementById("input-search");
+        const inputBackground = document.getElementById("input-background");
+        const svgSearch = document.getElementById("svg-search");
+        const loading = document.getElementById("loader-background");
+
+        function search(inputValue) {
             dataRows.classList.add("show");
-            console.log(event)
-            get(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${event.target.value}&format=json&origin=*`)
+            loading.classList.add("show");
+
+            get(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${inputValue}&format=json&origin=*`)
                 .then(result => {
                     let containers = "";
-                    result.query?.search?.forEach(item => {
-                        containers += `<div> ${ item?.title } </div>`;
-                    });
+
+                    result.query?.search?.length != 0 ? 
+                        result.query?.search?.forEach(item => {
+                            containers += `<div> ${ item?.title } </div>`;
+                        })
+                        : containers += `<div> Nenhum item encontrado. </div>`;
+                    
                     dataRows.innerHTML = containers;
+                    loading.classList.remove("show");
                 })
                 .catch((e) => {
                     console.error(e);
                 });
-        });
+        }
 
-        document.querySelector("input").addEventListener("focusout", () => { 
-            dataRows.classList.remove("show")
+        inputSearch.addEventListener("input", event => search(event.target.value));
+        inputSearch.addEventListener("focusout", () => dataRows.classList.remove("show"));
+        inputSearch.addEventListener("focusin", event => { 
+            if (event.target.value.length > 0) search(event.target.value);
         });
-
+        svgSearch.addEventListener("click", event => {
+            inputBackground.classList.add("show"); 
+            inputSearch.classList.add("show"); 
+        });
+        inputBackground.addEventListener("click", event => {
+            inputBackground.classList.remove("show"); 
+            inputSearch.classList.remove("show"); 
+        });
     </script>
 </html>
