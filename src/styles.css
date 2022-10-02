@@ -21,6 +21,8 @@ button {
 
 .error {
     color: rgb(248, 59, 59);
+    position: absolute;
+    bottom: 15px;
 }
 
 .show {
@@ -53,6 +55,7 @@ button {
     justify-content: center;
     padding: 20px;
     background-color: rgb(32 32 32);
+    position: relative;
 }
 
 #login > .content > input,  
