@@ -21,11 +21,16 @@
                 <input type="password" name="password" id="password" placeholder="Senha">
                 <p id="messageEmptyPassword" class="error" >Preencha a senha</p>
                 <p id="messageValidation" class="error" >Senha ou Email estão incorretos!</p>
-                <button onclick="login()">Entrar</button>
+                <button id="login-button" class="flex align-center justify-center">
+                    <div id="loader-login">
+                        <div class="loader"></div>
+                    </div>
+                    Entrar
+                </button>
             </div>
         </div>
 
-        <div id="home flex-column ">
+        <div id="home" class="flex-column">
             <nav class="navigation">
                 <div>
                     <a href="" class="epicLogo cursor-pointer"></a>
@@ -261,41 +266,32 @@
     </body>
 
     <script type="module">
-        import { get } from "./index.js";
-
+        import { get, post } from "./index.js";
+        
         const dataRows = document.getElementById("data-rows-content");
         const inputSearch = document.getElementById("input-search");
         const inputBackground = document.getElementById("input-background");
         const svgSearch = document.getElementById("svg-search");
         const loading = document.getElementById("loader-background");
+        const loadingLogin = document.getElementById("loader-login");
+        const loginButton = document.getElementById("login-button");
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const loginPage = document.getElementById("login");
+        const homePage = document.getElementById("home");
+        const messageEmptyEmail = document.getElementById('messageEmptyEmail');
+        const messageEmptyPassword = document.getElementById('messageEmptyPassword');
+        const messageValidation = document.getElementById('messageValidation');
 
-        function search(inputValue) {
-            dataRows.classList.add("show");
-            loading.classList.add("show");
-
-            get(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${inputValue}&format=json&origin=*`)
-                .then(result => {
-                    let containers = "";
-
-                    result.query?.search?.length != 0 ? 
-                        result.query?.search?.forEach(item => {
-                            containers += `<div> ${ item?.title } </div>`;
-                        })
-                        : containers += `<div> Nenhum item encontrado. </div>`;
-                    
-                    dataRows.innerHTML = containers;
-                    loading.classList.remove("show");
-                })
-                .catch((e) => {
-                    console.error(e);
-                });
-        }
+        let emailValue;
+        let passwordValue;
 
         inputSearch.addEventListener("input", event => search(event.target.value));
         inputSearch.addEventListener("focusout", () => dataRows.classList.remove("show"));
         inputSearch.addEventListener("focusin", event => { 
             if (event.target.value.length > 0) search(event.target.value);
         });
+        loginButton.addEventListener("click", event => login());
         svgSearch.addEventListener("click", event => {
             inputBackground.classList.add("show"); 
             inputSearch.classList.add("show"); 
@@ -304,45 +300,19 @@
             inputBackground.classList.remove("show"); 
             inputSearch.classList.remove("show"); 
         });
-    </script>
-    <script>
-        // import { post } from "./index.js";
-
-        const email = document.getElementById('email');
-        const password = document.getElementById('password');
-        const loginPage = document.getElementById("login");
-        const homePage = document.getElementById("home");
-        const messageEmptyEmail = document.getElementById('messageEmptyEmail');
-        const messageEmptyPassword = document.getElementById('messageEmptyPassword');
-        let emailValue;
-        let passwordValue;
 
         email.addEventListener("input", event => {
+            messageValidation.classList.remove('show');
             messageEmptyEmail.classList.remove('show');
             emailValue = event.target.value;
         });
         password.addEventListener("input", event => {
+            messageValidation.classList.remove('show');
             messageEmptyPassword.classList.remove('show');
             passwordValue = event.target.value;
         });
 
-        function post(url, params) {
-            return new Promise((resolve, reject) => {
-                const post = new XMLHttpRequest();
-                post.onload = () => {
-                    if (post.status === 200 && post.readyState === 4) {
-                        resolve(JSON.parse(post.response));
-                    }
-                };
-                post.onerror = reject;
-                post.open("POST", url);
-                post.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                post.send(JSON.stringify(params));
-            });
-        }
-        
-        function login() {
-            const messageValidation = document.getElementById('messageValidation');
+        async function login() {
 
             if (!emailValue) {
                 messageEmptyEmail.classList.add('show');
@@ -353,18 +323,41 @@
                 messageEmptyPassword.classList.add('show');
                 return;
             }
+            loadingLogin.classList.add("show");
 
-            post("https://reqres.in/api/login", { email: emailValue, password: passwordValue })
-                .then(response => {
-                    console.log(response.token);
-                    localStorage.setItem('token', response.token);
-                    loginPage.classList.remove('show');
-                    homePage.classList.add('show');
+            try {
+                const response = await post("https://reqres.in/api/login", { email: emailValue, password: passwordValue });
+                if (response.info?.type == 'Error') throw new Error();
+                localStorage.setItem('token', response.token);
+                loginPage.classList.remove('show');
+                homePage.classList.add('show');
+                loadingLogin.classList.remove("show");
+            } catch (error) {
+                console.error(error);
+                messageValidation.classList.add('show');
+                loadingLogin.classList.remove("show");
+            }
+        }
 
-                }).catch((e) => {
-                    console.error(e);
-                    messageValidation.classList.add('show');
-                });
+        async function search(inputValue) {
+            dataRows.classList.add("show");
+            loading.classList.add("show");
+            
+            try {
+                const response = await get(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${inputValue}&format=json&origin=*`);
+                if (response.info?.type == 'Error') throw new Error();
+                let containers = "";
+                response.query?.search?.length != 0 ? 
+                    response.query?.search?.forEach(item => {
+                        containers += `<div> ${ item?.title } </div>`;
+                    })
+                    : containers += `<div> Nenhum item encontrado. </div>`;
+                
+                dataRows.innerHTML = containers;
+                loading.classList.remove("show");
+            } catch (error) {
+                console.error(error);
+            }
         }
 
         function isLogged() {
@@ -372,5 +365,7 @@
             
             token ?  homePage.classList.add('show') : loginPage.classList.add('show');
         }
+
+        window.isLogged = isLogged;
     </script>
 </html>

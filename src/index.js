@@ -1,30 +1,37 @@
-function get(url) {
-    return new Promise((resolve, reject) => {
-        const req = new XMLHttpRequest();
-        req.onload = () => {
-            if (req.status === 200 && req.readyState === 4) {
-                resolve(JSON.parse(req.response));
-            }
-        };
-        req.onerror = reject;
-        req.open("GET", url);
-        req.send();
-    });
+async function get(url = '') {
+    const response = await fetch(url);
+    
+    if (response.ok) return response.json();
+    const responseError = {
+        type: 'Error',
+        message: 'Something went wrong',
+    };
+  
+    const error = new Error();
+    error.info = responseError;
+
+    return (error);
 }
 
-function post(url, params) {
-    return new Promise((resolve, reject) => {
-        const post = new XMLHttpRequest();
-        post.onload = () => {
-            if (post.status === 200 && post.readyState === 4) {
-                resolve(JSON.parse(post.response));
-            }
-        };
-        post.onerror = reject;
-        post.open("POST", url);
-        post.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        post.send(JSON.stringify(params));
+async function post(url = '', data = {}) {
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
     });
-}
+
+    if (response.ok) return response.json();
+    const responseError = {
+        type: 'Error',
+        message: 'Something went wrong',
+    };
+  
+    const error = new Error();
+    error.info = responseError;
+
+    return (error);
+  }
 
 export { get, post };

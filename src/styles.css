@@ -59,24 +59,33 @@ button {
 #login > .content > button {
     height: 42px;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 25px;
     border-radius: 6px;
     outline: none;
     border: none;
+    max-width: 100%;
 }
 
 #login > .content > input {
+    max-width: calc(100% - 30px);
     background-color: rgb(43, 43, 43);
     padding-left: 30px;
     color: white;
-
 }
 
-#home, #login, #messageValidation {
+#home, 
+#login, 
+#messageValidation,
+#messageEmptyEmail,
+#messageEmptyPassword {
     display: none;
 }
 
-#home.show, #login.show, #messageValidation.show  {
+#home.show, 
+#login.show, 
+#messageValidation.error.show ,
+#messageEmptyEmail.error.show ,
+#messageEmptyPassword.error.show  {
     display: flex;
 }
 
@@ -379,7 +388,8 @@ h2.highlight:hover > a > span > svg {
 .highlight-images-main::-webkit-scrollbar, 
 .right::-webkit-scrollbar,
 #data-rows > #data-rows-content, 
-#data-rows > #loader-background {
+#data-rows > #loader-background,
+#loader-login {
     display: none;
 }
 
@@ -620,7 +630,8 @@ h2.highlight:hover > a > span > svg {
 }
 
 #data-rows > #data-rows-content.show, 
-#data-rows > #loader-background.show  {
+#data-rows > #loader-background.show,
+#loader-login.show  {
     display: block;
 }
 
@@ -630,8 +641,8 @@ h2.highlight:hover > a > span > svg {
 }
 
 .loader {
-    border: 5px solid #ffffff; /* Light grey */
-    border-top: 5px solid #000000; /* Blue */
+    border: 5px solid #cacaca; /* Light grey */
+    border-top: 5px solid #4e4e4e; /* Blue */
     border-radius: 50%;
     width: 25px;
     height: 25px;
