@@ -19,6 +19,67 @@ button {
     cursor: pointer;
 }
 
+.error {
+    color: rgb(248, 59, 59);
+}
+
+.show {
+    display: flex;
+}
+
+.none {
+    display: none;
+}
+
+#login {
+    z-index: 9999999;
+    background-color: rgb(0, 0, 0);
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+#login > .content {
+    max-width: 500px;
+    border-radius: 8px;
+    width: 100%;
+    min-height: 400px;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: rgb(32 32 32);
+}
+
+#login > .content > input,  
+#login > .content > button {
+    height: 42px;
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 6px;
+    outline: none;
+    border: none;
+}
+
+#login > .content > input {
+    background-color: rgb(43, 43, 43);
+    padding-left: 30px;
+    color: white;
+
+}
+
+#home, #login, #messageValidation {
+    display: none;
+}
+
+#home.show, #login.show, #messageValidation.show  {
+    display: flex;
+}
+
 .main {
     width: 75%;
     margin: auto;
@@ -172,6 +233,10 @@ button {
 
 .flex {
     display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
 }
 
 .align-center {

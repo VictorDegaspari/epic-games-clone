@@ -12,4 +12,19 @@ function get(url) {
     });
 }
 
-export { get };
+function post(url, params) {
+    return new Promise((resolve, reject) => {
+        const post = new XMLHttpRequest();
+        post.onload = () => {
+            if (post.status === 200 && post.readyState === 4) {
+                resolve(JSON.parse(post.response));
+            }
+        };
+        post.onerror = reject;
+        post.open("POST", url);
+        post.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        post.send(JSON.stringify(params));
+    });
+}
+
+export { get, post };
