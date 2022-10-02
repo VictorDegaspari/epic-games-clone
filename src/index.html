@@ -12,233 +12,247 @@
         <link rel="stylesheet" type="text/css" href="https://static-assets-prod.epicgames.com/epic-store/static/webpack/21.egstore-site.4bdc6582aa0fb78eb5b5.css">
     </head>
 
-    <body>
-        <nav class="navigation">
-            <div>
+    <body onload="isLogged()">
+        <div id="login" class="flex flex-column ">
+            <div class="content flex flex-column">
                 <a href="" class="epicLogo cursor-pointer"></a>
-                <span>
-                    STORE
-                    <div class="active"></div>
-                </span>
-                <span>
-                    PERGUNTAS FREQUENTES
-                    <div class="inactive"></div>
-                </span>
-                <span>
-                    AJUDA
-                    <div class="inactive"></div>
-                </span>
-                <span>
-                    UNREAL ENGINE
-                    <div class="inactive"></div>
-                </span>
+                <input type="email" name="email" id="email" placeholder="E-mail">
+                <p id="messageEmptyEmail" class="error" >Preencha o e-mail</p>
+                <input type="password" name="password" id="password" placeholder="Senha">
+                <p id="messageEmptyPassword" class="error" >Preencha a senha</p>
+                <p id="messageValidation" class="error" >Senha ou Email estão incorretos!</p>
+                <button onclick="login()">Entrar</button>
             </div>
+        </div>
 
-            <div>
-                <span>
-                    <img src="assets/icons/globe-grid-svgrepo-com.svg" width="17" height="17" alt="globe_icon">
-                </span>
-                <span>
-                    <div class="flex">
-                        <img src="assets/icons/user-svgrepo-com.svg" width="17" height="17" alt="user_icon">
-                        <span>ENTRAR</span> 
-                    </div>
-                    <div class="inactive"></div>
-                </span>
-                <button class="download">
-                    <div>BAIXAR EPIC GAMES</div>
-                    <div class="burger-menu"></div>
-                </button>
-            </div>            
-        </nav>
-        <div class="main">
-            <div class="fixed-header">
-                <div class="icon-search" id="div-search">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 20" preserveAspectRatio="xMidYMid meet" id="svg-search">
-                        <g transform="scale(1 -1) rotate(-45 -11.93502884 -2)" stroke="currentColor" stroke-width="1.65" fill="none" fill-rule="evenodd">
-                            <circle cx="7.70710678" cy="7.70710678" r="7"></circle>
-                            <path d="M15.2071068 8.62132034h5.6923881" stroke-linecap="square"></path>
-                        </g>
-                    </svg>
-
-                    <input type="text" placeholder="Pesquisar loja" id="input-search" autocomplete="off">
-                    <div id="input-background"></div>
-
-                    <div id="data-rows">
-                        <div id="loader-background">
-                            <div class="loader"></div>
-                        </div>
-                        <div id="data-rows-content"></div>
-                    </div>
-                </div>
-                <div class="flex centralize">
-                    <a href="" class="active">Descobrir</a>
-                    <span class="down-arrow">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 9">
-                            <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fill-rule="evenodd"></path>
-                        </svg>
+        <div id="home flex-column ">
+            <nav class="navigation">
+                <div>
+                    <a href="" class="epicLogo cursor-pointer"></a>
+                    <span>
+                        STORE
+                        <div class="active"></div>
+                    </span>
+                    <span>
+                        PERGUNTAS FREQUENTES
+                        <div class="inactive"></div>
+                    </span>
+                    <span>
+                        AJUDA
+                        <div class="inactive"></div>
+                    </span>
+                    <span>
+                        UNREAL ENGINE
+                        <div class="inactive"></div>
                     </span>
                 </div>
+    
                 <div>
-                    <a class="hidden-header" href="">Navegar</a>
-                </div>
-                <div>
-                    <a class="hidden-header" href="">Novidades</a>
-                </div>
-            </div>
-
-            <div class="flex carousel-images">
-                <div class="left cursor-pointer">
-                    <picture>
-                        <img alt="Play Saints Row on Epic Games Store" src="https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-desktop-1280x702-e2b42d436367.jpg?h=1080&amp;resize=1&amp;w=1920" class="css-1w9gkua" data-image="https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-desktop-1280x702-e2b42d436367.jpg?h=1080&amp;resize=1&amp;w=1920">
-                    </picture>
-                    <div class="current-carousel-button flex">
-                        <h3>O tempo está acabando. Economize até 75% em jogos e complementos durante a Promoção do Evento de Agosto. Acaba em 6 de setembro.</h3>
-                        <button>ECONOMIZE AGORA</button>
-                    </div>
-                    <div class="current-carousel-info"></div>
-                </div>
-                <div class="right">
-                    <div class="carousel-games active">
-                        <img src="https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-thumb-1200x1600-f5ca5531d94e.jpg?h=1280&resize=1&w=960" alt="Saints Row" />
-                        <h3>O tempo está acabando. Economize até 75% em jogos e complementos durante a Promoção do Evento de Agosto. Acaba em 6 de setembro.</h3>
-                        <div class="games-info">
-                            Saints Row
+                    <span>
+                        <img src="assets/icons/globe-grid-svgrepo-com.svg" width="17" height="17" alt="globe_icon">
+                    </span>
+                    <span>
+                        <div class="flex">
+                            <img src="assets/icons/user-svgrepo-com.svg" width="17" height="17" alt="user_icon">
+                            <span>ENTRAR</span> 
                         </div>
-                        <div class="carousel-progress"></div>
-                    </div>
-                    <div class="carousel-games">
-                        <img src="https://cdn2.unrealengine.com/egs-cotw-angler-carousel-thumb-1200x1600-b6cd84f848f3.jpg?h=1280&resize=1&w=960" alt="Promoção do Evento de Setembro" />
-                        <div class="games-info">
-                            Promoção do Evento de Setembro
-                        </div>
-                    </div>
-                    <div class="carousel-games">
-                        <img src="https://cdn2.unrealengine.com/egs-uncharted-carousel-thumbnail-1200x1600-94a84847c592.jpg?h=1280&resize=1&w=960" alt="Destiny 2" />
-                        <div class="games-info">
-                            Destiny 2
+                        <div class="inactive"></div>
+                    </span>
+                    <button class="download">
+                        <div>BAIXAR EPIC GAMES</div>
+                        <div class="burger-menu"></div>
+                    </button>
+                </div>            
+            </nav>
+            <div class="main">
+                <div class="fixed-header">
+                    <div class="icon-search" id="div-search">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 20" preserveAspectRatio="xMidYMid meet" id="svg-search">
+                            <g transform="scale(1 -1) rotate(-45 -11.93502884 -2)" stroke="currentColor" stroke-width="1.65" fill="none" fill-rule="evenodd">
+                                <circle cx="7.70710678" cy="7.70710678" r="7"></circle>
+                                <path d="M15.2071068 8.62132034h5.6923881" stroke-linecap="square"></path>
+                            </g>
+                        </svg>
+    
+                        <input type="text" placeholder="Pesquisar loja" id="input-search" autocomplete="off">
+                        <div id="input-background"></div>
+    
+                        <div id="data-rows">
+                            <div id="loader-background">
+                                <div class="loader"></div>
+                            </div>
+                            <div id="data-rows-content"></div>
                         </div>
                     </div>
-                    <div class="carousel-games">
-                        <img src="https://cdn2.unrealengine.com/egs-d2-event-sale-carousel-thumbnail-1200x1600-cadf8880dc1c.jpg?h=1280&resize=1&w=960" alt="Dead Island 2" />
-                        <div class="games-info">
-                            Dead Island 2
-                        </div>
-                    </div>
-                    <div class="carousel-games">
-                        <img src="https://cdn2.unrealengine.com/egs-pcbs2-carousel-thumb-315x399-827b723dd428.jpg?h=1280&resize=1&w=960" alt="PC Building Simulator 2">
-                        <div class="games-info">
-                            PC Building Simulator 2
-                        </div>
-                    </div>
-                    <div class="carousel-games">
-                        <img src="https://cdn2.unrealengine.com/languagecode-developer-gametitle-s2-1200x1600-alt-1200x1600-cd29354f1130.jpg?h=1280&resize=1&w=960" alt="Rumbleverse" />
-                        <div class="games-info">
-                            Rumbleverse
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="flex centralize">
-                <div class="balls active"></div>
-                <div class="balls"></div>
-                <div class="balls"></div>
-                <div class="balls"></div>
-                <div class="balls"></div>
-                <div class="balls"></div>
-            </div>
-
-            <div class="flex align-center justify-between">
-                <h2 class="flex highlight">
-                    <a href="">
-                        Destaques: Promoção do Evento de Agosto
-                        <span>
-                            <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 5 9">
+                    <div class="flex centralize">
+                        <a href="" class="active">Descobrir</a>
+                        <span class="down-arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 9">
                                 <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fill-rule="evenodd"></path>
                             </svg>
                         </span>
-                    </a>
-                </h2>
-                <div class="flex">
-                    <button class="arrow-button-rotate">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 9">
-                            <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fill-rule="evenodd"></path>
-                        </svg>
-                    </button>
-                    <button class="arrow-button">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 9">
-                            <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fill-rule="evenodd"></path>
-                        </svg>
-                    </button>
+                    </div>
+                    <div>
+                        <a class="hidden-header" href="">Navegar</a>
+                    </div>
+                    <div>
+                        <a class="hidden-header" href="">Novidades</a>
+                    </div>
                 </div>
-            </div>
-
-            <div class="highlight-images-main flex w-100">
-                <div class="highlight-images w-100">
-                    <img alt="Grand Theft Auto V: Premium Edition" src="https://cdn1.epicgames.com/0584d2013f0149a791e7b9bad0eec102/offer/GTAV_EGS_Artwork_1200x1600_Portrait Store Banner-1200x1600-382243057711adf80322ed2aeea42191.jpg?h=854&amp;resize=1&amp;w=640" class="css-1nbweuk" data-image="https://cdn1.epicgames.com/0584d2013f0149a791e7b9bad0eec102/offer/GTAV_EGS_Artwork_1200x1600_Portrait Store Banner-1200x1600-382243057711adf80322ed2aeea42191.jpg?h=854&amp;resize=1&amp;w=640">
-                    <div class="base-game">JOGO BASE</div>
-                    <div class="game-name">Grand Theft Auto V: Premium Edition</div>
-                    <div class="flex">
-                        <div class="discount">-50%</div>
-                        <div class="price">
-                            <span class="old-price">R$ 69,99</span>
-                            <span class="current-price">R$ 34,99</span>
+    
+                <div class="flex carousel-images">
+                    <div class="left cursor-pointer">
+                        <picture>
+                            <img alt="Play Saints Row on Epic Games Store" src="https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-desktop-1280x702-e2b42d436367.jpg?h=1080&amp;resize=1&amp;w=1920" class="css-1w9gkua" data-image="https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-desktop-1280x702-e2b42d436367.jpg?h=1080&amp;resize=1&amp;w=1920">
+                        </picture>
+                        <div class="current-carousel-button flex">
+                            <h3>O tempo está acabando. Economize até 75% em jogos e complementos durante a Promoção do Evento de Agosto. Acaba em 6 de setembro.</h3>
+                            <button>ECONOMIZE AGORA</button>
+                        </div>
+                        <div class="current-carousel-info"></div>
+                    </div>
+                    <div class="right">
+                        <div class="carousel-games active">
+                            <img src="https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-thumb-1200x1600-f5ca5531d94e.jpg?h=1280&resize=1&w=960" alt="Saints Row" />
+                            <h3>O tempo está acabando. Economize até 75% em jogos e complementos durante a Promoção do Evento de Agosto. Acaba em 6 de setembro.</h3>
+                            <div class="games-info">
+                                Saints Row
+                            </div>
+                            <div class="carousel-progress"></div>
+                        </div>
+                        <div class="carousel-games">
+                            <img src="https://cdn2.unrealengine.com/egs-cotw-angler-carousel-thumb-1200x1600-b6cd84f848f3.jpg?h=1280&resize=1&w=960" alt="Promoção do Evento de Setembro" />
+                            <div class="games-info">
+                                Promoção do Evento de Setembro
+                            </div>
+                        </div>
+                        <div class="carousel-games">
+                            <img src="https://cdn2.unrealengine.com/egs-uncharted-carousel-thumbnail-1200x1600-94a84847c592.jpg?h=1280&resize=1&w=960" alt="Destiny 2" />
+                            <div class="games-info">
+                                Destiny 2
+                            </div>
+                        </div>
+                        <div class="carousel-games">
+                            <img src="https://cdn2.unrealengine.com/egs-d2-event-sale-carousel-thumbnail-1200x1600-cadf8880dc1c.jpg?h=1280&resize=1&w=960" alt="Dead Island 2" />
+                            <div class="games-info">
+                                Dead Island 2
+                            </div>
+                        </div>
+                        <div class="carousel-games">
+                            <img src="https://cdn2.unrealengine.com/egs-pcbs2-carousel-thumb-315x399-827b723dd428.jpg?h=1280&resize=1&w=960" alt="PC Building Simulator 2">
+                            <div class="games-info">
+                                PC Building Simulator 2
+                            </div>
+                        </div>
+                        <div class="carousel-games">
+                            <img src="https://cdn2.unrealengine.com/languagecode-developer-gametitle-s2-1200x1600-alt-1200x1600-cd29354f1130.jpg?h=1280&resize=1&w=960" alt="Rumbleverse" />
+                            <div class="games-info">
+                                Rumbleverse
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="highlight-images w-100">
-                    <img alt="Far Cry" src="https://cdn1.epicgames.com/b4565296c22549e4830c13bc7506642d/offer/TETRA_PREORDER_STANDARD%20EDITION_EPIC_Store_Portrait_1200x1600-1200x1600-ca8b802ff13813c37a44ebf68d0946a2.png?h=854&resize=1&w=640" />
-                    <div class="base-game">JOGO BASE</div>
-                    <div class="game-name">Far Cry 6 Standard Edition</div>
+                <div class="flex centralize">
+                    <div class="balls active"></div>
+                    <div class="balls"></div>
+                    <div class="balls"></div>
+                    <div class="balls"></div>
+                    <div class="balls"></div>
+                    <div class="balls"></div>
+                </div>
+    
+                <div class="flex align-center justify-between">
+                    <h2 class="flex highlight">
+                        <a href="">
+                            Destaques: Promoção do Evento de Agosto
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 5 9">
+                                    <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fill-rule="evenodd"></path>
+                                </svg>
+                            </span>
+                        </a>
+                    </h2>
                     <div class="flex">
-                        <div class="discount">-60%</div>
-                        <div class="price">
-                            <span class="old-price">R$ 249,99</span>
-                            <span class="current-price">R$ 99,99</span>
-                        </div>
+                        <button class="arrow-button-rotate">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 9">
+                                <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fill-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                        <button class="arrow-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 9">
+                                <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fill-rule="evenodd"></path>
+                            </svg>
+                        </button>
                     </div>
                 </div>
-                <div class="highlight-images w-100">
-                    <img alt="Red Dead Redemption II" src="https://cdn1.epicgames.com/epic/offer/RDR2PC1227_Epic%20Games_860x1148-860x1148-b4c2210ee0c3c3b843a8de399bfe7f5c.jpg?h=854&resize=1&w=640" />
-                    <div class="base-game">JOGO BASE</div>
-                    <div class="game-name">Red Dead Redemption 2</div>
-                    <div class="flex">
-                        <div class="discount">-50%</div>
-                        <div class="price">
-                            <span class="old-price">R$ 239</span>
-                            <span class="current-price">R$ 119,50</span>
+    
+                <div class="highlight-images-main flex w-100">
+                    <div class="highlight-images w-100">
+                        <img alt="Grand Theft Auto V: Premium Edition" src="https://cdn1.epicgames.com/0584d2013f0149a791e7b9bad0eec102/offer/GTAV_EGS_Artwork_1200x1600_Portrait Store Banner-1200x1600-382243057711adf80322ed2aeea42191.jpg?h=854&amp;resize=1&amp;w=640" class="css-1nbweuk" data-image="https://cdn1.epicgames.com/0584d2013f0149a791e7b9bad0eec102/offer/GTAV_EGS_Artwork_1200x1600_Portrait Store Banner-1200x1600-382243057711adf80322ed2aeea42191.jpg?h=854&amp;resize=1&amp;w=640">
+                        <div class="base-game">JOGO BASE</div>
+                        <div class="game-name">Grand Theft Auto V: Premium Edition</div>
+                        <div class="flex">
+                            <div class="discount">-50%</div>
+                            <div class="price">
+                                <span class="old-price">R$ 69,99</span>
+                                <span class="current-price">R$ 34,99</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="highlight-images w-100">
-                    <img alt="The Witcher 3" src="https://cdn1.epicgames.com/14ee004dadc142faaaece5a6270fb628/offer/EGS_TheWitcher3WildHuntGameoftheYear_CDPROJEKTRED_S2-1200x1600-d887e1b749d11e8876996227e4de5c89.jpg?h=854&resize=1&w=640" />
-                    <div class="base-game">JOGO BASE</div>
-                    <div class="game-name">The Witcher 3: Wild Hunt - Game of the Year Edition</div>
-                    <div class="flex">
-                        <div>
-                            <span class="current-price">R$ 99,96</span>
+                    <div class="highlight-images w-100">
+                        <img alt="Far Cry" src="https://cdn1.epicgames.com/b4565296c22549e4830c13bc7506642d/offer/TETRA_PREORDER_STANDARD%20EDITION_EPIC_Store_Portrait_1200x1600-1200x1600-ca8b802ff13813c37a44ebf68d0946a2.png?h=854&resize=1&w=640" />
+                        <div class="base-game">JOGO BASE</div>
+                        <div class="game-name">Far Cry 6 Standard Edition</div>
+                        <div class="flex">
+                            <div class="discount">-60%</div>
+                            <div class="price">
+                                <span class="old-price">R$ 249,99</span>
+                                <span class="current-price">R$ 99,99</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="highlight-images w-100">
-                    <img alt="Riders" src="https://cdn1.epicgames.com/salesEvent/salesEvent/EN_MAD_STD_GAME_EPIC_Store_Portrait_1200x1600_EN_1200x1600-ddd4f456e3035ce50ddfa0d358efa208?h=854&resize=1&w=640" />
-                    <div class="base-game">JOGO BASE</div>
-                    <div class="game-name">Riders Republic</div>
-                    <div class="flex">
-                        <div class="discount">-60%</div>
-                        <div class="price">
-                            <span class="old-price">R$ 249,90</span>
-                            <span class="current-price">R$ 99,96</span>
+                    <div class="highlight-images w-100">
+                        <img alt="Red Dead Redemption II" src="https://cdn1.epicgames.com/epic/offer/RDR2PC1227_Epic%20Games_860x1148-860x1148-b4c2210ee0c3c3b843a8de399bfe7f5c.jpg?h=854&resize=1&w=640" />
+                        <div class="base-game">JOGO BASE</div>
+                        <div class="game-name">Red Dead Redemption 2</div>
+                        <div class="flex">
+                            <div class="discount">-50%</div>
+                            <div class="price">
+                                <span class="old-price">R$ 239</span>
+                                <span class="current-price">R$ 119,50</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="highlight-images w-100">
-                    <img alt="Horizon" src="https://cdn1.epicgames.com/3328b08ac1c14540aa265a1a85c07839/offer/hzd_tall-1200x1600-d4b1057afd47f9256d8da71f2f187be4.jpg?h=854&resize=1&w=640">
-                    <div class="base-game">JOGO BASE</div>
-                    <div class="game-name">Horizon Zero Dawn™ Complete Edition</div>
-                    <div class="flex">
-                        <div>
-                            <span class="current-price">R$ 199,90</span>
+                    <div class="highlight-images w-100">
+                        <img alt="The Witcher 3" src="https://cdn1.epicgames.com/14ee004dadc142faaaece5a6270fb628/offer/EGS_TheWitcher3WildHuntGameoftheYear_CDPROJEKTRED_S2-1200x1600-d887e1b749d11e8876996227e4de5c89.jpg?h=854&resize=1&w=640" />
+                        <div class="base-game">JOGO BASE</div>
+                        <div class="game-name">The Witcher 3: Wild Hunt - Game of the Year Edition</div>
+                        <div class="flex">
+                            <div>
+                                <span class="current-price">R$ 99,96</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="highlight-images w-100">
+                        <img alt="Riders" src="https://cdn1.epicgames.com/salesEvent/salesEvent/EN_MAD_STD_GAME_EPIC_Store_Portrait_1200x1600_EN_1200x1600-ddd4f456e3035ce50ddfa0d358efa208?h=854&resize=1&w=640" />
+                        <div class="base-game">JOGO BASE</div>
+                        <div class="game-name">Riders Republic</div>
+                        <div class="flex">
+                            <div class="discount">-60%</div>
+                            <div class="price">
+                                <span class="old-price">R$ 249,90</span>
+                                <span class="current-price">R$ 99,96</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="highlight-images w-100">
+                        <img alt="Horizon" src="https://cdn1.epicgames.com/3328b08ac1c14540aa265a1a85c07839/offer/hzd_tall-1200x1600-d4b1057afd47f9256d8da71f2f187be4.jpg?h=854&resize=1&w=640">
+                        <div class="base-game">JOGO BASE</div>
+                        <div class="game-name">Horizon Zero Dawn™ Complete Edition</div>
+                        <div class="flex">
+                            <div>
+                                <span class="current-price">R$ 199,90</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -290,5 +304,73 @@
             inputBackground.classList.remove("show"); 
             inputSearch.classList.remove("show"); 
         });
+    </script>
+    <script>
+        // import { post } from "./index.js";
+
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const loginPage = document.getElementById("login");
+        const homePage = document.getElementById("home");
+        const messageEmptyEmail = document.getElementById('messageEmptyEmail');
+        const messageEmptyPassword = document.getElementById('messageEmptyPassword');
+        let emailValue;
+        let passwordValue;
+
+        email.addEventListener("input", event => {
+            messageEmptyEmail.classList.remove('show');
+            emailValue = event.target.value;
+        });
+        password.addEventListener("input", event => {
+            messageEmptyPassword.classList.remove('show');
+            passwordValue = event.target.value;
+        });
+
+        function post(url, params) {
+            return new Promise((resolve, reject) => {
+                const post = new XMLHttpRequest();
+                post.onload = () => {
+                    if (post.status === 200 && post.readyState === 4) {
+                        resolve(JSON.parse(post.response));
+                    }
+                };
+                post.onerror = reject;
+                post.open("POST", url);
+                post.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                post.send(JSON.stringify(params));
+            });
+        }
+        
+        function login() {
+            const messageValidation = document.getElementById('messageValidation');
+
+            if (!emailValue) {
+                messageEmptyEmail.classList.add('show');
+                return;
+            }
+
+            if (!passwordValue) {
+                messageEmptyPassword.classList.add('show');
+                return;
+            }
+
+            post("https://reqres.in/api/login", { email: emailValue, password: passwordValue })
+                .then(response => {
+                    console.log(response.token);
+                    localStorage.setItem('token', response.token);
+                    loginPage.classList.remove('show');
+                    homePage.classList.add('show');
+
+                }).catch((e) => {
+                    console.error(e);
+                    messageValidation.classList.add('show');
+                });
+        }
+
+        function isLogged() {
+            let token = localStorage.getItem('token');
+            
+            token ?  homePage.classList.add('show') : loginPage.classList.add('show');
+        }
     </script>
 </html>
