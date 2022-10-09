@@ -342,20 +342,22 @@
         async function search(inputValue) {
             dataRows.classList.add("show");
             loading.classList.add("show");
-            
+            const baseUrl = "https://swapi.dev/api/people/";
+
             try {
-                const response = await get(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${inputValue}&format=json&origin=*`);
+                const response = await get(baseUrl + '?search=' + encodeURI(inputValue) + '&format=json');
                 if (response.info?.type == 'Error') throw new Error();
                 let containers = "";
-                response.query?.search?.length != 0 ? 
-                    response.query?.search?.forEach(item => {
-                        containers += `<div> ${ item?.title } </div>`;
+                response.results?.length != 0 ? 
+                    response.results?.forEach(item => {
+                        containers += `<div> ${ item.name } </div>`;
                     })
                     : containers += `<div> Nenhum item encontrado. </div>`;
                 
                 dataRows.innerHTML = containers;
                 loading.classList.remove("show");
             } catch (error) {
+                loading.classList.remove("show");
                 console.error(error);
             }
         }
