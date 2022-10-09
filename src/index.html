@@ -21,6 +21,7 @@
                 <input type="password" name="password" id="password" placeholder="Senha">
                 <small id="messageEmptyPassword" class="error" >Preencha a senha</small>
                 <small id="messageValidation" class="error" >Senha ou Email estão incorretos!</small>
+                <small id="messageMinLength" class="error">Senha ou Email possuem caracteres insuficientes!</small>
                 <button id="login-button" class="flex align-center justify-center">
                     <div id="loader-login">
                         <div class="loader"></div>
@@ -282,6 +283,7 @@
         const messageEmptyEmail = document.getElementById('messageEmptyEmail');
         const messageEmptyPassword = document.getElementById('messageEmptyPassword');
         const messageValidation = document.getElementById('messageValidation');
+        const messageSizeCharacters = document.getElementById('messageMinLength');
 
         let emailValue;
         let passwordValue;
@@ -314,15 +316,24 @@
 
         async function login() {
 
+            if( emailValue.length < 3 || passwordValue.length < 3) {
+                messageSizeCharacters.classList.add('show');
+                return;
+            }
             if (!emailValue) {
                 messageEmptyEmail.classList.add('show');
                 return;
             }
-
             if (!passwordValue) {
                 messageEmptyPassword.classList.add('show');
                 return;
             }
+
+
+            
+            
+
+
             loadingLogin.classList.add("show");
 
             try {

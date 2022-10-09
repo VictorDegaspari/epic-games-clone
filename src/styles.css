@@ -80,7 +80,8 @@ button {
 #login, 
 #messageValidation,
 #messageEmptyEmail,
-#messageEmptyPassword {
+#messageEmptyPassword,
+#messageMinLength {
     display: none;
 }
 
@@ -88,7 +89,8 @@ button {
 #login.show, 
 #messageValidation.error.show ,
 #messageEmptyEmail.error.show ,
-#messageEmptyPassword.error.show  {
+#messageEmptyPassword.error.show,
+#messageMinLength.error.show {
     display: flex;
 }
 
