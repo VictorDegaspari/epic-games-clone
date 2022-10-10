@@ -1,0 +1,32 @@
+[
+    { 
+        "title" : "Saints Row",
+        "description": "O tempo está acabando. Economize até 75% em jogos e complementos durante a Promoção do Evento de Agosto. Acaba em 6 de setembro.", 
+        "url": "https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-thumb-1200x1600-f5ca5531d94e.jpg?h=1280&resize=1&w=960"
+    },
+    { 
+        "title" : "Promoção do Evento de Setembro",
+        "description": "", 
+        "url": "https://cdn2.unrealengine.com/egs-cotw-angler-carousel-thumb-1200x1600-b6cd84f848f3.jpg?h=1280&resize=1&w=960"
+    },
+    { 
+        "title" : "Destiny 2",
+        "description": "", 
+        "url": "https://cdn2.unrealengine.com/egs-uncharted-carousel-thumbnail-1200x1600-94a84847c592.jpg?h=1280&resize=1&w=960"
+    },
+    { 
+        "title" : "Dead Island 2",
+        "description": "", 
+        "url": "https://cdn2.unrealengine.com/egs-d2-event-sale-carousel-thumbnail-1200x1600-cadf8880dc1c.jpg?h=1280&resize=1&w=960"
+    },
+    { 
+        "title" : "PC Building Simulator 2",
+        "description": "", 
+        "url": "https://cdn2.unrealengine.com/egs-pcbs2-carousel-thumb-315x399-827b723dd428.jpg?h=1280&resize=1&w=960"
+    },
+    { 
+        "title" : "Rumbleverse",
+        "description": "", 
+        "url": "https://cdn2.unrealengine.com/languagecode-developer-gametitle-s2-1200x1600-alt-1200x1600-cd29354f1130.jpg?h=1280&resize=1&w=960"
+    }
+]
