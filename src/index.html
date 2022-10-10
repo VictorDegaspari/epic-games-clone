@@ -17,11 +17,9 @@
             <div class="content flex flex-column">
                 <a href="" class="epicLogo cursor-pointer"></a>
                 <input type="email" name="email" id="email" placeholder="E-mail">
-                <small id="messageEmptyEmail" class="error" >Preencha o e-mail</small>
                 <input type="password" name="password" id="password" placeholder="Senha">
-                <small id="messageEmptyPassword" class="error" >Preencha a senha</small>
                 <small id="messageValidation" class="error" >Senha ou Email estão incorretos!</small>
-                <small id="messageMinLength" class="error">Senha ou Email possuem caracteres insuficientes!</small>
+                <small id="messageMinLength" class="error">Preencha e-mail e senha com pelo menos 3 caracteres!</small>
                 <button id="login-button" class="flex align-center justify-center">
                     <div id="loader-login">
                         <div class="loader"></div>
@@ -182,10 +180,8 @@
         const password = document.getElementById('password');
         const loginPage = document.getElementById("login");
         const homePage = document.getElementById("home");
-        const messageEmptyEmail = document.getElementById('messageEmptyEmail');
-        const messageEmptyPassword = document.getElementById('messageEmptyPassword');
         const messageValidation = document.getElementById('messageValidation');
-        const messageSizeCharacters = document.getElementById('messageMinLength');
+        const messageMinLength = document.getElementById('messageMinLength');
 
         let emailValue;
         let passwordValue;
@@ -207,30 +203,26 @@
 
         email.addEventListener("input", event => {
             messageValidation.classList.remove('show');
-            messageEmptyEmail.classList.remove('show');
+            messageMinLength.classList.remove('show');
             emailValue = event.target.value;
         });
         password.addEventListener("input", event => {
             messageValidation.classList.remove('show');
-            messageEmptyPassword.classList.remove('show');
+            messageMinLength.classList.remove('show');
             passwordValue = event.target.value;
         });
 
         async function login() {
 
-            if( emailValue.length < 3 || passwordValue.length < 3) {
-                messageSizeCharacters.classList.add('show');
+            if (
+                !passwordValue || 
+                !emailValue || 
+                emailValue.length < 3 || 
+                passwordValue.length < 3
+            ) {
+                messageMinLength.classList.add('show');
                 return;
             }
-            if (!emailValue) {
-                messageEmptyEmail.classList.add('show');
-                return;
-            }
-            if (!passwordValue) {
-                messageEmptyPassword.classList.add('show');
-                return;
-            }
-
             loadingLogin.classList.add("show");
 
             try {

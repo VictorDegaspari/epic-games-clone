@@ -79,17 +79,13 @@ button {
 #home, 
 #login, 
 #messageValidation,
-#messageEmptyEmail,
-#messageEmptyPassword,
 #messageMinLength {
     display: none;
 }
 
 #home.show, 
 #login.show, 
-#messageValidation.error.show ,
-#messageEmptyEmail.error.show ,
-#messageEmptyPassword.error.show,
+#messageValidation.error.show,
 #messageMinLength.error.show {
     display: flex;
 }
