@@ -488,7 +488,7 @@ h2.highlight:hover > a > span > svg {
     height: 50px;
     font-size: 14px;
     letter-spacing: 1px;
-    z-index: 999999;
+    z-index: 99;
     font-weight: 600;
     line-height: 15px;
 }
