@@ -3,6 +3,10 @@
     <head>
         <title>Epic Games Store | Baixe e jogue jogos para PC, mods, DLCs e muito mais - Epic Games</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="format-detection" content="date=no">
+        <meta name="format-detection" content="address=no">
+        <meta charset="UTF-8" />
         <link rel="shortcut icon" href="https://static-assets-prod.epicgames.com/epic-store/static/webpack/../favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="styles.css">
         <!-- Fonts -->
@@ -160,15 +164,13 @@
 
     <script type="module">
         import { get, post } from "./index.js";
-        import * as gamesData from "./assets/json/games.json" assert { type: "json" };
-        import * as popularGamesData from "./assets/json/popular-games.json" assert { type: "json" };
-
-        const games = gamesData?.default || [];
-        const popularGames = popularGamesData?.default || [];
-
+        import gamesData from "./assets/json/games.json" assert { type: 'json' };
+        import popularGamesData from "./assets/json/popular-games.json" assert { type: 'json' };
+        
+        const games = gamesData?.games || [];
+        const popularGames = popularGamesData?.popularGames || [];
         const gamesContainer = document.getElementById("highlight-images");
         const popularGamesContainer = document.getElementById("carousel-games");
-
         const dataRows = document.getElementById("data-rows-content");
         const inputSearch = document.getElementById("input-search");
         const inputBackground = document.getElementById("input-background");
