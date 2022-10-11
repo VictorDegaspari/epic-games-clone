@@ -305,6 +305,11 @@
         }
 
         window.isLogged = isLogged;
-        document.onload = (loadGames(games), loadPopularGames(popularGames));
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadGames(games);
+            loadPopularGames(popularGames);
+        });
+
     </script>
 </html>
