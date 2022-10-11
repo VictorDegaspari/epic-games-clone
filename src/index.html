@@ -163,13 +163,11 @@
     </body>
 
     <script type="module">
-        import { get, post } from "./index.js";
-        import gamesData from "./json/games.json" assert { type: 'json' };
-        import popularGamesData from "./json/popular-games.json" assert { type: 'json' };
-        
-        console.log(gamesData)
-        const games =  gamesData?.games || [];
-        const popularGames = popularGamesData?.popularGames || [];
+        import { get, post } from "./js/index.js";
+        import { popularGames, games } from "./js/games-data.js";
+
+        const gamesData = games() || [];
+        const popularGamesData = popularGames() || [];
         const gamesContainer = document.getElementById("highlight-images");
         const popularGamesContainer = document.getElementById("carousel-games");
         const dataRows = document.getElementById("data-rows-content");
@@ -272,7 +270,7 @@
             
             token ?  homePage.classList.add('show') : loginPage.classList.add('show');
 
-            games.forEach(game => {
+            gamesData.forEach(game => {
                 gameContainers += `
                     <div class="highlight-images w-100">
                         <img alt="${ game.title }" src="${ game.url }">
@@ -288,7 +286,7 @@
                     </div>`
             });
 
-            popularGames.forEach((game, index) => {
+            popularGamesData.forEach((game, index) => {
                 popularGamesContainers += `
                     <div class="carousel-games ${ index == 0 ? 'active' : '' }">
                         <img src="${ game.url }" alt="${ game.title }" />

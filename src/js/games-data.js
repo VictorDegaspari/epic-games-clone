@@ -1,5 +1,40 @@
-{
-    "games": [
+function popularGames() {
+    return [
+        { 
+            "title" : "Saints Row",
+            "description": "O tempo está acabando. Economize até 75% em jogos e complementos durante a Promoção do Evento de Agosto. Acaba em 6 de setembro.", 
+            "url": "https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-thumb-1200x1600-f5ca5531d94e.jpg?h=1280&resize=1&w=960"
+        },
+        { 
+            "title" : "Promoção do Evento de Setembro",
+            "description": "", 
+            "url": "https://cdn2.unrealengine.com/egs-cotw-angler-carousel-thumb-1200x1600-b6cd84f848f3.jpg?h=1280&resize=1&w=960"
+        },
+        { 
+            "title" : "Destiny 2",
+            "description": "", 
+            "url": "https://cdn2.unrealengine.com/egs-uncharted-carousel-thumbnail-1200x1600-94a84847c592.jpg?h=1280&resize=1&w=960"
+        },
+        { 
+            "title" : "Dead Island 2",
+            "description": "", 
+            "url": "https://cdn2.unrealengine.com/egs-d2-event-sale-carousel-thumbnail-1200x1600-cadf8880dc1c.jpg?h=1280&resize=1&w=960"
+        },
+        { 
+            "title" : "PC Building Simulator 2",
+            "description": "", 
+            "url": "https://cdn2.unrealengine.com/egs-pcbs2-carousel-thumb-315x399-827b723dd428.jpg?h=1280&resize=1&w=960"
+        },
+        { 
+            "title" : "Rumbleverse",
+            "description": "", 
+            "url": "https://cdn2.unrealengine.com/languagecode-developer-gametitle-s2-1200x1600-alt-1200x1600-cd29354f1130.jpg?h=1280&resize=1&w=960"
+        }
+    ];
+}
+
+function games() {
+    return [
         { 
             "title" : "Grand Theft Auto V: Premium Edition", 
             "url": "https://cdn1.epicgames.com/0584d2013f0149a791e7b9bad0eec102/offer/GTAV_EGS_Artwork_1200x1600_Portrait Store Banner-1200x1600-382243057711adf80322ed2aeea42191.jpg?h=854&amp;resize=1&amp;w=640",
@@ -42,5 +77,7 @@
             "old_price": "",
             "discount": ""
         }
-    ]
+    ];
 }
+
+export { games, popularGames };
