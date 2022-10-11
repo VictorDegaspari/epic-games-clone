@@ -180,6 +180,7 @@
 
         let emailValue;
         let passwordValue;
+        let img;
 
         inputSearch.addEventListener("input", event => search(event.target.value));
         inputSearch.addEventListener("focusout", () => dataRows.classList.remove("show"));
@@ -311,11 +312,15 @@
                 childrenBalls[index].classList.remove('active');
                 childrenPopularGames[index].classList.remove('active');
                 index++;
-                if (index == childrenBalls.length) index = 0;
+                if (index == popularGamesData.length) { 
+                    index = 0;
+                    popularGamesContainer.scrollLeft = 1;
+                }
                 childrenBalls[index].classList.add('active');
                 childrenPopularGames[index].classList.add('active');
                 childrenPopularGames[index].appendChild(activeDiv);
                 defineCarouselImg(childrenPopularGames[index]);
+                popularGamesContainer.scrollLeft += (img.offsetWidth + 30);
                 
             }, 8000);
         }
@@ -325,9 +330,11 @@
                 if (item.constructor.name == 'HTMLImageElement') {
                     activeCarouselImg.classList.toggle("active");
                     activeCarouselImg.src = item.src;
+                    img = item;
                 }
             });
         }
+
         window.isLogged = isLogged;
     </script>
 </html>
