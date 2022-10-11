@@ -164,11 +164,11 @@
 
     <script type="module">
         import { get, post } from "./index.js";
-        import gamesData from "./assets/json/games.json" assert { type: 'json' };
-        import popularGamesData from "./assets/json/popular-games.json" assert { type: 'json' };
+        // import gamesData from "./assets/json/games.json" assert { type: 'json' };
+        // import popularGamesData from "./assets/json/popular-games.json" assert { type: 'json' };
         
-        const games = gamesData?.games || [];
-        const popularGames = popularGamesData?.popularGames || [];
+        // const games =  gamesData ? gamesData?.games : [];
+        // const popularGames = popularGamesData?.popularGames || [];
         const gamesContainer = document.getElementById("highlight-images");
         const popularGamesContainer = document.getElementById("carousel-games");
         const dataRows = document.getElementById("data-rows-content");
