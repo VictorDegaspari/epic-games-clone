@@ -167,6 +167,7 @@
         import gamesData from "./json/games.json" assert { type: 'json' };
         import popularGamesData from "./json/popular-games.json" assert { type: 'json' };
         
+        console.log(gamesData)
         const games =  gamesData?.games || [];
         const popularGames = popularGamesData?.popularGames || [];
         const gamesContainer = document.getElementById("highlight-images");
