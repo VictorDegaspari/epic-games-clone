@@ -163,8 +163,8 @@
         import * as gamesData from "./assets/json/games.json" assert { type: "json" };
         import * as popularGamesData from "./assets/json/popular-games.json" assert { type: "json" };
 
-        const games = gamesData.default;
-        const popularGames = popularGamesData.default;
+        const games = gamesData?.default || [];
+        const popularGames = popularGamesData?.default || [];
 
         const gamesContainer = document.getElementById("highlight-images");
         const popularGamesContainer = document.getElementById("carousel-games");
@@ -264,14 +264,13 @@
 
         function isLogged() {
             let token = localStorage.getItem('token');
+            let gameContainers = "";
+            let popularGamesContainers = "";
             
             token ?  homePage.classList.add('show') : loginPage.classList.add('show');
-        }
 
-        function loadGames(games) {
-            let containers = "";
             games.forEach(game => {
-                containers += `
+                gameContainers += `
                     <div class="highlight-images w-100">
                         <img alt="${ game.title }" src="${ game.url }">
                         <div class="base-game">JOGO BASE</div>
@@ -285,13 +284,9 @@
                         </div>
                     </div>`
             });
-            gamesContainer.innerHTML = containers;
-        }
 
-        function loadPopularGames(popularGames) {
-            let containers = "";
             popularGames.forEach((game, index) => {
-                containers += `
+                popularGamesContainers += `
                     <div class="carousel-games ${ index == 0 ? 'active' : '' }">
                         <img src="${ game.url }" alt="${ game.title }" />
                         <h3>${ game.description }</h3>
@@ -301,15 +296,12 @@
                         ${ index == 0 ? '<div class="carousel-progress"></div>' : '' }
                     </div>`
             });
-            popularGamesContainer.innerHTML = containers;
+
+            gamesContainer.innerHTML = gameContainers;
+            popularGamesContainer.innerHTML = popularGamesContainers;
         }
 
         window.isLogged = isLogged;
-
-        document.addEventListener("DOMContentLoaded", () => {
-            loadGames(games);
-            loadPopularGames(popularGames);
-        });
 
     </script>
 </html>
