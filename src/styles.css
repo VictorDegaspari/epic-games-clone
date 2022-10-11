@@ -273,6 +273,7 @@ button {
 
 .left {
     max-width: 80%;
+    width: 100%;
     position: relative;
 }
 
@@ -282,6 +283,35 @@ button {
     width: 100%;
     flex: 1 1 0%;
     border-radius: 16px;
+    height: 100%;
+    animation-duration: 10s;
+    animation-fill-mode: both;
+    animation: fade-parent .5s ease-in-out alternate;
+}
+.left img.active{
+    animation: fade .5s ease-in-out alternate;
+}
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fade-parent {
+    0% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .right {

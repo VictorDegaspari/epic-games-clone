@@ -111,7 +111,7 @@
                 <div class="flex carousel-images">
                     <div class="left cursor-pointer">
                         <picture>
-                            <img alt="Play Saints Row on Epic Games Store" src="https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-desktop-1280x702-e2b42d436367.jpg?h=1080&amp;resize=1&amp;w=1920" class="css-1w9gkua" data-image="https://cdn2.unrealengine.com/egs-saints-row-launch-carousel-desktop-1280x702-e2b42d436367.jpg?h=1080&amp;resize=1&amp;w=1920">
+                            <img alt="Play Saints Row on Epic Games Store" id="active-carousel-img" />
                         </picture>
                         <div class="current-carousel-button flex">
                             <h3>O tempo está acabando. Economize até 75% em jogos e complementos durante a Promoção do Evento de Agosto. Acaba em 6 de setembro.</h3>
@@ -121,15 +121,7 @@
                     </div>
                     <div class="right" id="carousel-games"></div>
                 </div>
-                <div class="flex centralize">
-                    <div class="balls active"></div>
-                    <div class="balls"></div>
-                    <div class="balls"></div>
-                    <div class="balls"></div>
-                    <div class="balls"></div>
-                    <div class="balls"></div>
-                </div>
-    
+                <div class="flex centralize" id="balls"></div>
                 <div class="flex align-center justify-between">
                     <h2 class="flex highlight">
                         <a href="">
@@ -170,6 +162,7 @@
         const popularGamesData = popularGames() || [];
         const gamesContainer = document.getElementById("highlight-images");
         const popularGamesContainer = document.getElementById("carousel-games");
+        const ballsContainer = document.getElementById("balls");
         const dataRows = document.getElementById("data-rows-content");
         const inputSearch = document.getElementById("input-search");
         const inputBackground = document.getElementById("input-background");
@@ -183,6 +176,7 @@
         const homePage = document.getElementById("home");
         const messageValidation = document.getElementById('messageValidation');
         const messageMinLength = document.getElementById('messageMinLength');
+        const activeCarouselImg = document.getElementById('active-carousel-img');
 
         let emailValue;
         let passwordValue;
@@ -267,6 +261,7 @@
             let token = localStorage.getItem('token');
             let gameContainers = "";
             let popularGamesContainers = "";
+            let carouselBalls = "";
             
             token ?  homePage.classList.add('show') : loginPage.classList.add('show');
 
@@ -287,6 +282,7 @@
             });
 
             popularGamesData.forEach((game, index) => {
+                carouselBalls += `<div class="balls ${ index == 0 ? 'active' : '' }"></div>`
                 popularGamesContainers += `
                     <div class="carousel-games ${ index == 0 ? 'active' : '' }">
                         <img src="${ game.url }" alt="${ game.title }" />
@@ -294,15 +290,44 @@
                         <div class="games-info">
                             ${ game.title }
                         </div>
-                        ${ index == 0 ? '<div class="carousel-progress"></div>' : '' }
                     </div>`
             });
-
+            ballsContainer.innerHTML = carouselBalls;
             gamesContainer.innerHTML = gameContainers;
             popularGamesContainer.innerHTML = popularGamesContainers;
+            
+            let childrenBalls = Array.from(ballsContainer.children);
+            let childrenPopularGames = Array.from(popularGamesContainer.children);
+            let index = 0;
+            const activeDiv = document.createElement("div");
+            activeDiv.classList.add("carousel-progress");
+
+            childrenPopularGames[index].appendChild(activeDiv);
+            childrenBalls[index].classList.add('active');
+            childrenPopularGames[index].classList.add('active');
+            defineCarouselImg(childrenPopularGames[index]);
+
+            const activeInterval = setInterval(() => {
+                childrenBalls[index].classList.remove('active');
+                childrenPopularGames[index].classList.remove('active');
+                index++;
+                if (index == childrenBalls.length) index = 0;
+                childrenBalls[index].classList.add('active');
+                childrenPopularGames[index].classList.add('active');
+                childrenPopularGames[index].appendChild(activeDiv);
+                defineCarouselImg(childrenPopularGames[index]);
+                
+            }, 8000);
         }
 
+        function defineCarouselImg(element) {
+            element.childNodes.forEach(item => { 
+                if (item.constructor.name == 'HTMLImageElement') {
+                    activeCarouselImg.classList.toggle("active");
+                    activeCarouselImg.src = item.src;
+                }
+            });
+        }
         window.isLogged = isLogged;
-
     </script>
 </html>
