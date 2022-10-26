@@ -60,7 +60,7 @@
                     <span>
                         <div class="flex">
                             <img src="assets/icons/user-svgrepo-com.svg" width="17" height="17" alt="user_icon">
-                            <span>ENTRAR</span> 
+                            <span id="userEnt">ENTRAR</span> 
                         </div>
                         <div class="inactive"></div>
                     </span>
@@ -89,6 +89,7 @@
                             </div>
                             <div id="data-rows-content"></div>
                         </div>
+
                     </div>
                     <div class="flex centralize">
                         <a href="" class="active">Descobrir</a>
@@ -283,7 +284,13 @@
         const messageEmptyEmail = document.getElementById('messageEmptyEmail');
         const messageEmptyPassword = document.getElementById('messageEmptyPassword');
         const messageValidation = document.getElementById('messageValidation');
+<<<<<<< Updated upstream
         const messageSizeCharacters = document.getElementById('messageMinLength');
+=======
+        const messageMinLength = document.getElementById('messageMinLength');
+        const activeCarouselImg = document.getElementById('active-carousel-img');
+        let userEnt = document.getElementById('userEnt');
+>>>>>>> Stashed changes
 
         let emailValue;
         let passwordValue;
@@ -340,20 +347,35 @@
                 const response = await post("https://reqres.in/api/login", { email: emailValue, password: passwordValue });
                 if (response.info?.type == 'Error') throw new Error();
                 localStorage.setItem('token', response.token);
+                localStorage.setItem('email', emailValue);
+                let email = localStorage.getItem('email');
+                userEnt.innerHTML = email;
                 loginPage.classList.remove('show');
                 homePage.classList.add('show');
-                loadingLogin.classList.remove("show");
+                loadingLogin.classList.remove("show");        
             } catch (error) {
+                localStorage.removeItem('email');
+                localStorage.removeItem('token');
                 console.error(error);
                 messageValidation.classList.add('show');
                 loadingLogin.classList.remove("show");
             }
         }
-
+        
         async function search(inputValue) {
             dataRows.classList.add("show");
+            if( inputValue.length < 3 ){
+                dataRows.innerHTML = "<div>Digite pelo menos 3 caracteres...</div>";
+                return
+            }
             loading.classList.add("show");
+<<<<<<< Updated upstream
             
+=======
+            const baseUrl = "https://swapi.dev/api/people/";
+
+
+>>>>>>> Stashed changes
             try {
                 const response = await get(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${inputValue}&format=json&origin=*`);
                 if (response.info?.type == 'Error') throw new Error();
@@ -373,8 +395,91 @@
 
         function isLogged() {
             let token = localStorage.getItem('token');
+<<<<<<< Updated upstream
             
             token ?  homePage.classList.add('show') : loginPage.classList.add('show');
+=======
+            let gameContainers = "";
+            let popularGamesContainers = "";
+            let carouselBalls = "";
+            let email = localStorage.getItem('email');
+            
+            if (token) {
+                homePage.classList.add('show');
+                userEnt.innerHTML = email;
+
+            } else {
+                loginPage.classList.add('show');
+            }
+           
+            gamesData.forEach(game => {
+                gameContainers += `
+                    <div class="highlight-images w-100">
+                        <img alt="${ game.title }" src="${ game.url }">
+                        <div class="base-game">JOGO BASE</div>
+                        <div class="game-name">${ game.title }</div>
+                        <div class="flex">
+                            <div class="${ game.discount ? 'discount' : 'none' }">${ game.discount }</div>
+                            <div class="price">
+                                <span class="${ game.discount ? 'old-price' : 'none' }">R$ ${ game.old_price }</span>
+                                <span class="current-price">R$ ${ game.current_price }</span>
+                            </div>
+                        </div>
+                    </div>`
+            });
+
+            popularGamesData.forEach((game, index) => {
+                carouselBalls += `<div class="balls ${ index == 0 ? 'active' : '' }"></div>`
+                popularGamesContainers += `
+                    <div class="carousel-games ${ index == 0 ? 'active' : '' }">
+                        <img src="${ game.url }" alt="${ game.title }" />
+                        <h3>${ game.description }</h3>
+                        <div class="games-info">
+                            ${ game.title }
+                        </div>
+                    </div>`
+            });
+            ballsContainer.innerHTML = carouselBalls;
+            gamesContainer.innerHTML = gameContainers;
+            popularGamesContainer.innerHTML = popularGamesContainers;
+            
+            let childrenBalls = Array.from(ballsContainer.children);
+            let childrenPopularGames = Array.from(popularGamesContainer.children);
+            let index = 0;
+            const activeDiv = document.createElement("div");
+            activeDiv.classList.add("carousel-progress");
+
+            childrenPopularGames[index].appendChild(activeDiv);
+            childrenBalls[index].classList.add('active');
+            childrenPopularGames[index].classList.add('active');
+            defineCarouselImg(childrenPopularGames[index]);
+
+            const activeInterval = setInterval(() => {
+                childrenBalls[index].classList.remove('active');
+                childrenPopularGames[index].classList.remove('active');
+                index++;
+                if (index == popularGamesData.length) { 
+                    index = 0;
+                    popularGamesContainer.scrollLeft = 1;
+                }
+                childrenBalls[index].classList.add('active');
+                childrenPopularGames[index].classList.add('active');
+                childrenPopularGames[index].appendChild(activeDiv);
+                defineCarouselImg(childrenPopularGames[index]);
+                popularGamesContainer.scrollLeft += (img.offsetWidth + 30);
+                
+            }, 8000);
+        }
+
+        function defineCarouselImg(element) {
+            element.childNodes.forEach(item => { 
+                if (item.constructor.name == 'HTMLImageElement') {
+                    activeCarouselImg.classList.toggle("active");
+                    activeCarouselImg.src = item.src;
+                    img = item;
+                }
+            });
+>>>>>>> Stashed changes
         }
 
         window.isLogged = isLogged;
