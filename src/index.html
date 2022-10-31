@@ -62,7 +62,7 @@
                     <span>
                         <div class="flex">
                             <img src="assets/icons/user-svgrepo-com.svg" width="17" height="17" alt="user_icon">
-                            <span>ENTRAR</span> 
+                            <span id="userEnt">ENTRAR</span> 
                         </div>
                         <div class="inactive"></div>
                     </span>
@@ -91,6 +91,7 @@
                             </div>
                             <div id="data-rows-content"></div>
                         </div>
+
                     </div>
                     <div class="flex centralize">
                         <a href="" class="active">Descobrir</a>
@@ -177,6 +178,8 @@
         const messageValidation = document.getElementById('messageValidation');
         const messageMinLength = document.getElementById('messageMinLength');
         const activeCarouselImg = document.getElementById('active-carousel-img');
+        const messageSizeCharacters = document.getElementById('messageMinLength');
+        let userEnt = document.getElementById('userEnt');
 
         let emailValue;
         let passwordValue;
@@ -225,18 +228,27 @@
                 const response = await post("https://reqres.in/api/login", { email: emailValue, password: passwordValue });
                 if (response.info?.type == 'Error') throw new Error();
                 localStorage.setItem('token', response.token);
+                localStorage.setItem('email', emailValue);
+                let email = localStorage.getItem('email');
+                userEnt.innerHTML = email;
                 loginPage.classList.remove('show');
                 homePage.classList.add('show');
-                loadingLogin.classList.remove("show");
+                loadingLogin.classList.remove("show");        
             } catch (error) {
+                localStorage.removeItem('email');
+                localStorage.removeItem('token');
                 console.error(error);
                 messageValidation.classList.add('show');
                 loadingLogin.classList.remove("show");
             }
         }
-
+        
         async function search(inputValue) {
             dataRows.classList.add("show");
+            if( inputValue.length < 3 ){
+                dataRows.innerHTML = "<div>Digite pelo menos 3 caracteres...</div>";
+                return
+            }
             loading.classList.add("show");
             const baseUrl = "https://swapi.dev/api/people/";
 
@@ -260,11 +272,22 @@
 
         function isLogged() {
             let token = localStorage.getItem('token');
+            
+            token ?  homePage.classList.add('show') : loginPage.classList.add('show');
+
+
             let gameContainers = "";
             let popularGamesContainers = "";
             let carouselBalls = "";
+            let email = localStorage.getItem('email');
             
-            token ?  homePage.classList.add('show') : loginPage.classList.add('show');
+            if (token) {
+                homePage.classList.add('show');
+                userEnt.innerHTML = email;
+
+            } else {
+                loginPage.classList.add('show');
+            }
 
             gamesData.forEach(game => {
                 gameContainers += `
