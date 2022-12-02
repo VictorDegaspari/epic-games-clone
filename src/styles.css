@@ -79,14 +79,23 @@ button {
 #home, 
 #login, 
 #messageValidation,
-#messageMinLength {
+#messageMinLength,
+#show-game, 
+.form-edit-game,
+.form-save-game,
+.game-edit {
     display: none;
 }
 
 #home.show, 
 #login.show, 
 #messageValidation.error.show,
-#messageMinLength.error.show {
+#messageMinLength.error.show,
+#loader-game.show,
+#show-game.show,
+.form-edit-game.show,
+.form-save-game.show,
+.game-edit.show {
     display: flex;
 }
 
@@ -421,7 +430,9 @@ h2.highlight:hover > a > span > svg {
 .right::-webkit-scrollbar,
 #data-rows > #data-rows-content, 
 #data-rows > #loader-background,
-#loader-login {
+#loader-login,
+#loader-game,
+#loader-user {
     display: none;
 }
 
@@ -974,4 +985,59 @@ h2.highlight:hover > a > span > svg {
     h2.highlight > a {
         margin-left: 16px;
     }
+}
+
+#show-game {
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin-top: -52px;
+}
+
+#show-game > button, 
+#show-game > div,  #show-game > form {
+    width: 90%;
+    max-width: 700px;
+    color: white;
+}
+#show-game > div > button, 
+#show-game > button, 
+.form-edit-game > label > input, 
+.form-save-game > label > input, 
+#show-game > form > button {
+    border-radius: 4px;
+    color: rgb(255, 255, 255);
+    background: transparent;
+    border: 1px solid rgb(255, 255, 255);
+    padding: 15px 0px;
+    margin-bottom: 8px;
+}
+
+#show-game > div > .info {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+#show-game > div > img {
+    width: 100%;
+    object-fit: contain;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.form-edit-game > label > input,
+.form-save-game > label > input {
+    padding: 10px;
+}
+.form-edit-game > label,
+.form-save-game > label {
+    margin-top: 8px;
+
 }

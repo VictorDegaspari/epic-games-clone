@@ -93,20 +93,15 @@
                         </div>
 
                     </div>
-                    <div class="flex centralize">
-                        <a href="" class="active">Descobrir</a>
+                    <div class="add-new-game flex centralize">
+                        <a class="active" href="">Adicionar Jogo</a>
                         <span class="down-arrow">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 9">
                                 <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fill-rule="evenodd"></path>
                             </svg>
                         </span>
                     </div>
-                    <div>
-                        <a class="hidden-header" href="">Navegar</a>
-                    </div>
-                    <div>
-                        <a class="hidden-header" href="">Novidades</a>
-                    </div>
+
                 </div>
     
                 <div class="flex carousel-images">
@@ -153,10 +148,63 @@
                 </div>
             </div>
         </div>
+        <div id="show-game" class="flex flex-column w-100">
+            <div class="game-edit flex-column"></div>
+            <div id="loader-game">
+                <div class="loader"></div>
+            </div>
+            <form class="form-edit-game w-100 flex-column" action="javascript:void(0);" >
+                <label for="title" class="flex flex-column w-100">
+                    Título
+                    <input name="title" type="text" placeholder="Título" />
+                </label>
+                <label for="current_price" class="flex flex-column w-100">
+                    Preço
+                    <input name="current_price" type="number" placeholder="Preço" />
+                </label>
+                <label for="url" class="flex flex-column w-100">
+                    URL
+                    <input name="url" type="text" placeholder="Imagem do jogo" />
+                </label>
+                <label for="discount" class="flex flex-column w-100">
+                    Desconto
+                    <input name="discount" type="number" placeholder="% do desconto" />
+                </label>
+                <label for="old_price" class="flex flex-column w-100">
+                    Preço antigo
+                    <input name="old_price" type="number" placeholder="Valor antigo do jogo" />
+                </label>
+                <button type="submit">SALVAR</button>
+            </form>
+            <form class="form-save-game w-100 flex-column" action="javascript:void(0);" >
+                <label for="title" class="flex flex-column w-100">
+                    Título
+                    <input name="title" type="text" placeholder="Título" />
+                </label>
+                <label for="current_price" class="flex flex-column w-100">
+                    Preço
+                    <input name="current_price" type="number" placeholder="Preço" />
+                </label>
+                <label for="url" class="flex flex-column w-100">
+                    URL
+                    <input name="url" type="text" placeholder="Imagem do jogo" />
+                </label>
+                <label for="discount" class="flex flex-column w-100">
+                    Desconto
+                    <input name="discount" type="number" placeholder="% do desconto" />
+                </label>
+                <label for="old_price" class="flex flex-column w-100">
+                    Preço antigo
+                    <input name="old_price" type="number" placeholder="Valor antigo do jogo" />
+                </label>
+                <button type="submit">SALVAR</button>
+            </form>
+            <button class="w-100" id="go-back"><span>VOLTAR</span></button>
+        </div>
     </body>
 
     <script type="module">
-        import { get, post } from "./js/index.js";
+        import { get, post, update } from "./js/index.js";
         import { popularGames, games } from "./js/games-data.js";
 
         const gamesData = games() || [];
@@ -170,6 +218,7 @@
         const svgSearch = document.getElementById("svg-search");
         const loading = document.getElementById("loader-background");
         const loadingLogin = document.getElementById("loader-login");
+        const loadingUser = document.getElementById("loader-user");
         const loginButton = document.getElementById("login-button");
         const email = document.getElementById('email');
         const password = document.getElementById('password');
@@ -179,14 +228,23 @@
         const messageMinLength = document.getElementById('messageMinLength');
         const activeCarouselImg = document.getElementById('active-carousel-img');
         const messageSizeCharacters = document.getElementById('messageMinLength');
-        let userEnt = document.getElementById('userEnt');
+        const gamePage = document.getElementById("show-game");
+        const baseUrl = "http://localhost:3000";
+        const newGame = document.querySelector(".add-new-game");
+        const gameEdit = document.querySelector(".game-edit");
+        const loadingGame = document.getElementById("loader-game");
+        const saveGame = document.querySelector(".form-save-game");
+        const editGame = document.querySelector(".form-edit-game");
+        const returnToHome = document.getElementById("go-back");
 
+        let userEnt = document.getElementById('userEnt');
         let emailValue;
         let passwordValue;
         let img;
 
+        returnToHome.addEventListener("click", event => goHome());
+        newGame.addEventListener("click", event => addNewGame(event));
         inputSearch.addEventListener("input", event => search(event.target.value));
-        inputSearch.addEventListener("focusout", () => dataRows.classList.remove("show"));
         inputSearch.addEventListener("focusin", event => { 
             if (event.target.value.length > 0) search(event.target.value);
         });
@@ -196,8 +254,34 @@
             inputSearch.classList.add("show"); 
         });
         inputBackground.addEventListener("click", event => {
-            inputBackground.classList.remove("show"); 
-            inputSearch.classList.remove("show"); 
+            closeSelect();
+        });
+
+        saveGame.addEventListener('submit', async (e) => { 
+            e.preventDefault();
+            const data = handleSubmit(e);
+            if (!data) return;
+            Object.assign(data, { author: localStorage.getItem('userId') })
+            loadingGame.classList.add("show");
+            const { game } = await post(baseUrl + '/games/post', data);
+            loadingGame.classList.remove("show");
+            saveGame.reset();
+            saveGame.classList.remove("show");
+            gamePage.classList.remove("show");
+            homePage.classList.add("show");
+        });
+
+        editGame.addEventListener('submit', async (e) => { 
+            e.preventDefault();
+            const data = handleSubmit(e);
+            if (!data) return;
+            Object.assign(data, { author: localStorage.getItem('userId') })
+            loadingGame.classList.add("show");
+            const { updatedGame } = await update(baseUrl + '/games/update/' + encodeURI(localStorage.getItem('gameId')), data);
+            editGame.reset();
+            loadingGame.classList.remove("show");
+            populateGame(updatedGame);
+            editGame.classList.remove("show");
         });
 
         email.addEventListener("input", event => {
@@ -225,9 +309,10 @@
             loadingLogin.classList.add("show");
 
             try {
-                const response = await post("https://reqres.in/api/login", { email: emailValue, password: passwordValue });
+                const response = await post(baseUrl + "/auth/login", { email: emailValue, password: passwordValue });
                 if (response.info?.type == 'Error') throw new Error();
                 localStorage.setItem('token', response.token);
+                localStorage.setItem('userId', response.user?._id);
                 localStorage.setItem('email', emailValue);
                 let email = localStorage.getItem('email');
                 userEnt.innerHTML = email;
@@ -250,19 +335,24 @@
                 return
             }
             loading.classList.add("show");
-            const baseUrl = "https://swapi.dev/api/people/";
 
             try {
-                const response = await get(baseUrl + '?search=' + encodeURI(inputValue) + '&format=json');
+                const response = await get(baseUrl + '/games/search/' + encodeURI(inputValue));
                 if (response.info?.type == 'Error') throw new Error();
                 let containers = "";
-                response.results?.length != 0 ? 
-                    response.results?.forEach(item => {
-                        containers += `<div> ${ item.name } </div>`;
+                response.games?.length != 0 ? 
+                    response.games?.forEach((item) => {
+                        containers += `<div data-value=${ item._id }> ${ item.title } </div>`;
                     })
                     : containers += `<div> Nenhum item encontrado. </div>`;
                 
                 dataRows.innerHTML = containers;
+                dataRows.childNodes.forEach(element => element.addEventListener("click", function () {
+                    const gameId = this.getAttribute('data-value');
+                    closeSelect();
+                    openGameById(gameId);
+                }));
+
                 loading.classList.remove("show");
             } catch (error) {
                 loading.classList.remove("show");
@@ -270,18 +360,25 @@
             }
         }
 
-        function isLogged() {
+        async function isLogged() {
             let token = localStorage.getItem('token');
             
-            token ?  homePage.classList.add('show') : loginPage.classList.add('show');
+            token ? homePage.classList.add('show') : loginPage.classList.add('show');
+            const userLogged = await get(baseUrl + '/users/find/' + localStorage.getItem('email'));
 
+            if (!userLogged) {
+                localStorage.removeItem('email');
+                localStorage.removeItem('token');
+            }
 
             let gameContainers = "";
             let popularGamesContainers = "";
             let carouselBalls = "";
             let email = localStorage.getItem('email');
-            
-            if (token) {
+
+
+
+            if (token && email) {
                 homePage.classList.add('show');
                 userEnt.innerHTML = email;
 
@@ -356,6 +453,87 @@
                     img = item;
                 }
             });
+        }
+
+        function closeSelect() {
+            inputBackground.classList.remove("show"); 
+            inputSearch.classList.remove("show"); 
+            dataRows.classList.remove("show");
+        }
+
+        function goHome() {
+            homePage.classList.add("show");
+            gamePage.classList.remove("show");
+        }
+
+        async function openGameById(gameId = "") {
+            if (!gameId) return;
+            localStorage.setItem('gameId', gameId);
+            homePage.classList.remove("show");
+            gamePage.classList.add("show");
+            loadingGame.classList.add("show");
+            gameEdit.classList.add("show");
+
+            const { game } = await get(baseUrl + '/games/find/' + encodeURI(gameId));
+            loadingGame.classList.remove("show");
+            if (!game) return;
+            populateGame(game);
+            loadingGame.classList.remove("show");
+            saveGame.classList.remove("show");
+        }
+
+        function handleSubmit(event) {
+
+            const data = new FormData(event.target);
+            const value = Object.fromEntries(data.entries());
+
+            if (Object.values(value).includes(null) ||
+                Object.values(value).includes('')
+            ) {
+                return;
+            };
+           
+            return value;
+        }   
+
+        function populateGame(game) {
+            const date = new Date(game.created);
+            const formattedDate = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
+
+            gameEdit.innerHTML = 
+                `
+                <h3>${ game.title }</h3>
+                <img src="${ game.url }" alt="${ game.title }" />
+                ${ game.author?.email == localStorage.getItem('email') ? 
+                    `<button class="w-100" id="start-edit"><span>EDITAR</span></button>` : ''
+                }
+
+                <div class="info">
+                    <span>Autor</span> 
+                    <span>${ game.author?.name }</span> 
+                </div>
+                <div class="info">
+                    <span>Disponível</span> 
+                    <span>${ formattedDate }</span> 
+                </div>
+                <div class="info">
+                    <span>Valor</span> 
+                    <span>${ game.current_price ? 'R$'+game.current_price : 'Grátis' }</span> 
+                </div>`
+            const startEdit = document.getElementById("start-edit");
+
+            startEdit.addEventListener("click", event => { 
+                editGame.classList.toggle("show");
+            }); 
+        }   
+
+        function addNewGame() {
+            const loadingGame = document.getElementById("loader-game");
+            homePage.classList.remove("show");
+            gamePage.classList.add("show");
+            saveGame.classList.add("show");
+            gameEdit.classList.remove("show");
+            editGame.classList.remove("show")
         }
 
         window.isLogged = isLogged;

@@ -1,11 +1,13 @@
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import express from 'express';
-import usersRoutes from './src/database/Controller/usersController.js';
 import authRoutes from './src/database/Controller/authController.js';
 import gamesRoutes from './src/database/Controller/gamesController.js';
+import usersRoutes from './src/database/Controller/usersController.js';
 
 const app = express();
+dotenv.config();
 const PORT = process.env.PORT || 3000;
 
 

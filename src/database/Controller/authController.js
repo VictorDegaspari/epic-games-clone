@@ -1,15 +1,37 @@
-import express, { response } from 'express';
-import User from '../models/User.js';
+import { compare } from 'bcrypt';
+import dotenv from 'dotenv';
+import express from 'express';
+import jwt from 'jsonwebtoken';
+import User from '../Models/User.js';
 
+dotenv.config();
 const router = express.Router();
 
 router.post('/login', async (req, res) => {
     try {
-        console.log(req.body)
-        const user = await User.find({email: req.body.email, password: req.body.password});
-        if (!user) {
-            return res.status(400).send("usario não encontrado");
-        }
+        const user = await User.findOne({ email: req.body.email });
+        const validPassword = await compare(req.body.password, user.password);
+
+        if (!user || !validPassword) return res.status(400).send("Usuários com credenciais inválidas");
+        
+        const token = jwt.sign({
+            login: user.email,
+            name: user.name,
+            admin: user.admin
+        }, process.env.JWT_SECRET, { expiresIn: 86400 });
+        
+
+        return res.send({ user, token: token});
+        
+    } catch (error) {
+        console.error(error)
+        return res.status(400).send({ error: 'Usuário com credenciais inválidas' });
+    }
+});
+
+router.post('/register', async (req, res) => {
+    try {
+        const user = await User.create(req.body);
         return res.send({ user });
         
     } catch (error) {
@@ -17,7 +39,6 @@ router.post('/login', async (req, res) => {
         return res.status(400).send({ error: error });
     }
 });
-
 
 
 export default router;

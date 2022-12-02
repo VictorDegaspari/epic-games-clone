@@ -4,23 +4,27 @@ const { Schema } = mongoose;
 const GameSchema = new Schema({
     title: {
         type: String,
-        require: true
+        required: true
     },
     url: {
         type: String,
-        require: true,
+        required: true,
     },
     current_price: {
         type: Number,
-        require: true,
+        required: true,
     },
     old_price: {
         type: Number,
-        require: true, // ele serve para obrigar a enviar o campo (dado)
+        required: false,
     },
     discount: {
         type: String,
-        require: false
+        required: false
+    },
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     },
     created: {
         type: Date,

@@ -1,17 +1,18 @@
 import express from 'express';
-import User from '../models/User.js';
+import authMiddleware from '../Middlewares/auth.js';
+import User from '../Models/User.js';
 
 const router = express.Router();
+router.use(authMiddleware);
 
-router.post('/post', async (req, res) => {
+router.get('/find/:email', async (req, res) => {
     try {
-        console.log(req.body)
-        const user = await User.create(req.body);
+        const user = await User.find({ email: req.params.email });
+
         return res.send({ user });
         
     } catch (error) {
-        console.error(error)
-        return res.status(400).send({ error: error });
+        return res.status(400).send({ error });
     }
 });
 
