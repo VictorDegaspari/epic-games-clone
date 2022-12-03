@@ -26,4 +26,18 @@ router.get('/get', async (req, res) => {
     }
 });
 
+router.post('/post', async (req, res) => {
+    try {
+        if (!req.admin) {
+            return res.status(400).send({ error: 'Você precisa ser admin para adicionar usuários' });
+        }
+        const user = await User.create(req.body);
+        return res.send({ user });
+        
+    } catch (error) {
+        console.error(error)
+        return res.status(400).send({ error: error });
+    }
+});
+
 export default router;

@@ -83,7 +83,9 @@ button {
 #show-game, 
 .form-edit-game,
 .form-save-game,
-.game-edit {
+.game-edit,
+#show-user,
+.add-new-user {
     display: none;
 }
 
@@ -95,7 +97,9 @@ button {
 #show-game.show,
 .form-edit-game.show,
 .form-save-game.show,
-.game-edit.show {
+.game-edit.show,
+#show-user.show,
+.add-new-user.show {
     display: flex;
 }
 
@@ -987,7 +991,7 @@ h2.highlight:hover > a > span > svg {
     }
 }
 
-#show-game {
+#show-game, #show-user {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
@@ -995,16 +999,23 @@ h2.highlight:hover > a > span > svg {
 }
 
 #show-game > button, 
-#show-game > div,  #show-game > form {
+#show-user > button, 
+#show-game > div,  
+#show-user > div,  
+#show-game > form,
+#show-user > form {
     width: 90%;
     max-width: 700px;
     color: white;
 }
 #show-game > div > button, 
 #show-game > button, 
+#show-user > button, 
 .form-edit-game > label > input, 
 .form-save-game > label > input, 
-#show-game > form > button {
+.form-save-user > label > input, 
+#show-game > form > button,
+#show-user > form > button {
     border-radius: 4px;
     color: rgb(255, 255, 255);
     background: transparent;
@@ -1033,10 +1044,12 @@ h2.highlight:hover > a > span > svg {
 }
 
 .form-edit-game > label > input,
+.form-save-user > label > input,
 .form-save-game > label > input {
     padding: 10px;
 }
 .form-edit-game > label,
+.form-save-user > label,
 .form-save-game > label {
     margin-top: 8px;
 

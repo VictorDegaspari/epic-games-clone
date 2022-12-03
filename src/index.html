@@ -101,7 +101,9 @@
                             </svg>
                         </span>
                     </div>
-
+                    <div class="add-new-user">
+                        <a class="active" href="">Adicionar usuário</a>
+                    </div>
                 </div>
     
                 <div class="flex carousel-images">
@@ -154,6 +156,7 @@
                 <div class="loader"></div>
             </div>
             <form class="form-edit-game w-100 flex-column" action="javascript:void(0);" >
+                <h3>Editar jogo</h3>
                 <label for="title" class="flex flex-column w-100">
                     Título
                     <input name="title" type="text" placeholder="Título" />
@@ -177,6 +180,7 @@
                 <button type="submit">SALVAR</button>
             </form>
             <form class="form-save-game w-100 flex-column" action="javascript:void(0);" >
+                <h3>Cadastrar jogo</h3>
                 <label for="title" class="flex flex-column w-100">
                     Título
                     <input name="title" type="text" placeholder="Título" />
@@ -200,6 +204,30 @@
                 <button type="submit">SALVAR</button>
             </form>
             <button class="w-100" id="go-back"><span>VOLTAR</span></button>
+        </div>
+        <div id="show-user" class="flex flex-column w-100">
+            <form class="form-save-user w-100 flex-column" action="javascript:void(0);" >
+                <h3>Cadastrar usuário</h3>
+                <label for="name" class="flex flex-column w-100">
+                    Nome
+                    <input name="name" type="text" placeholder="Nome" required/>
+                </label>
+                <label for="email" class="flex flex-column w-100">
+                    E-mail
+                    <input name="email" type="email" placeholder="E-mail" required/>
+                </label>
+                <label for="password" class="flex flex-column w-100">
+                    Senha
+                    <input name="password" type="password" placeholder="Senha" required/>
+                </label>
+                <label for="password_c" class="flex flex-column w-100">
+                    Confirmar senha
+                    <input name="password_c" type="password" placeholder="Senha" required/>
+                </label>
+                <button type="submit" class="w-100">SALVAR</button>
+            </form>
+            <button class="w-100" id="go-back-user"><span>VOLTAR</span></button>
+            <small id="form-user-error" class="error"></small>
         </div>
     </body>
 
@@ -229,21 +257,27 @@
         const activeCarouselImg = document.getElementById('active-carousel-img');
         const messageSizeCharacters = document.getElementById('messageMinLength');
         const gamePage = document.getElementById("show-game");
-        const baseUrl = "http://localhost:3000";
+        const baseUrl = "http://epic-games.eba-wespuddi.us-east-2.elasticbeanstalk.com/";
         const newGame = document.querySelector(".add-new-game");
         const gameEdit = document.querySelector(".game-edit");
         const loadingGame = document.getElementById("loader-game");
+        const userPage = document.getElementById("show-user");
         const saveGame = document.querySelector(".form-save-game");
         const editGame = document.querySelector(".form-edit-game");
         const returnToHome = document.getElementById("go-back");
-
+        const returnToHomeUser = document.getElementById("go-back-user");
+        const userErr = document.getElementById("form-user-error");
+        const formUser = document.querySelector(".form-save-user")
+        const newUser = document.querySelector(".add-new-user");
         let userEnt = document.getElementById('userEnt');
         let emailValue;
         let passwordValue;
         let img;
-
+        localStorage.getItem('admin') == true ? newUser.classList.add("show") :  newUser.classList.remove("show");
         returnToHome.addEventListener("click", event => goHome());
+        returnToHomeUser.addEventListener("click", event => goHome());
         newGame.addEventListener("click", event => addNewGame(event));
+        newUser.addEventListener("click", event => addNewUser());
         inputSearch.addEventListener("input", event => search(event.target.value));
         inputSearch.addEventListener("focusin", event => { 
             if (event.target.value.length > 0) search(event.target.value);
@@ -284,6 +318,23 @@
             editGame.classList.remove("show");
         });
 
+        formUser.addEventListener('submit', async (e) => { 
+            e.preventDefault();
+            const data = handleSubmit(e);
+            console.log(data)
+            if (data.password !== data.password_c) {
+                userErr.innerHTML = "Senhas não coincidem"
+                return;
+            };
+            Object.assign(data, { author: localStorage.getItem('userId') })
+            loadingGame.classList.add("show");
+            const { updatedGame } = await post(baseUrl + '/users/post', data);
+            loadingGame.classList.remove("show");
+            formUser.reset();
+            editGame.classList.remove("show");
+            homePage.classList.add("show");
+        });
+
         email.addEventListener("input", event => {
             messageValidation.classList.remove('show');
             messageMinLength.classList.remove('show');
@@ -313,6 +364,7 @@
                 if (response.info?.type == 'Error') throw new Error();
                 localStorage.setItem('token', response.token);
                 localStorage.setItem('userId', response.user?._id);
+                localStorage.setItem('admin', response.user?.admin);
                 localStorage.setItem('email', emailValue);
                 let email = localStorage.getItem('email');
                 userEnt.innerHTML = email;
@@ -362,11 +414,12 @@
 
         async function isLogged() {
             let token = localStorage.getItem('token');
-            
             token ? homePage.classList.add('show') : loginPage.classList.add('show');
-            const userLogged = await get(baseUrl + '/users/find/' + localStorage.getItem('email'));
-
-            if (!userLogged) {
+            try {
+                await get(baseUrl + '/users/find/' + localStorage.getItem('email'));
+            } catch (error) {
+                homePage.classList.remove('show');
+                loginPage.classList.add('show');
                 localStorage.removeItem('email');
                 localStorage.removeItem('token');
             }
@@ -375,8 +428,6 @@
             let popularGamesContainers = "";
             let carouselBalls = "";
             let email = localStorage.getItem('email');
-
-
 
             if (token && email) {
                 homePage.classList.add('show');
@@ -483,16 +534,8 @@
         }
 
         function handleSubmit(event) {
-
             const data = new FormData(event.target);
             const value = Object.fromEntries(data.entries());
-
-            if (Object.values(value).includes(null) ||
-                Object.values(value).includes('')
-            ) {
-                return;
-            };
-           
             return value;
         }   
 
@@ -528,7 +571,6 @@
         }   
 
         function addNewGame() {
-            const loadingGame = document.getElementById("loader-game");
             homePage.classList.remove("show");
             gamePage.classList.add("show");
             saveGame.classList.add("show");
@@ -536,6 +578,10 @@
             editGame.classList.remove("show")
         }
 
+        function addNewUser() {
+            homePage.classList.remove("show");
+            userPage.classList.add("show");
+        }
         window.isLogged = isLogged;
     </script>
 </html>

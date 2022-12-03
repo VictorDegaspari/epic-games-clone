@@ -4,11 +4,13 @@ const { Schema } = mongoose;
 const GameSchema = new Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        minlength: 3,
     },
     url: {
         type: String,
         required: true,
+        minlength: 3,
     },
     current_price: {
         type: Number,
@@ -34,5 +36,10 @@ const GameSchema = new Schema({
 
 
 const Game = mongoose.model('Game', GameSchema);
-
+let error;
+try {
+  await Game.save();
+} catch (err) {
+  error = err;
+}
 export default Game;

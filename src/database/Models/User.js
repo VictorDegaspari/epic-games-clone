@@ -5,13 +5,15 @@ const { Schema } = mongoose;
 const UserSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        minlength: 3
     },
     email: {
         type: String,
         required: true,
         unique: true,
-        lowercase: true
+        lowercase: true,
+        minlength: 3
     },
     admin:{
         type: Boolean,
@@ -21,6 +23,7 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true,
+        minlength: 3
     },
     created: {
         type: Date,
