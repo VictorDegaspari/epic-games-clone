@@ -17,7 +17,7 @@ app.use('/users', usersRoutes);
 app.use('/auth', authRoutes );
 app.use('/games', gamesRoutes );
 app.use(bodyParser.urlencoded({ extended: false }));
-
+app.use(express.static('/public'));
 
 app.get('/', (req, res) => {
     res.send('OK');
