@@ -155,43 +155,20 @@
             <div id="loader-game">
                 <div class="loader"></div>
             </div>
-            <form class="form-edit-game w-100 flex-column" action="javascript:void(0);" >
-                <h3>Editar jogo</h3>
-                <label for="title" class="flex flex-column w-100">
-                    Título
-                    <input name="title" type="text" placeholder="Título" />
-                </label>
-                <label for="current_price" class="flex flex-column w-100">
-                    Preço
-                    <input name="current_price" type="number" placeholder="Preço" />
-                </label>
-                <label for="url" class="flex flex-column w-100">
-                    URL
-                    <input name="url" type="text" placeholder="Imagem do jogo" />
-                </label>
-                <label for="discount" class="flex flex-column w-100">
-                    Desconto
-                    <input name="discount" type="number" placeholder="% do desconto" />
-                </label>
-                <label for="old_price" class="flex flex-column w-100">
-                    Preço antigo
-                    <input name="old_price" type="number" placeholder="Valor antigo do jogo" />
-                </label>
-                <button type="submit">SALVAR</button>
-            </form>
+            <form class="form-edit-game w-100 flex-column" action="javascript:void(0);" ></form>
             <form class="form-save-game w-100 flex-column" action="javascript:void(0);" >
                 <h3>Cadastrar jogo</h3>
                 <label for="title" class="flex flex-column w-100">
                     Título
-                    <input name="title" type="text" placeholder="Título" />
+                    <input name="title" type="text" placeholder="Título" required/>
                 </label>
                 <label for="current_price" class="flex flex-column w-100">
                     Preço
-                    <input name="current_price" type="number" placeholder="Preço" />
+                    <input name="current_price" type="number" placeholder="Preço" required/>
                 </label>
                 <label for="url" class="flex flex-column w-100">
                     URL
-                    <input name="url" type="text" placeholder="Imagem do jogo" />
+                    <input name="url" type="text" placeholder="Imagem do jogo" required/>
                 </label>
                 <label for="discount" class="flex flex-column w-100">
                     Desconto
@@ -372,8 +349,7 @@
                 homePage.classList.add('show');
                 loadingLogin.classList.remove("show");        
             } catch (error) {
-                localStorage.removeItem('email');
-                localStorage.removeItem('token');
+                localStorage.clear();
                 console.error(error);
                 messageValidation.classList.add('show');
                 loadingLogin.classList.remove("show");
@@ -414,14 +390,14 @@
 
         async function isLogged() {
             let token = localStorage.getItem('token');
-            token ? homePage.classList.add('show') : loginPage.classList.add('show');
             try {
-                await get(baseUrl + '/users/find/' + localStorage.getItem('email'));
+                const user = await get(baseUrl + '/users/find/' + localStorage.getItem('email'));
+                user ? homePage.classList.add('show') : loginPage.classList.add('show');
+                if (user.info?.type == 'Error') throw new Error();
             } catch (error) {
                 homePage.classList.remove('show');
                 loginPage.classList.add('show');
-                localStorage.removeItem('email');
-                localStorage.removeItem('token');
+                localStorage.clear();
             }
 
             let gameContainers = "";
@@ -563,6 +539,30 @@
                     <span>Valor</span> 
                     <span>${ game.current_price ? 'R$'+game.current_price : 'Grátis' }</span> 
                 </div>`
+            editGame.innerHTML = `
+                <h3>Editar jogo</h3>
+                <label for="title" class="flex flex-column w-100">
+                    Título
+                    <input name="title" type="text" value="${ game.title }" placeholder="Título" required/>
+                </label>
+                <label for="current_price" class="flex flex-column w-100">
+                    Preço
+                    <input name="current_price" type="number" value="${ game.current_price }" placeholder="Preço" required/>
+                </label>
+                <label for="url" class="flex flex-column w-100">
+                    URL
+                    <input name="url" type="text" placeholder="Imagem do jogo" value="${ game.url }" required/>
+                </label>
+                <label for="discount" class="flex flex-column w-100">
+                    Desconto
+                    <input name="discount"  value="${ game.discount }" type="number" placeholder="% do desconto" />
+                </label>
+                <label for="old_price" class="flex flex-column w-100">
+                    Preço antigo
+                    <input name="old_price" value="${ game.old_price }" type="number" placeholder="Valor antigo do jogo" />
+                </label>
+                <button type="submit">SALVAR</button>
+            `;
             const startEdit = document.getElementById("start-edit");
 
             startEdit.addEventListener("click", event => { 
