@@ -250,7 +250,7 @@
         let emailValue;
         let passwordValue;
         let img;
-        localStorage.getItem('admin') == true ? newUser.classList.add("show") :  newUser.classList.remove("show");
+        localStorage.getItem('admin') == 'true' ? newUser.classList.add("show") :  newUser.classList.remove("show");
         returnToHome.addEventListener("click", event => goHome());
         returnToHomeUser.addEventListener("click", event => goHome());
         newGame.addEventListener("click", event => addNewGame(event));
