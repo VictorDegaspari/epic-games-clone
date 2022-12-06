@@ -15,7 +15,11 @@ function validationRequest(req, res, next) {
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) return res.status(401).send({ error: 'Token invalid' });
         
-        req.userId = decoded.id;
+        req.userId = decoded.userId;
+        req.admin = decoded.admin;
+        req.name = decoded.name;
+        req.email = decoded.login;
+        
         return next();
     })
 }

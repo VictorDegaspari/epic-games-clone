@@ -209,7 +209,7 @@
     </body>
 
     <script type="module">
-        import { get, post, update } from "./js/index.js";
+        import { get, post, update, remove } from "./js/index.js";
         import { popularGames, games } from "./js/games-data.js";
 
         const gamesData = games() || [];
@@ -562,12 +562,15 @@
                     <input name="old_price" value="${ game.old_price }" type="number" placeholder="Valor antigo do jogo" />
                 </label>
                 <button type="submit">SALVAR</button>
+                <button type="button" id="delete-game" class="delete-button">EXCLUIR</button>
             `;
+            const buttonDeleteGame = document.getElementById("delete-game");
             const startEdit = document.getElementById("start-edit");
 
             startEdit.addEventListener("click", event => { 
                 editGame.classList.toggle("show");
             }); 
+            buttonDeleteGame.addEventListener("click", event => deleteGame());
         }   
 
         function addNewGame() {
@@ -582,6 +585,15 @@
             homePage.classList.remove("show");
             userPage.classList.add("show");
         }
+
+        async function deleteGame() {
+            const gameId = localStorage.getItem('gameId');
+            loadingGame.classList.add("show");
+            await remove(baseUrl + '/games/remove/' + encodeURI(gameId));
+            loadingGame.classList.remove("show");
+            goHome();
+        }
+
         window.isLogged = isLogged;
     </script>
 </html>

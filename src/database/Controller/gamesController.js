@@ -59,4 +59,18 @@ router.patch('/update/:id', async (req, res) => {
         return res.status(400).send({ error: error });
     }
 });
+
+router.delete('/remove/:id', async (req, res) => {
+    try {
+        const game = await Game.findOne({ _id: req.params.id}).populate('author');
+        if (game.author?._id != req.userId) return res.status(401).send({ error: 'Nao autorizado' });
+        
+        await game.delete();
+        return res.status(200).send({ success: true, message: "Jogo deletado com sucesso" });
+    } catch (error) {
+        console.error(error)
+        return res.status(400).send({ error: error });
+    }
+});
+
 export default router;

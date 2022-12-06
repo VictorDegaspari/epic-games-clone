@@ -1054,3 +1054,9 @@ h2.highlight:hover > a > span > svg {
     margin-top: 8px;
 
 }
+
+#show-game > form > .delete-button,
+#show-user > form > .delete-button {
+    color: rgb(248, 59, 59);
+    border-color: rgb(248, 59, 59);
+}

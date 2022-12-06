@@ -15,6 +15,7 @@ router.post('/login', async (req, res) => {
         if (!user || !validPassword) return res.status(400).send("Usuários com credenciais inválidas");
         
         const token = jwt.sign({
+            userId: user._id,
             login: user.email,
             name: user.name,
             admin: user.admin
