@@ -519,6 +519,7 @@
         function populateGame(game) {
             const date = new Date(game.created);
             const formattedDate = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
+            saveGame.classList.remove("show");
 
             gameEdit.innerHTML = 
                 `
