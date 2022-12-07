@@ -250,7 +250,6 @@
         let emailValue;
         let passwordValue;
         let img;
-        localStorage.getItem('admin') == 'true' ? newUser.classList.add("show") :  newUser.classList.remove("show");
         returnToHome.addEventListener("click", event => goHome());
         returnToHomeUser.addEventListener("click", event => goHome());
         newGame.addEventListener("click", event => addNewGame(event));
@@ -342,6 +341,7 @@
                 localStorage.setItem('token', response.token);
                 localStorage.setItem('userId', response.user?._id);
                 localStorage.setItem('admin', response.user?.admin);
+                localStorage.getItem('admin') == 'true' ? newUser.classList.add("show") :  newUser.classList.remove("show");
                 localStorage.setItem('email', emailValue);
                 let email = localStorage.getItem('email');
                 userEnt.innerHTML = email;
@@ -390,20 +390,25 @@
 
         async function isLogged() {
             let token = localStorage.getItem('token');
-            try {
-                const user = await get(baseUrl + '/users/find/' + localStorage.getItem('email'));
-                user ? homePage.classList.add('show') : loginPage.classList.add('show');
-                if (user.info?.type == 'Error') throw new Error();
-            } catch (error) {
+            let email = localStorage.getItem('email');
+            if (!token || !email) {
                 homePage.classList.remove('show');
                 loginPage.classList.add('show');
-                localStorage.clear();
+            } else {
+                try {
+                    const user = await get(baseUrl + '/users/find/' + email);
+                    user ? homePage.classList.add('show') : loginPage.classList.add('show');
+                    if (user.info?.type == 'Error') throw new Error();
+                } catch (error) {
+                    homePage.classList.remove('show');
+                    loginPage.classList.add('show');
+                    localStorage.clear();
+                }
             }
 
             let gameContainers = "";
             let popularGamesContainers = "";
             let carouselBalls = "";
-            let email = localStorage.getItem('email');
 
             if (token && email) {
                 homePage.classList.add('show');
@@ -565,15 +570,22 @@
                 </label>
                 <button type="submit">SALVAR</button>
                 <button type="button" id="delete-game" class="delete-button">EXCLUIR</button>
+                <small class="confirm-delete">Deseja realmente excluir?
+                    <span class="yes-delete cursor-pointer">SIM</span>
+                    <span class="no-delete cursor-pointer">NÃO</span>
+                </small>
             `;
             const buttonDeleteGame = document.getElementById("delete-game");
             const startEdit = document.getElementById("start-edit");
+            const confirmDelete = document.querySelector(".confirm-delete");
+            const confirmDeleteYes = document.querySelector(".yes-delete");
+            const confirmDeleteNo = document.querySelector(".no-delete");
 
-            startEdit.addEventListener("click", event => { 
-                editGame.classList.toggle("show");
-            }); 
-            buttonDeleteGame.addEventListener("click", event => deleteGame());
-        }   
+            startEdit.addEventListener("click", event => editGame.classList.toggle("show")); 
+            buttonDeleteGame.addEventListener("click", event => confirmDelete.classList.toggle("show"));
+            confirmDeleteYes.addEventListener("click", event => deleteGame(game._id));
+            confirmDeleteNo.addEventListener("click", event => confirmDelete.classList.toggle("show"));
+        }
 
         function addNewGame() {
             homePage.classList.remove("show");
@@ -588,8 +600,7 @@
             userPage.classList.add("show");
         }
 
-        async function deleteGame() {
-            const gameId = localStorage.getItem('gameId');
+        async function deleteGame(gameId = "") {
             loadingGame.classList.add("show");
             await remove(baseUrl + '/games/remove/' + encodeURI(gameId));
             loadingGame.classList.remove("show");
