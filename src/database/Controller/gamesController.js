@@ -1,19 +1,20 @@
 import express from 'express';
 import fs from 'fs';
 import authMiddleware from '../Middlewares/auth.js';
-import uploadMiddleware from '../Middlewares/upload.js';
+// Na Vercel nao foi possivel realizar upload de imagem
+// import uploadMiddleware from '../Middlewares/upload.js';
 import Game from '../Models/Game.js';
 import Image from '../Models/Image.js';
 
 const router = express.Router();
 router.use(authMiddleware);
 
-router.post('/post', uploadMiddleware, async (req, res) => {
+router.post('/post', async (req, res) => {
     try {
         const newImage = new Image({
             name: req.body.title,
             image: {
-                data: req.file.filename,
+                data: req.body.url,
                 contentType: "image/png"
             }
         });
@@ -69,7 +70,7 @@ router.get('/find/:id', async (req, res) => {
     }
 });
 
-router.patch('/update/:id', uploadMiddleware, async (req, res) => {
+router.patch('/update/:id', async (req, res) => {
     try {
         const game = await Game.findOne({ _id: req.params.id}).populate('author image');
         if (game.author?._id != req.userId) return res.status(401).send({ error: 'Nao autorizado' });
@@ -78,7 +79,7 @@ router.patch('/update/:id', uploadMiddleware, async (req, res) => {
         const updateImage = {
             name: req.body.title,
             image: {
-                data: req.file.filename,
+                data: req.body.url,
                 contentType: "image/png"
             }
         };

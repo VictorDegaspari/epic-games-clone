@@ -166,9 +166,9 @@
                     Preço
                     <input name="current_price" type="number" placeholder="Preço" required/>
                 </label>
-                <label for="image" class="flex flex-column w-100">
+                <label for="url" class="flex flex-column w-100">
                     Imagem
-                    <input name="image" type="file" placeholder="Imagem do jogo" required/>
+                    <input name="url" type="text" placeholder="Imagem do jogo" required/>
                 </label>
                 <label for="discount" class="flex flex-column w-100">
                     Desconto
@@ -271,14 +271,14 @@
 
         saveGame.addEventListener('submit', async (e) => { 
             e.preventDefault();
-            const formData = new FormData(saveGame);
-            const imageInput = formData.get("image");
-            if (imageInput.size > 2621440) {
-                gameErr.innerHTML = "IMAGEM PODE TER NO MÁXIMO 2,5MB"
-                return;
-            };
+            const formData = handleSubmit(e);
+            // const imageInput = formData.get("image");
+            // if (imageInput.size > 2621440) {
+            //     gameErr.innerHTML = "IMAGEM PODE TER NO MÁXIMO 2,5MB"
+            //     return;
+            // };
             loadingGame.classList.add("show");
-            const { game } = await post(baseUrl + '/games/post', formData, true);
+            const { game } = await post(baseUrl + '/games/post', formData, false);
             loadingGame.classList.remove("show");
             saveGame.reset();
             saveGame.classList.remove("show");
@@ -288,14 +288,14 @@
 
         editGame.addEventListener('submit', async (e) => { 
             e.preventDefault();
-            const formData = new FormData(editGame);
-            const imageInput = formData.get("image");
-            if (imageInput.size > 2621440) {
-                gameErr.innerHTML = "IMAGEM PODE TER NO MÁXIMO 2,5MB"
-                return;
-            };
+            const formData = handleSubmit(e);
+            // const imageInput = formData.get("image");
+            // if (imageInput.size > 2621440) {
+            //     gameErr.innerHTML = "IMAGEM PODE TER NO MÁXIMO 2,5MB"
+            //     return;
+            // };
             loadingGame.classList.add("show");
-            const { updatedGame } = await update(baseUrl + '/games/update/' + encodeURI(localStorage.getItem('gameId')), formData, true);
+            const { updatedGame } = await update(baseUrl + '/games/update/' + encodeURI(localStorage.getItem('gameId')), formData, false);
             editGame.reset();
             loadingGame.classList.remove("show");
             populateGame(updatedGame);
@@ -402,6 +402,7 @@
                 homePage.classList.remove('show');
                 loginPage.classList.add('show');
             } else {
+                localStorage.getItem('admin') == 'true' ? newUser.classList.add("show") :  newUser.classList.remove("show");
                 try {
                     const user = await get(baseUrl + '/users/find/' + email);
                     user ? homePage.classList.add('show') : loginPage.classList.add('show');
@@ -535,7 +536,7 @@
             gameEdit.innerHTML = 
                 `
                 <h3>${ game.title }</h3>
-                <img src="data:image/png;base64,${ path }" alt="${ game.title }" />
+                <img src="${ game.url }" alt="${ game.title }" />
                 ${ game.author?.email == localStorage.getItem('email') ? 
                     `<button class="w-100" id="start-edit"><span>EDITAR</span></button>` : ''
                 }
@@ -562,9 +563,9 @@
                     Preço
                     <input name="current_price" type="number" value="${ game.current_price }" placeholder="Preço" required/>
                 </label>
-                <label for="image" class="flex flex-column w-100">
+                <label for="url" class="flex flex-column w-100">
                     Imagem
-                    <input name="image" type="file" placeholder="Imagem do jogo" value="${ game.url }" required/>
+                    <input name="url" type="text" placeholder="Imagem do jogo" value="${ game.url }" required/>
                 </label>
                 <label for="discount" class="flex flex-column w-100">
                     Desconto
