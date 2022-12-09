@@ -7,11 +7,6 @@ const GameSchema = new Schema({
         required: true,
         minlength: 3,
     },
-    url: {
-        type: String,
-        required: true,
-        minlength: 3,
-    },
     current_price: {
         type: Number,
         required: true,
@@ -27,6 +22,10 @@ const GameSchema = new Schema({
     author: {
         type: Schema.Types.ObjectId,
         ref: 'User'
+    },
+    image: {
+        type: Schema.Types.ObjectId,
+        ref: 'Image'
     },
     created: {
         type: Date,

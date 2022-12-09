@@ -1038,6 +1038,7 @@ h2.highlight:hover > a > span > svg {
     width: 100%;
     object-fit: contain;
     height: 100%;
+    max-height: 620px;
     width: 100%;
     display: flex;
     justify-content: center;

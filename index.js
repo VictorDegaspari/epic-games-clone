@@ -12,12 +12,13 @@ const PORT = process.env.PORT || 3000;
 
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '5mb'}));
 app.use('/users', usersRoutes);
 app.use('/auth', authRoutes );
 app.use('/games', gamesRoutes );
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
 app.use(express.static('/public'));
+app.use(express.static('/uploads'));
 
 app.get('/', (req, res) => {
     res.send('OK');

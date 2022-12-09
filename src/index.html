@@ -155,8 +155,8 @@
             <div id="loader-game">
                 <div class="loader"></div>
             </div>
-            <form class="form-edit-game w-100 flex-column" action="javascript:void(0);" ></form>
-            <form class="form-save-game w-100 flex-column" action="javascript:void(0);" >
+            <form class="form-edit-game w-100 flex-column" enctype="multipart/form-data" action="javascript:void(0);" ></form>
+            <form class="form-save-game w-100 flex-column" enctype="multipart/form-data" action="javascript:void(0);">
                 <h3>Cadastrar jogo</h3>
                 <label for="title" class="flex flex-column w-100">
                     Título
@@ -166,9 +166,9 @@
                     Preço
                     <input name="current_price" type="number" placeholder="Preço" required/>
                 </label>
-                <label for="url" class="flex flex-column w-100">
-                    URL
-                    <input name="url" type="text" placeholder="Imagem do jogo" required/>
+                <label for="image" class="flex flex-column w-100">
+                    Imagem
+                    <input name="image" type="file" placeholder="Imagem do jogo" required/>
                 </label>
                 <label for="discount" class="flex flex-column w-100">
                     Desconto
@@ -181,6 +181,7 @@
                 <button type="submit">SALVAR</button>
             </form>
             <button class="w-100" id="go-back"><span>VOLTAR</span></button>
+            <small id="form-game-error" class="error"></small>
         </div>
         <div id="show-user" class="flex flex-column w-100">
             <form class="form-save-user w-100 flex-column" action="javascript:void(0);" >
@@ -234,7 +235,7 @@
         const activeCarouselImg = document.getElementById('active-carousel-img');
         const messageSizeCharacters = document.getElementById('messageMinLength');
         const gamePage = document.getElementById("show-game");
-        const baseUrl = "https://epic-games-clone-wheat.vercel.app";
+        const baseUrl = "http://localhost:3000";
         const newGame = document.querySelector(".add-new-game");
         const gameEdit = document.querySelector(".game-edit");
         const loadingGame = document.getElementById("loader-game");
@@ -243,6 +244,7 @@
         const editGame = document.querySelector(".form-edit-game");
         const returnToHome = document.getElementById("go-back");
         const returnToHomeUser = document.getElementById("go-back-user");
+        const gameErr = document.getElementById("form-game-error");
         const userErr = document.getElementById("form-user-error");
         const formUser = document.querySelector(".form-save-user")
         const newUser = document.querySelector(".add-new-user");
@@ -269,11 +271,14 @@
 
         saveGame.addEventListener('submit', async (e) => { 
             e.preventDefault();
-            const data = handleSubmit(e);
-            if (!data) return;
-            Object.assign(data, { author: localStorage.getItem('userId') })
+            const formData = new FormData(saveGame);
+            const imageInput = formData.get("image");
+            if (imageInput.size > 2621440) {
+                gameErr.innerHTML = "IMAGEM PODE TER NO MÁXIMO 2,5MB"
+                return;
+            };
             loadingGame.classList.add("show");
-            const { game } = await post(baseUrl + '/games/post', data);
+            const { game } = await post(baseUrl + '/games/post', formData, true);
             loadingGame.classList.remove("show");
             saveGame.reset();
             saveGame.classList.remove("show");
@@ -283,11 +288,14 @@
 
         editGame.addEventListener('submit', async (e) => { 
             e.preventDefault();
-            const data = handleSubmit(e);
-            if (!data) return;
-            Object.assign(data, { author: localStorage.getItem('userId') })
+            const formData = new FormData(editGame);
+            const imageInput = formData.get("image");
+            if (imageInput.size > 2621440) {
+                gameErr.innerHTML = "IMAGEM PODE TER NO MÁXIMO 2,5MB"
+                return;
+            };
             loadingGame.classList.add("show");
-            const { updatedGame } = await update(baseUrl + '/games/update/' + encodeURI(localStorage.getItem('gameId')), data);
+            const { updatedGame } = await update(baseUrl + '/games/update/' + encodeURI(localStorage.getItem('gameId')), formData, true);
             editGame.reset();
             loadingGame.classList.remove("show");
             populateGame(updatedGame);
@@ -297,14 +305,13 @@
         formUser.addEventListener('submit', async (e) => { 
             e.preventDefault();
             const data = handleSubmit(e);
-            console.log(data)
             if (data.password !== data.password_c) {
-                userErr.innerHTML = "Senhas não coincidem"
+                userErr.innerHTML = "SENHAS NÃO COINCIDEM"
                 return;
             };
             Object.assign(data, { author: localStorage.getItem('userId') })
             loadingGame.classList.add("show");
-            const { updatedGame } = await post(baseUrl + '/users/post', data);
+            const { updatedGame } = await post(baseUrl + '/users/post', data, false);
             loadingGame.classList.remove("show");
             formUser.reset();
             editGame.classList.remove("show");
@@ -336,7 +343,7 @@
             loadingLogin.classList.add("show");
 
             try {
-                const response = await post(baseUrl + "/auth/login", { email: emailValue, password: passwordValue });
+                const response = await post(baseUrl + "/auth/login", { email: emailValue, password: passwordValue }, false);
                 if (response.info?.type == 'Error') throw new Error();
                 localStorage.setItem('token', response.token);
                 localStorage.setItem('userId', response.user?._id);
@@ -507,10 +514,10 @@
             loadingGame.classList.add("show");
             gameEdit.classList.add("show");
 
-            const { game } = await get(baseUrl + '/games/find/' + encodeURI(gameId));
+            const { game, path } = await get(baseUrl + '/games/find/' + encodeURI(gameId));
             loadingGame.classList.remove("show");
             if (!game) return;
-            populateGame(game);
+            populateGame(game, path);
             loadingGame.classList.remove("show");
             saveGame.classList.remove("show");
         }
@@ -521,15 +528,14 @@
             return value;
         }   
 
-        function populateGame(game) {
+        function populateGame(game, path) {
             const date = new Date(game.created);
             const formattedDate = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
             saveGame.classList.remove("show");
-
             gameEdit.innerHTML = 
                 `
                 <h3>${ game.title }</h3>
-                <img src="${ game.url }" alt="${ game.title }" />
+                <img src="data:image/png;base64,${ path }" alt="${ game.title }" />
                 ${ game.author?.email == localStorage.getItem('email') ? 
                     `<button class="w-100" id="start-edit"><span>EDITAR</span></button>` : ''
                 }
@@ -556,9 +562,9 @@
                     Preço
                     <input name="current_price" type="number" value="${ game.current_price }" placeholder="Preço" required/>
                 </label>
-                <label for="url" class="flex flex-column w-100">
-                    URL
-                    <input name="url" type="text" placeholder="Imagem do jogo" value="${ game.url }" required/>
+                <label for="image" class="flex flex-column w-100">
+                    Imagem
+                    <input name="image" type="file" placeholder="Imagem do jogo" value="${ game.url }" required/>
                 </label>
                 <label for="discount" class="flex flex-column w-100">
                     Desconto
@@ -576,12 +582,14 @@
                 </small>
             `;
             const buttonDeleteGame = document.getElementById("delete-game");
-            const startEdit = document.getElementById("start-edit");
+            if (game.author?.email == localStorage.getItem('email')) {
+                const startEdit = document.getElementById("start-edit");
+                startEdit.addEventListener("click", event => editGame.classList.toggle("show")); 
+            }
             const confirmDelete = document.querySelector(".confirm-delete");
             const confirmDeleteYes = document.querySelector(".yes-delete");
             const confirmDeleteNo = document.querySelector(".no-delete");
 
-            startEdit.addEventListener("click", event => editGame.classList.toggle("show")); 
             buttonDeleteGame.addEventListener("click", event => confirmDelete.classList.toggle("show"));
             confirmDeleteYes.addEventListener("click", event => deleteGame(game._id));
             confirmDeleteNo.addEventListener("click", event => confirmDelete.classList.toggle("show"));

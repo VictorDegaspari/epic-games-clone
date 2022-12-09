@@ -1,15 +1,28 @@
 import express from 'express';
+import fs from 'fs';
 import authMiddleware from '../Middlewares/auth.js';
+import uploadMiddleware from '../Middlewares/upload.js';
 import Game from '../Models/Game.js';
+import Image from '../Models/Image.js';
 
 const router = express.Router();
 router.use(authMiddleware);
 
-router.post('/post', async (req, res) => {
+router.post('/post', uploadMiddleware, async (req, res) => {
     try {
-        const game = await Game.create(req.body);
+        const newImage = new Image({
+            name: req.body.title,
+            image: {
+                data: req.file.filename,
+                contentType: "image/png"
+            }
+        });
+        const savedImage = await newImage.save();
+        const data = Object.assign(req.body, { author: req.userId, image: savedImage._id });
+
+        const game = await Game.create(data);
+
         return res.send({ game });
-        
     } catch (error) {
         console.error(error)
         return res.status(400).send({ error: error });
@@ -39,20 +52,47 @@ router.get('/get', async (req, res) => {
 
 router.get('/find/:id', async (req, res) => {
     try {
-        const game = await Game.findOne({ _id: req.params.id}).populate('author');
-        return res.send({ game });
+        const game = await Game.findOne({ _id: req.params.id }).populate('author image');
+        const path = 'uploads/' + game.image?.image?.data;
+        let base64;
+
+        if (!fs.existsSync(path)) {
+            base64 = null;
+        } else {
+            base64 = fs.readFileSync(path).toString('base64');
+        }
+        
+        return res.send({ game, path: base64 });
     } catch (error) {
         console.error(error)
         return res.status(400).send({ error: error });
     }
 });
 
-router.patch('/update/:id', async (req, res) => {
+router.patch('/update/:id', uploadMiddleware, async (req, res) => {
     try {
-        const game = await Game.findOne({ _id: req.params.id});
-        await game.updateOne(req.body);
-        const updatedGame = await Game.findOne({ _id: req.params.id}).populate('author');
-        
+        const game = await Game.findOne({ _id: req.params.id}).populate('author image');
+        if (game.author?._id != req.userId) return res.status(401).send({ error: 'Nao autorizado' });
+        const image = await Image.findOne({ _id: game.image?._id});
+
+        const updateImage = {
+            name: req.body.title,
+            image: {
+                data: req.file.filename,
+                contentType: "image/png"
+            }
+        };
+        if (image) {
+            await image.updateOne(updateImage);
+            await game.updateOne(req.body);
+        } else {
+            const newImage = new Image(updateImage);
+            const savedImage = await newImage.save();
+            const data = Object.assign(req.body, { author: req.userId, image: savedImage._id });
+            await game.updateOne(data);
+        }
+
+        const updatedGame = await Game.findOne({ _id: req.params.id }).populate('author image');
         return res.send({ updatedGame });
     } catch (error) {
         console.error(error)
@@ -62,10 +102,12 @@ router.patch('/update/:id', async (req, res) => {
 
 router.delete('/remove/:id', async (req, res) => {
     try {
-        const game = await Game.findOne({ _id: req.params.id}).populate('author');
+        const game = await Game.findOne({ _id: req.params.id}).populate('image', '_id');
         if (game.author?._id != req.userId) return res.status(401).send({ error: 'Nao autorizado' });
+        const image = await Image.findOne({ _id: game.image?._id});
         
         await game.delete();
+        if (image) await image.delete();
         return res.status(200).send({ success: true, message: "Jogo deletado com sucesso" });
     } catch (error) {
         console.error(error)
