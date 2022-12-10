@@ -324,17 +324,17 @@
                 userErr.innerHTML = "SENHAS NÃO COINCIDEM"
                 return;
             };
-            loadingGame.classList.add("show");
+            loadingUser.classList.add("show");
             try {
                 const response = await post(baseUrl + '/users/post', data, false);
                 if (response.info?.type == 'Error') throw new Error();
-                loadingGame.classList.remove("show");
+                loadingUser.remove("show");
                 formUser.reset();
                 editGame.classList.remove("show");
                 homePage.classList.add("show");
             } catch (error) {
                 userErr.innerHTML = "EMAIL JÁ CADASTRADO"
-                loadingGame.classList.remove("show");
+                loadingUser.classList.remove("show");
             }
         });
 
@@ -528,13 +528,14 @@
         }
 
         async function openGameById(gameId = "") {
+            gameErr.innerHTML = "";
+            userErr.innerHTML = "";
             if (!gameId) return;
             localStorage.setItem('gameId', gameId);
             homePage.classList.remove("show");
             gamePage.classList.add("show");
             loadingGame.classList.add("show");
             gameEdit.classList.add("show");
-            gameErr.innerHTML = "";
             const { game, path } = await get(baseUrl + '/games/find/' + encodeURI(gameId));
             loadingGame.classList.remove("show");
             if (!game) return;
@@ -619,6 +620,7 @@
         function addNewGame() {
             homePage.classList.remove("show");
             gameErr.innerHTML = "";
+            userErr.innerHTML = "";
             gamePage.classList.add("show");
             saveGame.classList.add("show");
             gameEdit.classList.remove("show");
@@ -628,6 +630,7 @@
         function addNewUser() {
             homePage.classList.remove("show");
             gameErr.innerHTML = "";
+            userErr.innerHTML = "";
             userPage.classList.add("show");
         }
 
