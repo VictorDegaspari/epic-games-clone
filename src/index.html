@@ -611,6 +611,8 @@
             if (game.author?.email == localStorage.getItem('email')) {
                 const startEdit = document.getElementById("start-edit");
                 startEdit.addEventListener("click", event => editGame.classList.toggle("show")); 
+            } else {
+                editGame.classList.remove("show");
             }
             const confirmDelete = document.querySelector(".confirm-delete");
             const confirmDeleteYes = document.querySelector(".yes-delete");
