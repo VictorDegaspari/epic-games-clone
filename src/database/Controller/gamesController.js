@@ -10,19 +10,31 @@ router.use(authMiddleware);
 
 router.post('/post', uploadMiddleware, async (req, res) => {
     try {
-        const newImage = new Image({
-            name: req.body.title,
-            image: {
-                data: req.file.filename,
-                contentType: "image/png"
-            }
-        });
-        const savedImage = await newImage.save();
-        const data = Object.assign(req.body, { author: req.userId, image: savedImage._id });
+        const dataValidation = req.body;
+        if (dataValidation.title.length < 3 ||
+            dataValidation.current_price.length < 2 ||
+            dataValidation.old_price.length < 2 ||
+            dataValidation.url.length < 3 ||
+            dataValidation.discount.length < 1)
+        {
+            return res.status(400).send({ error: 'Quantidade de caracteres preenchido nos campos insuficiente' });
+        } 
+        else {
 
-        const game = await Game.create(data);
+            const newImage = new Image({
+                name: req.body.title,
+                image: {
+                    data: req.body.url,
+                    contentType: "image/png"
+                }
+            });
+            const savedImage = await newImage.save();
+            const data = Object.assign(req.body, { author: req.userId, image: savedImage._id });
 
-        return res.send({ game });
+            const game = await Game.create(data); 
+
+            return res.send({ game });
+        }
     } catch (error) {
         console.error(error)
         return res.status(400).send({ error: error });
@@ -61,7 +73,7 @@ router.get('/find/:id', async (req, res) => {
         } else {
             base64 = fs.readFileSync(path).toString('base64');
         }
-        
+
         return res.send({ game, path: base64 });
     } catch (error) {
         console.error(error)
@@ -69,11 +81,21 @@ router.get('/find/:id', async (req, res) => {
     }
 });
 
-router.patch('/update/:id', uploadMiddleware, async (req, res) => {
+router.patch('/update/:id', async (req, res) => {
+    const dataValidation = req.body;
+    if (dataValidation.title.length < 3 ||
+        dataValidation.current_price.length < 2 ||
+        dataValidation.old_price.length < 2 ||
+        dataValidation.url.length < 3 ||
+        dataValidation.discount.length < 1)
+    {
+        return res.status(400).send({ error: 'Quantidade de caracteres preenchido nos campos insuficiente' });
+    } 
+
     try {
-        const game = await Game.findOne({ _id: req.params.id}).populate('author image');
+        const game = await Game.findOne({ _id: req.params.id }).populate('author image');
         if (game.author?._id != req.userId) return res.status(401).send({ error: 'Nao autorizado' });
-        const image = await Image.findOne({ _id: game.image?._id});
+        const image = await Image.findOne({ _id: game.image?._id });
 
         const updateImage = {
             name: req.body.title,
@@ -102,10 +124,10 @@ router.patch('/update/:id', uploadMiddleware, async (req, res) => {
 
 router.delete('/remove/:id', async (req, res) => {
     try {
-        const game = await Game.findOne({ _id: req.params.id}).populate('image', '_id');
+        const game = await Game.findOne({ _id: req.params.id }).populate('image', '_id');
         if (game.author?._id != req.userId) return res.status(401).send({ error: 'Nao autorizado' });
-        const image = await Image.findOne({ _id: game.image?._id});
-        
+        const image = await Image.findOne({ _id: game.image?._id });
+
         await game.delete();
         if (image) await image.delete();
         return res.status(200).send({ success: true, message: "Jogo deletado com sucesso" });

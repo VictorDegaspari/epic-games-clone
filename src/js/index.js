@@ -41,8 +41,7 @@ async function post(url = '', data = {}, image=false) {
     const responseError = {
         type: 'Error',
         message: 'Something went wrong',
-    };
-  
+    };  
     const error = new Error();
     error.info = responseError;
 
