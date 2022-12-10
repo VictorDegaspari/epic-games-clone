@@ -377,7 +377,7 @@
             dataRows.classList.add("show");
             if( inputValue.length < 3 ){
                 dataRows.innerHTML = "<div>Digite pelo menos 3 caracteres...</div>";
-                return
+                return;
             }
             loading.classList.add("show");
 
@@ -608,6 +608,7 @@
 
         function addNewGame() {
             homePage.classList.remove("show");
+            gameErr.innerHTML = "";
             gamePage.classList.add("show");
             saveGame.classList.add("show");
             gameEdit.classList.remove("show");
@@ -616,6 +617,7 @@
 
         function addNewUser() {
             homePage.classList.remove("show");
+            gameErr.innerHTML = "";
             userPage.classList.add("show");
         }
 
