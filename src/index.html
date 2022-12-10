@@ -333,6 +333,7 @@
                 if (response.info?.type == 'Error') throw new Error();
                 loadingUser.remove("show");
                 formUser.reset();
+                formUser.classList.remove("show");
                 editGame.classList.remove("show");
                 homePage.classList.add("show");
             } catch (error) {
