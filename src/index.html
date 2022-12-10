@@ -283,6 +283,7 @@
             loadingGame.classList.add("show");   
             try {
                 const { game } = await post(baseUrl + '/games/post', formData, false);
+                if (response.info?.type == 'Error') throw new Error();
                 loadingGame.classList.remove("show");
                 saveGame.reset();
                 saveGame.classList.remove("show");
@@ -305,6 +306,7 @@
             loadingGame.classList.add("show");
             try {
                 const { updatedGame } = await update(baseUrl + '/games/update/' + encodeURI(localStorage.getItem('gameId')), formData, false);
+                if (response.info?.type == 'Error') throw new Error();
                 editGame.reset();
                 loadingGame.classList.remove("show");
                 populateGame(updatedGame);
@@ -325,6 +327,7 @@
             loadingGame.classList.add("show");
             try {
                 const { updatedGame } = await post(baseUrl + '/users/post', data, false);
+                if (response.info?.type == 'Error') throw new Error();
                 loadingGame.classList.remove("show");
                 formUser.reset();
                 editGame.classList.remove("show");
