@@ -1,40 +1,40 @@
 import express from 'express';
 import fs from 'fs';
 import authMiddleware from '../Middlewares/auth.js';
-import uploadMiddleware from '../Middlewares/upload.js';
+// Na Vercel nao foi possivel realizar upload de imagem
+// import uploadMiddleware from '../Middlewares/upload.js';
 import Game from '../Models/Game.js';
 import Image from '../Models/Image.js';
 
 const router = express.Router();
 router.use(authMiddleware);
 
-router.post('/post', uploadMiddleware, async (req, res) => {
+router.post('/post', async (req, res) => {
+    const dataValidation = req.body;
+    if (
+        dataValidation.title.length < 3 ||
+        dataValidation.current_price.length < 2 ||
+        dataValidation.old_price.length < 2 ||
+        dataValidation.url.length < 3 ||
+        dataValidation.discount.length < 1
+    ) {
+        return res.status(400).send({ error: 'Quantidade de caracteres preenchido nos campos insuficiente' });
+    }
+
     try {
-        const dataValidation = req.body;
-        if (dataValidation.title.length < 3 ||
-            dataValidation.current_price.length < 2 ||
-            dataValidation.old_price.length < 2 ||
-            dataValidation.url.length < 3 ||
-            dataValidation.discount.length < 1)
-        {
-            return res.status(400).send({ error: 'Quantidade de caracteres preenchido nos campos insuficiente' });
-        } 
-        else {
+        const newImage = new Image({
+            name: req.body.title,
+            image: {
+                data: req.body.url,
+                contentType: "image/png"
+            }
+        });
+        const savedImage = await newImage.save();
+        const data = Object.assign(req.body, { author: req.userId, image: savedImage._id });
 
-            const newImage = new Image({
-                name: req.body.title,
-                image: {
-                    data: req.body.url,
-                    contentType: "image/png"
-                }
-            });
-            const savedImage = await newImage.save();
-            const data = Object.assign(req.body, { author: req.userId, image: savedImage._id });
+        const game = await Game.create(data);
 
-            const game = await Game.create(data); 
-
-            return res.send({ game });
-        }
+        return res.send({ game });
     } catch (error) {
         console.error(error)
         return res.status(400).send({ error: error });
@@ -100,7 +100,7 @@ router.patch('/update/:id', async (req, res) => {
         const updateImage = {
             name: req.body.title,
             image: {
-                data: req.file.filename,
+                data: req.body.url,
                 contentType: "image/png"
             }
         };

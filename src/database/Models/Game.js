@@ -27,6 +27,11 @@ const GameSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Image'
     },
+    url: {
+        type: String,
+        required: true,
+        minlength: 3,
+    },
     created: {
         type: Date,
         default: Date.now,
