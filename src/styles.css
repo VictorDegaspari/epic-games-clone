@@ -101,7 +101,8 @@ button {
 .game-edit.show,
 #show-user.show,
 .add-new-user.show,
-.confirm-delete.show {
+.confirm-delete.show,
+#loader-user.show {
     display: flex;
 }
 
