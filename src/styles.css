@@ -86,8 +86,7 @@ button {
 .game-edit,
 #show-user,
 .add-new-user,
-.confirm-delete,
-.form-save-user {
+.confirm-delete {
     display: none;
 }
 
@@ -99,7 +98,6 @@ button {
 #show-game.show,
 .form-edit-game.show,
 .form-save-game.show,
-.form-save-user.show,
 .game-edit.show,
 #show-user.show,
 .add-new-user.show,
