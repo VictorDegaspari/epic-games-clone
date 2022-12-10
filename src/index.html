@@ -524,7 +524,7 @@
             gamePage.classList.add("show");
             loadingGame.classList.add("show");
             gameEdit.classList.add("show");
-
+            gameErr.innerHTML = "";
             const { game, path } = await get(baseUrl + '/games/find/' + encodeURI(gameId));
             loadingGame.classList.remove("show");
             if (!game) return;
