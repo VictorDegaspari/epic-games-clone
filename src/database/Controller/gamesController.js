@@ -82,15 +82,6 @@ router.get('/find/:id', async (req, res) => {
 });
 
 router.patch('/update/:id', async (req, res) => {
-    const dataValidation = req.body;
-    if (dataValidation.title.length < 3 ||
-        dataValidation.current_price.length < 2 ||
-        dataValidation.old_price.length < 2 ||
-        dataValidation.url.length < 3 ||
-        dataValidation.discount.length < 1)
-    {
-        return res.status(400).send({ error: 'Quantidade de caracteres preenchido nos campos insuficiente' });
-    } 
 
     try {
         const game = await Game.findOne({ _id: req.params.id }).populate('author image');
