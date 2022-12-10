@@ -265,9 +265,7 @@
             inputBackground.classList.add("show"); 
             inputSearch.classList.add("show"); 
         });
-        inputBackground.addEventListener("click", event => {
-            closeSelect();
-        });
+        inputBackground.addEventListener("click", event => closeSelect());
 
         saveGame.addEventListener('submit', async (e) => { 
             e.preventDefault();
@@ -305,11 +303,16 @@
             //     return;
             // };
             loadingGame.classList.add("show");
-            const { updatedGame } = await update(baseUrl + '/games/update/' + encodeURI(localStorage.getItem('gameId')), formData, false);
-            editGame.reset();
-            loadingGame.classList.remove("show");
-            populateGame(updatedGame);
-            editGame.classList.remove("show");
+            try {
+                const { updatedGame } = await update(baseUrl + '/games/update/' + encodeURI(localStorage.getItem('gameId')), formData, false);
+                editGame.reset();
+                loadingGame.classList.remove("show");
+                populateGame(updatedGame);
+                editGame.classList.remove("show");
+            } catch (error) {
+                console.error(error);
+                loadingGame.classList.remove("show");
+            }
         });
 
         formUser.addEventListener('submit', async (e) => { 
@@ -319,13 +322,17 @@
                 userErr.innerHTML = "SENHAS NÃO COINCIDEM"
                 return;
             };
-            Object.assign(data, { author: localStorage.getItem('userId') })
             loadingGame.classList.add("show");
-            const { updatedGame } = await post(baseUrl + '/users/post', data, false);
-            loadingGame.classList.remove("show");
-            formUser.reset();
-            editGame.classList.remove("show");
-            homePage.classList.add("show");
+            try {
+                const { updatedGame } = await post(baseUrl + '/users/post', data, false);
+                loadingGame.classList.remove("show");
+                formUser.reset();
+                editGame.classList.remove("show");
+                homePage.classList.add("show");
+            } catch (error) {
+                userErr.innerHTML = "USUÁRIO JÁ CADASTRADO"
+                loadingGame.classList.remove("show");
+            }
         });
 
         email.addEventListener("input", event => {
