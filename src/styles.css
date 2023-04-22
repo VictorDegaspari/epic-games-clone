@@ -436,10 +436,8 @@ h2.highlight:hover > a > span > svg {
 .highlight-images-main::-webkit-scrollbar, 
 .right::-webkit-scrollbar,
 #data-rows > #data-rows-content, 
-#data-rows > #loader-background,
-#loader-login,
-#loader-game,
-#loader-user {
+#data-rows > #loader-background
+{
     display: none;
 }
 

@@ -8,11 +8,16 @@ export default function App() {
     const baseUrl = "https://epic-games-clone-wheat.vercel.app";
     const gamesData = games() || [];
     const popularGamesData = popularGames() || [];
-
+    const errors = [
+        { minLength: 'Preencha com pelo menos 3 caracteres!'},
+        { authError: 'Senha ou Email estão incorretos!' }
+    ];
     const [isLogged, setIsLogged] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isAdmin, setIsAdmin] = useState(true);
+    const [error, setError] = useState('');
     
     useEffect(() => {
         auth();
@@ -21,38 +26,39 @@ export default function App() {
 
     const gameContainers = gamesData.map((game) => (
         <div className="highlight-images w-100" key={ game.id }>
-            <img alt={game.title} src={game.url} />
+            <img alt={ game.title } src={ game.url } />
             <div className="base-game">JOGO BASE</div>
-            <div className="game-name">{game.title}</div>
+            <div className="game-name">{ game.title }</div>
             <div className="flex">
-                <div className={game.discount ? "discount" : "none"}>{game.discount}</div>
+                <div className={ game.discount ? "discount" : "none" }>{ game.discount }</div>
                 <div className="price">
-                    <span className={game.discount ? "old-price" : "none"}>
-                    R$ {game.old_price}
+                    <span className={ game.discount ? "old-price" : "none" }>
+                    R$ { game.old_price }
                     </span>
-                    <span className="current-price">R$ {game.current_price}</span>
+                    <span className="current-price">R$ { game.current_price }</span>
                 </div>
             </div>
         </div>
     ));
   
     const carouselBalls = popularGamesData.map((game, index) => (
-      <div
-        className={"balls " + (index === 0 ? "active" : "")}
-        key={ game.id }
-      ></div>
+        <div
+            className={ "balls " + (index === 0 ? "active" : "") }
+            key={ game.id }
+        ></div>
     ));
   
     const popularGamesContainers = popularGamesData.map((game, index) => (
         <div
-            className={"carousel-games " + (index === 0 ? "active" : "")}
+            className={ "carousel-games " + (index === 0 ? "active" : "") }
             key={ game.id }
         >
-            <img src={game.url} alt={ game.title } />
-            <h3>{game.description}</h3>
+            <img src={ game.url } alt={ game.title } />
+            <h3>{ game.description }</h3>
             <div className="games-info">{ game.title }</div>
         </div>
     ));
+
     async function auth() {
         let token = localStorage.getItem('token');
         let email = localStorage.getItem('email');
@@ -151,11 +157,12 @@ export default function App() {
             email.length < 3 || 
             password.length < 3
         ) {
-            // messageMinLength.classList.add('show');
+            setError(showError('minLength'));
             return;
         }
 
         try {
+            setLoading(true);
             const response = await post(baseUrl + "/auth/login", { email: email, password: password }, false);
             if (response.info?.type == 'Error') throw new Error();
             localStorage.setItem('token', response.token);
@@ -164,11 +171,25 @@ export default function App() {
             localStorage.getItem('admin') == 'true' ?  setIsAdmin(true) : setIsAdmin(false);
             localStorage.setItem('email', email);
             setIsLogged(true);
+            setLoading(false);
         } catch (error) {
             localStorage.clear();
+            setLoading(false);
             console.error(error);
+            setError(showError('authError'));
         }
     }
+
+    function showError (error) {
+        let showError = '';
+        errors.forEach(element => {
+            if (error in element) {
+                showError = element[error];
+            }
+        });
+        return showError;
+    }
+
   return (
     <div className="App">
         <div id="login" className={ `flex flex-column ${ !isLogged ? 'show' : '' }` }>
@@ -176,11 +197,10 @@ export default function App() {
             <a href="https://store-epicgames.com" target='_blank' rel="noreferrer" className="epicLogo cursor-pointer"> </a>
             <input type="email" name="email" id="email" placeholder="E-mail" value={ email } onChange={ (event) => setEmail(event.target.value) }/>
             <input type="password" name="password" id="password" placeholder="Senha" value={ password } onChange={ (event) => setPassword(event.target.value) }/>
-            <small id="messageValidation" className="error" >Senha ou Email estão incorretos!</small>
-            <small id="messageMinLength" className="error">Preencha e-mail e senha com pelo menos 3 caracteres!</small>
-            <button id="login-button" className="flex align-center justify-center" onClick={login()}>
+            { error && <small className="error" >{ error }</small> }
+            <button id="login-button" className="flex align-center justify-center" onClick={ () => login() }>
                 <div id="loader-login">
-                    <div className="loader"></div>
+                    { loading && <div className="loader"></div> }
                 </div>
                 Entrar
             </button>
@@ -276,11 +296,11 @@ export default function App() {
                       <h2 className="flex highlight">
                             <a href="https://store-epicgames.com" target='_blank' rel="noreferrer">
                                 Destaques: Promoção do Evento de Agosto
-                                    <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 5 9">
-                                            <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fillRule="evenodd"></path>
-                                        </svg>
-                                    </span>
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 5 9">
+                                        <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fillRule="evenodd"></path>
+                                    </svg>
+                                </span>
                             </a>
                       </h2>
                         <div className="flex">
@@ -309,58 +329,58 @@ export default function App() {
               </div>
               <form className="form-edit-game w-100 flex-column" encType="multipart/form-data"></form>
               <form className="form-save-game w-100 flex-column" encType="multipart/form-data">
-                  <h3>Cadastrar jogo</h3>
-                  <label htmlFor="title" className="flex flex-column w-100">
-                      Título
-                      <input name="title" type="text" placeholder="Título" />
-                  </label>
-                  <label htmlFor="current_price" className="flex flex-column w-100">
-                      Preço
-                      <input name="current_price" type="number" placeholder="Preço" />
-                  </label>
-                  <label htmlFor="url" className="flex flex-column w-100">
-                      Imagem
-                      <input name="url" type="text" placeholder="Imagem do jogo" />
-                  </label>
-                  <label htmlFor="discount" className="flex flex-column w-100">
-                      Desconto
-                      <input name="discount" type="number" placeholder="% do desconto" />
-                  </label>
-                  <label htmlFor="old_price" className="flex flex-column w-100">
-                      Preço antigo
-                      <input name="old_price" type="number" placeholder="Valor antigo do jogo" />
-                  </label>
+                    <h3>Cadastrar jogo</h3>
+                    <label htmlFor="title" className="flex flex-column w-100">
+                        Título
+                        <input name="title" type="text" placeholder="Título" />
+                    </label>
+                    <label htmlFor="current_price" className="flex flex-column w-100">
+                        Preço
+                        <input name="current_price" type="number" placeholder="Preço" />
+                    </label>
+                    <label htmlFor="url" className="flex flex-column w-100">
+                        Imagem
+                        <input name="url" type="text" placeholder="Imagem do jogo" />
+                    </label>
+                    <label htmlFor="discount" className="flex flex-column w-100">
+                        Desconto
+                        <input name="discount" type="number" placeholder="% do desconto" />
+                    </label>
+                    <label htmlFor="old_price" className="flex flex-column w-100">
+                        Preço antigo
+                        <input name="old_price" type="number" placeholder="Valor antigo do jogo" />
+                    </label>
                   <button type="submit">SALVAR</button>
               </form>
               <button className="w-100" id="go-back"><span>VOLTAR</span></button>
               <small id="form-game-error" className="error"></small>
           </div>
           <div id="show-user" className="flex flex-column w-100">
-              <div id="loader-user">
-                  <div className="loader"></div>
-              </div>
-              <form className="form-save-user w-100 flex-column">
-                  <h3>Cadastrar usuário</h3>
-                  <label htmlFor="name" className="flex flex-column w-100">
-                      Nome
-                      <input name="name" type="text" placeholder="Nome" required/>
-                  </label>
-                  <label htmlFor="email" className="flex flex-column w-100">
-                      E-mail
-                      <input name="email" type="email" placeholder="E-mail" required/>
-                  </label>
-                  <label htmlFor="password" className="flex flex-column w-100">
-                      Senha
-                      <input name="password" type="password" placeholder="Senha" required/>
-                  </label>
-                  <label htmlFor="password_c" className="flex flex-column w-100">
-                      Confirmar senha
-                      <input name="password_c" type="password" placeholder="Senha" required/>
-                  </label>
-                  <button type="submit" className="w-100">SALVAR</button>
-              </form>
-              <button className="w-100" id="go-back-user"><span>VOLTAR</span></button>
-              <small id="form-user-error" className="error"></small>
+                <div id="loader-user">
+                    <div className="loader"></div>
+                </div>
+                <form className="form-save-user w-100 flex-column">
+                    <h3>Cadastrar usuário</h3>
+                    <label htmlFor="name" className="flex flex-column w-100">
+                        Nome
+                        <input name="name" type="text" placeholder="Nome" required/>
+                    </label>
+                    <label htmlFor="email" className="flex flex-column w-100">
+                        E-mail
+                        <input name="email" type="email" placeholder="E-mail" required/>
+                    </label>
+                    <label htmlFor="password" className="flex flex-column w-100">
+                        Senha
+                        <input name="password" type="password" placeholder="Senha" required/>
+                    </label>
+                    <label htmlFor="password_c" className="flex flex-column w-100">
+                        Confirmar senha
+                        <input name="password_c" type="password" placeholder="Senha" required/>
+                    </label>
+                    <button type="submit" className="w-100">SALVAR</button>
+                </form>
+                <button className="w-100" id="go-back-user"><span>VOLTAR</span></button>
+                <small id="form-user-error" className="error"></small>
           </div>
     </div>
   );
