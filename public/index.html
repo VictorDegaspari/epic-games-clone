@@ -192,39 +192,7 @@
           passwordValue = event.target.value;
       });
 
-      async function login() {
 
-          if (
-              !passwordValue || 
-              !emailValue || 
-              emailValue.length < 3 || 
-              passwordValue.length < 3
-          ) {
-              messageMinLength.classList.add('show');
-              return;
-          }
-          loadingLogin.classList.add("show");
-
-          try {
-              const response = await post(baseUrl + "/auth/login", { email: emailValue, password: passwordValue }, false);
-              if (response.info?.type == 'Error') throw new Error();
-              localStorage.setItem('token', response.token);
-              localStorage.setItem('userId', response.user?._id);
-              localStorage.setItem('admin', response.user?.admin);
-              localStorage.getItem('admin') == 'true' ? newUser.classList.add("show") :  newUser.classList.remove("show");
-              localStorage.setItem('email', emailValue);
-              let email = localStorage.getItem('email');
-              userEnt.innerHTML = email;
-              loginPage.classList.remove('show');
-              homePage.classList.add('show');
-              loadingLogin.classList.remove("show");        
-          } catch (error) {
-              localStorage.clear();
-              console.error(error);
-              messageValidation.classList.add('show');
-              loadingLogin.classList.remove("show");
-          }
-      }
       
       async function search(inputValue) {
           dataRows.classList.add("show");
@@ -258,95 +226,7 @@
           }
       }
 
-      async function isLogged() {
-          let token = localStorage.getItem('token');
-          let email = localStorage.getItem('email');
-          if (!token || !email) {
-              homePage.classList.remove('show');
-              loginPage.classList.add('show');
-          } else {
-              localStorage.getItem('admin') == 'true' ? newUser.classList.add("show") :  newUser.classList.remove("show");
-              try {
-                  const user = await get(baseUrl + '/users/find/' + email);
-                  user ? homePage.classList.add('show') : loginPage.classList.add('show');
-                  if (user.info?.type == 'Error') throw new Error();
-              } catch (error) {
-                  homePage.classList.remove('show');
-                  loginPage.classList.add('show');
-                  localStorage.clear();
-              }
-          }
 
-          let gameContainers = "";
-          let popularGamesContainers = "";
-          let carouselBalls = "";
-
-          if (token && email) {
-              homePage.classList.add('show');
-              userEnt.innerHTML = email;
-
-          } else {
-              loginPage.classList.add('show');
-          }
-
-          gamesData.forEach(game => {
-              gameContainers += `
-                  <div class="highlight-images w-100">
-                      <img alt="${ game.title }" src="${ game.url }">
-                      <div class="base-game">JOGO BASE</div>
-                      <div class="game-name">${ game.title }</div>
-                      <div class="flex">
-                          <div class="${ game.discount ? 'discount' : 'none' }">${ game.discount }</div>
-                          <div class="price">
-                              <span class="${ game.discount ? 'old-price' : 'none' }">R$ ${ game.old_price }</span>
-                              <span class="current-price">R$ ${ game.current_price }</span>
-                          </div>
-                      </div>
-                  </div>`
-          });
-
-          popularGamesData.forEach((game, index) => {
-              carouselBalls += `<div class="balls ${ index == 0 ? 'active' : '' }"></div>`
-              popularGamesContainers += `
-                  <div class="carousel-games ${ index == 0 ? 'active' : '' }">
-                      <img src="${ game.url }" alt="${ game.title }" />
-                      <h3>${ game.description }</h3>
-                      <div class="games-info">
-                          ${ game.title }
-                      </div>
-                  </div>`
-          });
-          ballsContainer.innerHTML = carouselBalls;
-          gamesContainer.innerHTML = gameContainers;
-          popularGamesContainer.innerHTML = popularGamesContainers;
-          
-          let childrenBalls = Array.from(ballsContainer.children);
-          let childrenPopularGames = Array.from(popularGamesContainer.children);
-          let index = 0;
-          const activeDiv = document.createElement("div");
-          activeDiv.classList.add("carousel-progress");
-
-          childrenPopularGames[index].appendChild(activeDiv);
-          childrenBalls[index].classList.add('active');
-          childrenPopularGames[index].classList.add('active');
-          defineCarouselImg(childrenPopularGames[index]);
-
-          const activeInterval = setInterval(() => {
-              childrenBalls[index].classList.remove('active');
-              childrenPopularGames[index].classList.remove('active');
-              index++;
-              if (index == popularGamesData.length) { 
-                  index = 0;
-                  popularGamesContainer.scrollLeft = 1;
-              }
-              childrenBalls[index].classList.add('active');
-              childrenPopularGames[index].classList.add('active');
-              childrenPopularGames[index].appendChild(activeDiv);
-              defineCarouselImg(childrenPopularGames[index]);
-              popularGamesContainer.scrollLeft += (img.offsetWidth + 30);
-              
-          }, 8000);
-      }
 
       function defineCarouselImg(element) {
           element.childNodes.forEach(item => { 
@@ -486,7 +366,6 @@
           goHome();
       }
 
-      window.isLogged = isLogged;
   </script>
   </body>
 </html>
