@@ -51,13 +51,11 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-    <script type="module">
+    <!-- <script type="module">
       import { get, post, update, remove } from "./src/js/index.js";
       import { popularGames, games } from "./src/js/games-data.js";
 
       const gamesContainer = document.getElementById("highlight-images");
-      const popularGamesContainer = document.getElementById("carousel-games");
-      const ballsContainer = document.getElementById("balls");
       const dataRows = document.getElementById("data-rows-content");
       const inputSearch = document.getElementById("input-search");
       const inputBackground = document.getElementById("input-background");
@@ -225,17 +223,6 @@
       }
 
 
-
-      function defineCarouselImg(element) {
-          element.childNodes.forEach(item => { 
-              if (item.constructor.name == 'HTMLImageElement') {
-                  activeCarouselImg.classList.toggle("active");
-                  activeCarouselImg.src = item.src;
-                  img = item;
-              }
-          });
-      }
-
       function closeSelect() {
           inputBackground.classList.remove("show"); 
           inputSearch.classList.remove("show"); 
@@ -364,6 +351,6 @@
           goHome();
       }
 
-  </script>
+  </script> -->
   </body>
 </html>
