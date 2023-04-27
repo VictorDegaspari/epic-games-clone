@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { games, popularGames } from "../js/games-data";
-
 
 export default function Home() {
     const [ email, setEmail] = useState('');
     const gamesData = games() || [];
     const popularGamesData = popularGames() || [];
     const isAdmin = localStorage.getItem('admin');
-    const navigate = useNavigate();
     
     useEffect(() => {
         carouselInit();
@@ -50,7 +47,6 @@ export default function Home() {
     ));
 
     let img;
-    let interval;
     function carouselInit() {
         const popularGamesContainer = document.getElementById("carousel-games");
         const ballsContainer = document.getElementById("balls");
@@ -66,27 +62,22 @@ export default function Home() {
         childrenPopularGames[index].classList.add('active');
         defineCarouselImg(childrenPopularGames[index]);
 
-        // interval = setInterval(() => {
-        //     childrenBalls[index].classList.remove('active');
-        //     childrenPopularGames[index].classList.remove('active');
-        //     index++;
-        //     if (index === popularGamesData.length) { 
-        //         index = 0;
-        //         popularGamesContainer.scrollLeft = 1;
-        //     }
-        //     childrenBalls[index].classList.add('active');
-        //     childrenPopularGames[index].classList.add('active');
-        //     activeDiv.setAttribute('key', Math.random());
-        //     childrenPopularGames[index].appendChild(activeDiv);
-        //     defineCarouselImg(childrenPopularGames[index]);
-        //     popularGamesContainer.scrollLeft += (img.offsetWidth + 30);
+        setInterval(() => {
+            childrenBalls[index].classList.remove('active');
+            childrenPopularGames[index].classList.remove('active');
+            index++;
+            if (index === popularGamesData.length) { 
+                index = 0;
+                popularGamesContainer.scrollLeft = 1;
+            }
+            childrenBalls[index].classList.add('active');
+            childrenPopularGames[index].classList.add('active');
+            activeDiv.setAttribute('key', Math.random());
+            childrenPopularGames[index].appendChild(activeDiv);
+            defineCarouselImg(childrenPopularGames[index]);
+            popularGamesContainer.scrollLeft += (img.offsetWidth + 30);
             
-        // }, 8000);
-    }
-
-    function changePage(route = '') {
-        if (interval) clearInterval(interval);
-        navigate(route);
+        }, 8000);
     }
 
     function defineCarouselImg(element) {
@@ -161,16 +152,16 @@ export default function Home() {
                                 <div id="data-rows-content"></div>
                             </div>
                       </div>
-                        <div className="add-new-game flex centralize" onClick={ () => changePage('/game') }>
-                            <a className="active">Adicionar Jogo</a>
+                        <div className="add-new-game flex centralize">
+                            <a className="active" href="https://store-epicgames.com" target='_blank' rel="noreferrer">Adicionar Jogo</a>
                             <span className="down-arrow">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 9">
                                     <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fillRule="evenodd"></path>
                                 </svg>
                             </span>
                         </div>
-                        <div className={`add-new-user ${ isAdmin ? 'show' : '' }`} onClick={ () => changePage('/user')}>
-                            <a className="active">Adicionar usuário</a>
+                        <div className={`add-new-user ${ isAdmin ? 'show' : '' }`}>
+                            <a className="active" href="https://store-epicgames.com" target='_blank' rel="noreferrer">Adicionar usuário</a>
                         </div>
                   </div>
       
