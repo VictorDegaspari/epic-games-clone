@@ -9,6 +9,7 @@ export default function Home() {
     const email = localStorage.getItem('email');
     const [ gamesFound, setGamesFound ] = useState([]);
     const [ loading, setLoading ] = useState(false);
+    const [ showSearchModal, setShowSearchModal] = useState(false);
     const [ searchInput, setSearchInput] = useState('');
     const gamesData = games() || [];
     const popularGamesData = popularGames() || [];
@@ -107,16 +108,16 @@ export default function Home() {
         });
     }
     const fetchedGames = gamesFound.map((game, index) => (
-        <div key={ game._id } onClick={() => navigate('/game/' +  game._id)}>
+        <div className='w-100' key={ game._id } onClick={() => navigate('/game/' +  game._id)}>
             { game.title }
         </div>
     ));
 
     async function search(event) {
         try {
-            setLoading(true);
             setSearchInput(event.target.value);
             if (event.target.value.length < 3) return;
+            setLoading(true);
             const response = await get(baseUrl + '/games/search/' + encodeURI(event.target.value));
             if (response.info?.type === 'Error') throw new Error();
             setGamesFound(response.games);
@@ -171,27 +172,25 @@ export default function Home() {
                 <div className="main">
                     <div className="fixed-header">
                         <div className="icon-search" id="div-search">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 20" preserveAspectRatio="xMidYMid meet" id="svg-search">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 20" preserveAspectRatio="xMidYMid meet" id="svg-search" className='show' onClick={() => setShowSearchModal(true)}>
                                 <g transform="scale(1 -1) rotate(-45 -11.93502884 -2)" stroke="currentColor" strokeWidth="1.65" fill="none" fillRule="evenodd">
                                     <circle cx="7.70710678" cy="7.70710678" r="7"></circle>
                                     <path d="M15.2071068 8.62132034h5.6923881" strokeLinecap="square"></path>
                                 </g>
                             </svg>
       
-                          <input type="text" placeholder="Pesquisar jogo" id="input-search" autoComplete="off" value={searchInput} onChange={(e) => search(e)} />
-                          <div id="input-background"></div>
-                            <div id="data-rows">
-                                <div id="loader-background">
-                                    <div className="loader"></div>
-                                </div>
-                                <div id="data-rows-content" className='show'>
+                            <input type="text" className={ showSearchModal ? 'show' : '' } placeholder="Pesquisar jogo" id="input-search" autoComplete="off" value={searchInput} onChange={(e) => search(e)} />
+                            { showSearchModal && <div id="input-background" className='show' onClick={() => setShowSearchModal(false)}></div> }
+                            <div id="data-rows" className={ showSearchModal ? 'show relative' : 'relative' }>
+                                { loading && <div className="loader loader-search show"></div> }
+                                <div id="data-rows-content" className={ showSearchModal ? 'show w-100' : 'show' }>
                                     { searchInput.length >= 3 ?
-                                        (fetchedGames.length > 0 ? fetchedGames : <div> Nenhum item encontrado. </div>) : 
-                                        (searchInput.length > 0 && searchInput.length < 3 && <div>Digite pelo menos 3 caracteres...</div>)
+                                        (fetchedGames.length > 0 ? fetchedGames : <div>{ loading ? 'Buscando...' : 'Nenhum item encontrado.' }</div>) : 
+                                        (searchInput.length > 0 && searchInput.length < 3 && <div>{ loading ? 'Buscando...' : 'Digite pelo menos 3 caracteres...' }</div>)
                                     }   
                                 </div>
                             </div>
-                      </div>
+                        </div>
                         <div className="add-new-game flex centralize" onClick={ () => changePage('/game') }>
                             <a className="active">Adicionar Jogo</a>
                             <span className="down-arrow">
@@ -205,7 +204,7 @@ export default function Home() {
                         </div>
                   </div>
       
-                  <div className="flex carousel-images">
+                    <div className="flex carousel-images">
                         <div className="left cursor-pointer">
                             <picture>
                                 <img alt="Play Saints Row on Epic Games Store" id="active-carousel-img" />
@@ -216,33 +215,33 @@ export default function Home() {
                             </div>
                             <div className="current-carousel-info"></div>
                         </div>
-                      <div className="right" id="carousel-games">{ popularGamesContainers }</div>
-                  </div>
-                  <div className="flex centralize" id="balls">{ carouselBalls }</div>
-                  <div className="flex align-center justify-between">
-                      <h2 className="flex highlight">
-                            <a href="https://store-epicgames.com" target='_blank' rel="noreferrer">
-                                Destaques: Promoção do Evento de Agosto
-                                <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 5 9">
+                        <div className="right" id="carousel-games">{ popularGamesContainers }</div>
+                    </div>
+                    <div className="flex centralize" id="balls">{ carouselBalls }</div>
+                    <div className="flex align-center justify-between">
+                        <h2 className="flex highlight">
+                                <a href="https://store-epicgames.com" target='_blank' rel="noreferrer">
+                                    Destaques: Promoção do Evento de Agosto
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 5 9">
+                                            <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fillRule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                </a>
+                        </h2>
+                            <div className="flex">
+                                <button className="arrow-button-rotate">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 9">
                                         <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fillRule="evenodd"></path>
                                     </svg>
-                                </span>
-                            </a>
-                      </h2>
-                        <div className="flex">
-                            <button className="arrow-button-rotate">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 9">
-                                    <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fillRule="evenodd"></path>
-                                </svg>
-                            </button>
-                            <button className="arrow-button">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 9">
-                                    <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fillRule="evenodd"></path>
-                                </svg>
-                            </button>
-                        </div>
-                  </div>
+                                </button>
+                                <button className="arrow-button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 9">
+                                        <path stroke="currentColor" d="M1 1l3 3.5L1 8" fill="none" fillRule="evenodd"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                    </div>
         
                     <div className="highlight-images-main flex w-100" id="highlight-images">
                         { gameContainers }

@@ -692,12 +692,9 @@ h2.highlight:hover > a > span > svg {
     border: 5px solid #cacaca; /* Light grey */
     border-top: 5px solid #4e4e4e; /* Blue */
     border-radius: 50%;
-    width: 25px;
-    height: 25px;
+    width: 15px;
+    height: 15px;
     animation: spin 2s linear infinite;
-    position: relative;
-    left: calc(50% - 25px);
-    top: calc(50% - 25px);
 }
 
 #loader-background {
@@ -1073,4 +1070,20 @@ h2.highlight:hover > a > span > svg {
 .confirm-delete > span {
     margin-left: 10px;
     text-decoration: underline;
+}
+.ml-5 {
+    margin-left: 5px;
+}
+.mr-5 {
+    margin-right: 5px;
+}
+
+.relative {
+    position: relative;
+}
+
+.loader-search {
+    position: absolute;
+    right: 15px;
+    top: 9px;
 }

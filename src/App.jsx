@@ -1,8 +1,7 @@
 import { Fragment } from 'react';
 import { Navigate, Outlet, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import './App.css';
 import Game from './pages/Games/Game';
-import FindGame from './pages/Games/ManageGame';
+import ManageGame from './pages/Games/ManageGame';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import User from './pages/Users/User';
@@ -25,9 +24,10 @@ export default function App() {
         <Fragment>
             <Routes>
                 <Route exact path='/' element={<PrivateRoute/>}>
-                    <Route  exact path='/home' element={<Home/>}/>
+                    <Route  exact path='/' element={<Navigate to="/home" />}/>
+                    <Route  path='/home' element={<Home/>}/>
                     <Route  path='/game' element={<Game/>}/>
-                    <Route  path='/game/:id' element={<FindGame/>}/>
+                    <Route  path='/game/:id' element={<ManageGame/>}/>
                     <Route  path='/user' element={<User/>}/>
                 </Route>
                 <Route exact path='/login' element={<Login/>}/>
