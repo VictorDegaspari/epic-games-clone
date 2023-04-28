@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { post } from "../js/index";
+import { post } from "../../js/index";
 
 export default function Game() {
     const navigate = useNavigate();
@@ -40,10 +40,9 @@ async function postGame(data){
         <>
             <div id="show-game" className="flex flex-column w-100 show">
                 <div className="game-edit flex-column"></div>
-                {loading && <div id="loader-game">
+                { loading && <div id="loader-game">
                     <div className="loader"></div>
-                </div>}
-                <form className="form-edit-game w-100 flex-column" encType="multipart/form-data"></form>
+                </div> }
                 <form className="form-save-game w-100 flex-column show" onSubmit={ (event) => handleSubmit(event)} encType="multipart/form-data">
                         <h3>Cadastrar jogo</h3>
                         <label htmlFor="title" className="flex flex-column w-100">

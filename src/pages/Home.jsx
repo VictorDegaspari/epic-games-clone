@@ -1,18 +1,27 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { games, popularGames } from "../js/games-data";
-
+import { get } from '../js/index';
 
 export default function Home() {
-    const [ email, setEmail] = useState('');
+    const baseUrl = "https://epic-games-clone-wheat.vercel.app";
+    const [ email, setEmail ] = useState('');
+    const [ gamesFound, setGamesFound ] = useState([]);
+    const [ loading, setLoading ] = useState(false);
+    const [ searchInput, setSearchInput] = useState('');
     const gamesData = games() || [];
     const popularGamesData = popularGames() || [];
     const isAdmin = localStorage.getItem('admin');
     const navigate = useNavigate();
+    let interval;
     
     useEffect(() => {
         carouselInit();
-    });
+
+        return(() => {
+            clearInterval(interval)
+        })
+    }, [interval]);
 
     const carouselBalls = popularGamesData.map((game, index) => (
         <div
@@ -50,38 +59,34 @@ export default function Home() {
     ));
 
     let img;
-    let interval;
     function carouselInit() {
+        const activeDiv = document.createElement("div");
+        activeDiv.classList.add("carousel-progress");
         const popularGamesContainer = document.getElementById("carousel-games");
         const ballsContainer = document.getElementById("balls");
         let childrenBalls = Array.from(ballsContainer.children);
         let childrenPopularGames = Array.from(popularGamesContainer.children);
         let index = 0;
-        const activeDiv = document.createElement("div");
-        // activeDiv.setAttribute('key', Math.random());
-        activeDiv.classList.add("carousel-progress");
-        console.log(childrenPopularGames, childrenBalls)
         childrenPopularGames[index].appendChild(activeDiv);
         childrenBalls[index].classList.add('active');
         childrenPopularGames[index].classList.add('active');
         defineCarouselImg(childrenPopularGames[index]);
-
-        // interval = setInterval(() => {
-        //     childrenBalls[index].classList.remove('active');
-        //     childrenPopularGames[index].classList.remove('active');
-        //     index++;
-        //     if (index === popularGamesData.length) { 
-        //         index = 0;
-        //         popularGamesContainer.scrollLeft = 1;
-        //     }
-        //     childrenBalls[index].classList.add('active');
-        //     childrenPopularGames[index].classList.add('active');
-        //     activeDiv.setAttribute('key', Math.random());
-        //     childrenPopularGames[index].appendChild(activeDiv);
-        //     defineCarouselImg(childrenPopularGames[index]);
-        //     popularGamesContainer.scrollLeft += (img.offsetWidth + 30);
+        interval = setInterval(() => {
+            childrenBalls[index].classList.remove('active');
+            childrenPopularGames[index].classList.remove('active');
+            index++;
+            if (index === popularGamesData.length) { 
+                index = 0;
+                popularGamesContainer.scrollLeft = 1;
+            }
+            childrenBalls[index].classList.add('active');
+            childrenPopularGames[index].classList.add('active');
+            activeDiv.setAttribute('key', Math.random());
+            childrenPopularGames[index].appendChild(activeDiv);
+            defineCarouselImg(childrenPopularGames[index]);
+            popularGamesContainer.scrollLeft += (img.offsetWidth + 30);
             
-        // }, 8000);
+        }, 8000);
     }
 
     function changePage(route = '') {
@@ -99,6 +104,26 @@ export default function Home() {
                 img = item;
             }
         });
+    }
+    const fetchedGames = gamesFound.map((game, index) => (
+        <div key={ game._id } onClick={() => navigate('/game/' +  game._id)}>
+            { game.title }
+        </div>
+    ));
+
+    async function search(event) {
+        try {
+            setLoading(true);
+            setSearchInput(event.target.value);
+            if (event.target.value.length < 3) return;
+            const response = await get(baseUrl + '/games/search/' + encodeURI(event.target.value));
+            if (response.info?.type === 'Error') throw new Error();
+            setGamesFound(response.games);
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            console.error(error);
+        }
     }
 
     return (
@@ -152,13 +177,18 @@ export default function Home() {
                                 </g>
                             </svg>
       
-                          <input type="text" placeholder="Pesquisar loja" id="input-search" autoComplete="off" />
+                          <input type="text" placeholder="Pesquisar jogo" id="input-search" autoComplete="off" value={searchInput} onChange={(e) => search(e)} />
                           <div id="input-background"></div>
                             <div id="data-rows">
                                 <div id="loader-background">
                                     <div className="loader"></div>
                                 </div>
-                                <div id="data-rows-content"></div>
+                                <div id="data-rows-content" className='show'>
+                                    { searchInput.length >= 3 ?
+                                        (fetchedGames.length > 0 ? fetchedGames : <div> Nenhum item encontrado. </div>) : 
+                                        (searchInput.length > 0 && searchInput.length < 3 && <div>Digite pelo menos 3 caracteres...</div>)
+                                    }   
+                                </div>
                             </div>
                       </div>
                         <div className="add-new-game flex centralize" onClick={ () => changePage('/game') }>

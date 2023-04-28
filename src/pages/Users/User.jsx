@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { post } from "../js/index";
+import { post } from "../../js/index";
 
 export default function User() {
     const navigate = useNavigate();
@@ -34,7 +34,7 @@ export default function User() {
             console.error(error);
             setLoading(false);
         }
-}
+    }
     return (
         <>
             <div id="show-user" className="flex flex-column w-100 show">

@@ -79,7 +79,6 @@
       const loadingGame = document.getElementById("loader-game");
       const userPage = document.getElementById("show-user");
       const saveGame = document.querySelector(".form-save-game");
-      const editGame = document.querySelector(".form-edit-game");
       const returnToHome = document.getElementById("go-back");
       const returnToHomeUser = document.getElementById("go-back-user");
       const gameErr = document.getElementById("form-game-error");
@@ -229,103 +228,6 @@
           dataRows.classList.remove("show");
       }
 
-      function goHome() {
-          homePage.classList.add("show");
-          gamePage.classList.remove("show");
-          userPage.classList.remove("show");
-      }
-
-      async function openGameById(gameId = "") {
-          gameErr.innerHTML = "";
-          userErr.innerHTML = "";
-          if (!gameId) return;
-          localStorage.setItem('gameId', gameId);
-          homePage.classList.remove("show");
-          gamePage.classList.add("show");
-          loadingGame.classList.add("show");
-          gameEdit.classList.add("show");
-          const { game, path } = await get(baseUrl + '/games/find/' + encodeURI(gameId));
-          loadingGame.classList.remove("show");
-          if (!game) return;
-          populateGame(game, path);
-          loadingGame.classList.remove("show");
-          saveGame.classList.remove("show");
-      }
-
-      function handleSubmit(event) {
-          const data = new FormData(event.target);
-          const value = Object.fromEntries(data.entries());
-          return value;
-      }   
-
-      function populateGame(game, path) {
-          const date = new Date(game.created);
-          const formattedDate = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
-          saveGame.classList.remove("show");
-          gameEdit.innerHTML = 
-              `
-              <h3>${ game.title }</h3>
-              <img src="${ game.url }" alt="${ game.title }" />
-              ${ game.author?.email == localStorage.getItem('email') ? 
-                  `<button class="w-100" id="start-edit"><span>EDITAR</span></button>` : ''
-              }
-
-              <div class="info">
-                  <span>Autor</span> 
-                  <span>${ game.author?.name }</span> 
-              </div>
-              <div class="info">
-                  <span>Disponível</span> 
-                  <span>${ formattedDate }</span> 
-              </div>
-              <div class="info">
-                  <span>Valor</span> 
-                  <span>${ game.current_price ? 'R$'+game.current_price : 'Grátis' }</span> 
-              </div>`
-          editGame.innerHTML = `
-              <h3>Editar jogo</h3>
-              <label for="title" class="flex flex-column w-100">
-                  Título
-                  <input name="title" type="text" value="${ game.title }" placeholder="Título" required/>
-              </label>
-              <label for="current_price" class="flex flex-column w-100">
-                  Preço
-                  <input name="current_price" type="number" value="${ game.current_price }" placeholder="Preço" required/>
-              </label>
-              <label for="url" class="flex flex-column w-100">
-                  Imagem
-                  <input name="url" type="text" placeholder="Imagem do jogo" value="${ game.url }" required/>
-              </label>
-              <label for="discount" class="flex flex-column w-100">
-                  Desconto
-                  <input name="discount"  value="${ game.discount }" type="number" placeholder="% do desconto" required/>
-              </label>
-              <label for="old_price" class="flex flex-column w-100">
-                  Preço antigo
-                  <input name="old_price" value="${ game.old_price }" type="number" placeholder="Valor antigo do jogo" required/>
-              </label>
-              <button type="submit">SALVAR</button>
-              <button type="button" id="delete-game" class="delete-button">EXCLUIR</button>
-              <small class="confirm-delete">Deseja realmente excluir?
-                  <span class="yes-delete cursor-pointer">SIM</span>
-                  <span class="no-delete cursor-pointer">NÃO</span>
-              </small>
-          `;   
-          const buttonDeleteGame = document.getElementById("delete-game");
-          if (game.author?.email == localStorage.getItem('email')) {
-              const startEdit = document.getElementById("start-edit");
-              startEdit.addEventListener("click", event => editGame.classList.toggle("show")); 
-          } else {
-              editGame.classList.remove("show");
-          }
-          const confirmDelete = document.querySelector(".confirm-delete");
-          const confirmDeleteYes = document.querySelector(".yes-delete");
-          const confirmDeleteNo = document.querySelector(".no-delete");
-
-          buttonDeleteGame.addEventListener("click", event => confirmDelete.classList.toggle("show"));
-          confirmDeleteYes.addEventListener("click", event => deleteGame(game._id));
-          confirmDeleteNo.addEventListener("click", event => confirmDelete.classList.toggle("show"));
-      }
 
       function addNewGame() {
           homePage.classList.remove("show");
