@@ -65,7 +65,7 @@ async function postGame(data){
                             Preço antigo
                             <input name="old_price" type="number" placeholder="Valor antigo do jogo" onChange={handleInputChange}/>
                         </label>
-                    <button type="submit">SALVAR</button>
+                    <button type="submit" className="save-button">SALVAR</button>
                 </form>
                 <button className="w-100" id="go-back" onClick={ () => navigate('/home')}><span>VOLTAR</span></button>
                 <small id="form-game-error" className="error"></small>

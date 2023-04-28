@@ -1062,7 +1062,11 @@ h2.highlight:hover > a > span > svg {
     color: rgb(248, 59, 59);
     border-color: rgb(248, 59, 59);
 }
-
+#show-game > form > .save-button,
+#show-user > form > .save-button {
+    color: #50C878;
+    border-color: #50C878;
+}
 .confirm-delete {
     margin-bottom: 8px;
 }

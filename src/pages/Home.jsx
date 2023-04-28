@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import GlobeIcon from '../assets/icons/globe-grid-svgrepo-com.svg';
+import UserIcon from '../assets/icons/user-svgrepo-com.svg';
 import { games, popularGames } from "../js/games-data";
 import { get } from '../js/index';
-
 export default function Home() {
     const baseUrl = "https://epic-games-clone-wheat.vercel.app";
-    const [ email, setEmail ] = useState('');
+    const email = localStorage.getItem('email');
     const [ gamesFound, setGamesFound ] = useState([]);
     const [ loading, setLoading ] = useState(false);
     const [ searchInput, setSearchInput] = useState('');
@@ -152,11 +153,11 @@ export default function Home() {
     
                 <div>
                     <span>
-                        <img src="../assets/icons/globe-grid-svgrepo-com.svg" width="17" height="17" alt="globe_icon" />
+                        <img src={GlobeIcon} width="17" height="17" alt="globe_icon" />
                     </span>
                     <span>
                         <div className="flex">
-                            <img src="" width="17" height="17" alt="user_icon" />
+                            <img src={UserIcon} width="17" height="17" alt="user_icon" />
                             <span id="userEnt">{ email || 'ENTRAR' }</span> 
                         </div>
                         <div className="inactive"></div>

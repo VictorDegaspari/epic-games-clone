@@ -59,7 +59,7 @@ export default function User() {
                         Confirmar senha
                         <input name="password_c" type="password" placeholder="Senha" required onChange={handleInputChange}/>
                     </label>
-                    <button type="submit" className="w-100">SALVAR</button>
+                    <button type="submit" className="w-100 save-button">SALVAR</button>
                 </form>
                 <button className="w-100" id="go-back-user" onClick={ () => navigate('/home')}><span>VOLTAR</span></button>
                 <small id="form-user-error" className="error"></small>
