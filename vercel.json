@@ -3,13 +3,13 @@
     "builds": [
         {
             "src": "connection.mjs",
-            "use": "@now/node"
+            "use": "@vercel/node"
         }
     ],
     "rewrites":  [
         {
             "source": "/(.*)", 
-            "destination": "connection.mjs"
+            "destination": "/"
         }
     ]
     
