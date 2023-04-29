@@ -1,0 +1,23 @@
+{
+    "name": "epicgames-clone-api",
+    "type": "module",
+    "version": "0.0.2",
+    "author": "Victor Degaspari",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "bcrypt": "^5.1.0",
+        "body-parser": "^1.20.1",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "express-jwt": "^7.7.7",
+        "jsonwebtoken": "^8.5.1",
+        "mongodb": "^4.12.0",
+        "mongoose": "^6.7.2",
+        "multer": "^1.4.5-lts.1"
+    }
+}

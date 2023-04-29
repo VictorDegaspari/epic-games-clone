@@ -2,13 +2,13 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
-import authRoutes from './src/database/Controller/authController.mjs';
-import gamesRoutes from './src/database/Controller/gamesController.mjs';
-import usersRoutes from './src/database/Controller/usersController.mjs';
+import authRoutes from './Controller/authController.js';
+import gamesRoutes from './Controller/gamesController.js';
+import usersRoutes from './Controller/usersController.js';
 
 const app = express();
 dotenv.config();
-const PORT = 3006;
+const PORT = process.env.PORT || 3000;
 
 
 app.use(cors());
@@ -25,5 +25,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(PORT, () => {
-    console.log('Server running at 3000');
+    console.log('Server running at ' + (process.env.PORT || 3000));
 });

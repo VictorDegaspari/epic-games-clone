@@ -1,10 +1,10 @@
 import express from 'express';
 import fs from 'fs';
-import authMiddleware from '../Middlewares/auth.mjs';
+import authMiddleware from '../Middlewares/auth.js';
 // Na Vercel nao foi possivel realizar upload de imagem
 // import uploadMiddleware from '../Middlewares/upload.js';
-import Game from '../Models/Game.mjs';
-import Image from '../Models/Image.mjs';
+import Game from '../Models/Game.js';
+import Image from '../Models/Image.js';
 
 const router = express.Router();
 router.use(authMiddleware);

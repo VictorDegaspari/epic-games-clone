@@ -1,4 +1,4 @@
-import mongoose from '../../database/connection.mjs';
+import mongoose from '../connection.js';
 const { Schema } = mongoose;
 
 const ImageSchema = new Schema({
