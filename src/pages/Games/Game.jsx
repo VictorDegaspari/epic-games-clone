@@ -12,10 +12,7 @@ export default function Game() {
     const handleSubmit = (event) => {
         setErrorMessage('');
         event.preventDefault();
-        const data = new FormData(event.target);
-        const jsonData = JSON.stringify(Object.fromEntries(data.entries()));
-        postGame(JSON.parse(jsonData));
-        console.log(jsonData);
+        postGame(formData);
     };
 
     const handleInputChange = (event) => {

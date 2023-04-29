@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { get, remove, update } from "../../js/index";
 
@@ -6,6 +6,7 @@ export default function FindGame() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [loadingGame, setLoadingGame] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [isShowing, setIsShowing] = useState(true);
@@ -13,27 +14,26 @@ export default function FindGame() {
     const [formattedDate, setFormattedDate] = useState('');
     const [gameData, setGameData] = useState({});
     const baseUrl = "https://epic-games-clone-wheat.vercel.app";
-    const [formData, setFormData] = useState({});
-    
+    const idRef = useRef(id);
+
     useEffect(() => {
-        openGameById();
-    }, []);
+        async function openGameById() {
+            if (!idRef.current) return;
+            localStorage.setItem('gameId', idRef.current);
+            setLoadingGame(true);
 
-    async function openGameById() {
-        if (!id) return;
-        localStorage.setItem('gameId', id);
-        setLoading(true);
-
-        const { game } = await get(baseUrl + '/games/find/' + encodeURI(id));
-        setLoading(false);
-        if (!game) return;
-        if (game.author?.email === localStorage.getItem('email')) {
-            setIsAdmin(true);
+            const { game } = await get(baseUrl + '/games/find/' + encodeURI(idRef.current));
+            setLoadingGame(false);
+            if (!game) return;
+            if (game.author?.email === localStorage.getItem('email')) {
+                setIsAdmin(true);
+            }
+            const date = new Date(game.created);
+            setFormattedDate(date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear());
+            setGameData(game);
         }
-        const date = new Date(game.created);
-        setFormattedDate(date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear());
-        setGameData(game);
-    }
+        openGameById();
+    }, [id]);
 
     async function deleteGame() {
         setLoading(true);
@@ -44,13 +44,12 @@ export default function FindGame() {
 
     async function editGame(e) {
         e.preventDefault();
-        const data = new FormData(e.target);
-        const jsonData = JSON.stringify(Object.fromEntries(data.entries()));
-        setLoading(true);
+
         try {
-            const response = await update(baseUrl + '/games/update/' + encodeURI(id), JSON.parse(jsonData), false);
-            if (response.info?.type === 'Error') throw new Error();
             setLoading(true);
+            const response = await update(baseUrl + '/games/update/' + encodeURI(id), gameData, false);
+            if (response.info?.type === 'Error') throw new Error();
+            setLoading(false);
             setGameData(response.updatedGame);
             handleShow();
         } catch (error) {
@@ -71,9 +70,9 @@ export default function FindGame() {
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
+        setGameData((prevData) => ({
+            ...prevData,
+            [name]: value,
         }));
     };
 
@@ -83,6 +82,11 @@ export default function FindGame() {
             { isShowing && 
                 <div className="game-edit flex-column show" encType="multipart/form-data">
                         <h3>{ gameData.title }</h3>
+                        { loadingGame && 
+                            <div className="w-100 centralize flex">
+                                <div className="loader ml-5 "></div>
+                            </div>
+                        }
                         <img src={ gameData.url } alt={ gameData.title } />
 
                         <div className="info">
@@ -127,7 +131,12 @@ export default function FindGame() {
                         <input name="old_price" value={ gameData.old_price } type="number" placeholder="Valor antigo do jogo" required onChange={handleInputChange}/>
                     </label>
                     <button type="button" onClick={() => handleShow()}>VOLTAR</button>
-                    <button type="submit" className="save-button">SALVAR</button>
+                    <button type="submit" className="save-button centralize">
+                        SALVAR
+                        { loading && 
+                            <div className="loader ml-5 "></div>
+                        }
+                    </button>
                     <button type="button" id="delete-game" className="delete-button" onClick={() => setShowConfirmDelete(true)}>EXCLUIR</button>
                     { showConfirmDelete &&
                         <small className="confirm-delete show">Deseja realmente excluir?

@@ -5,12 +5,10 @@ import { post } from "../js/index";
 export default function Login() {
     const navigate = useNavigate();
     const [ error, setError] = useState('');
-    const [ isLogged, setIsLogged] = useState('');
     const [ loading, setLoading ] = useState(false);
     const [ email, setEmail] = useState('');
     const [ password, setPassword] = useState('');
     const baseUrl = "https://epic-games-clone-wheat.vercel.app";
-    const [ isAdmin, setIsAdmin] = useState(true);
     const errors = [
         { minLength: 'Preencha com pelo menos 3 caracteres!'},
         { authError: 'Senha ou Email estão incorretos!' }
@@ -34,9 +32,7 @@ export default function Login() {
             localStorage.setItem('token', response.token);
             localStorage.setItem('userId', response.user?._id);
             localStorage.setItem('admin', response.user?.admin);
-            localStorage.getItem('admin') === 'true' ?  setIsAdmin(true) : setIsAdmin(false);
             localStorage.setItem('email', email);
-            setIsLogged(true);
             setLoading(false);
             navigate('/home');
         } catch (error) {

@@ -16,14 +16,33 @@ export default function Home() {
     const isAdmin = localStorage.getItem('admin');
     const navigate = useNavigate();
     let interval;
+    const [index, setIndex] = useState(0);
+    let img;
     
     useEffect(() => {
-        carouselInit();
+        const gamesParent = document.getElementById("carousel-games");
+        const ballsContainer = document.getElementById("balls");
+        const childrenBalls = Array.from(ballsContainer.children);
+        const children = Array.from(gamesParent.children);
+        childrenBalls[index].classList.add('active');
+        children[index].classList.add('active');
+        defineCarouselImg(children[index]);
+        const interval = setInterval(() => {
+            childrenBalls[index].classList.remove('active');
+            children[index].classList.remove('active');
+            const previousIndex = index;
+            setIndex(i => (i + 1) % popularGamesData.length);
+            childrenBalls[index].classList.add('active');
+            children[index].classList.add('active');
+            defineCarouselImg(children[index]);
+            children[previousIndex].classList.remove('active')
+            childrenBalls[index].classList.remove('active');
+            gamesParent.scrollLeft += (img.offsetWidth + 30);
+        }, 8000);
 
-        return(() => {
-            clearInterval(interval)
-        })
-    }, [interval]);
+        return () => clearInterval(interval);
+        
+    }, [index]);
 
     const carouselBalls = popularGamesData.map((game, index) => (
         <div
@@ -59,37 +78,6 @@ export default function Home() {
             </div>
         </div>
     ));
-
-    let img;
-    function carouselInit() {
-        const activeDiv = document.createElement("div");
-        activeDiv.classList.add("carousel-progress");
-        const popularGamesContainer = document.getElementById("carousel-games");
-        const ballsContainer = document.getElementById("balls");
-        let childrenBalls = Array.from(ballsContainer.children);
-        let childrenPopularGames = Array.from(popularGamesContainer.children);
-        let index = 0;
-        childrenPopularGames[index].appendChild(activeDiv);
-        childrenBalls[index].classList.add('active');
-        childrenPopularGames[index].classList.add('active');
-        defineCarouselImg(childrenPopularGames[index]);
-        interval = setInterval(() => {
-            childrenBalls[index].classList.remove('active');
-            childrenPopularGames[index].classList.remove('active');
-            index++;
-            if (index === popularGamesData.length) { 
-                index = 0;
-                popularGamesContainer.scrollLeft = 1;
-            }
-            childrenBalls[index].classList.add('active');
-            childrenPopularGames[index].classList.add('active');
-            activeDiv.setAttribute('key', Math.random());
-            childrenPopularGames[index].appendChild(activeDiv);
-            defineCarouselImg(childrenPopularGames[index]);
-            popularGamesContainer.scrollLeft += (img.offsetWidth + 30);
-            
-        }, 8000);
-    }
 
     function changePage(route = '') {
         if (interval) clearInterval(interval);

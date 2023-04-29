@@ -495,7 +495,8 @@ h2.highlight:hover > a > span > svg {
     top: -14px
 }
 
-.carousel-games .carousel-progress {
+.carousel-games.active::after {
+    content: '';
     height: 100%;
     position: absolute;
     left: 0;
@@ -505,8 +506,13 @@ h2.highlight:hover > a > span > svg {
     width: 0px;
     animation: progress 8s infinite linear;
     z-index: 999;
-}
 
+}
+@media (max-width: 768px) {
+    .carousel-games.active::after {
+        display:none
+    }
+}
 .left > .current-carousel-info {
     position: absolute;
     width: 80%;
