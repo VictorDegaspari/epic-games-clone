@@ -3,9 +3,7 @@
   "version": "0.2.0",
   "private": true,
   "scripts": {
-    "start": "node connection.mjs",
-    "server": "node connection.mjs --port=3001",
-    "client": "react-scripts start --port=3002",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
