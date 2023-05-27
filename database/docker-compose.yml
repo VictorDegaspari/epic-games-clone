@@ -1,0 +1,64 @@
+version: "3"
+services:
+  api:
+    image: node:latest
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+    env_file:
+     - .env
+    command: npm start
+    volumes: 
+      - .:/app
+    working_dir: /app
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    networks:
+      - epic-network
+
+  mongodb:
+    image: mongo:4.2
+    container_name: 'mongodb'
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${CLUSTER_NAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${CLUSTER_PASSWORD}
+    networks:
+      - epic-network
+
+  redis:
+    image: redis:6.2.1-alpine
+    restart: always
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"
+    networks:
+      - epic-network
+
+  rabbitmq:
+    image: rabbitmq:3.11.16-alpine
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - epic-network
+
+volumes:
+  mongo-data:
+networks:
+  epic-network:
+    name: epic-clone
+    driver: bridge

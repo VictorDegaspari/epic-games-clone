@@ -8,11 +8,11 @@ import usersRoutes from './Controller/usersController.js';
 
 const app = express();
 dotenv.config();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
 
 app.use(cors());
-app.use(bodyParser.json({limit: '5mb'}));
+app.use(bodyParser.json({ limit: '5mb' }));
 app.use('/users', usersRoutes);
 app.use('/auth', authRoutes );
 app.use('/games', gamesRoutes );
@@ -25,5 +25,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(PORT, () => {
-    console.log('Server running at ' + (process.env.PORT || 3000));
+    console.log('Server running at ' + (3000));
 });
