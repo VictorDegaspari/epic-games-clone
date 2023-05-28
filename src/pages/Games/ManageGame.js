@@ -13,7 +13,7 @@ export default function FindGame() {
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
     const [formattedDate, setFormattedDate] = useState('');
     const [gameData, setGameData] = useState({});
-    const baseUrl = "https://epic-games-clone-wheat.vercel.app";
+    const baseUrl = process.env.REACT_APP_API_URL;
     const idRef = useRef(id);
 
     useEffect(() => {

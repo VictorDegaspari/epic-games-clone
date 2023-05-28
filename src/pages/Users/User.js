@@ -7,7 +7,7 @@ export default function User() {
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [formData, setFormData] = useState({});
-    const baseUrl = "https://epic-games-clone-wheat.vercel.app";
+    const baseUrl = process.env.REACT_APP_API_URL;
     
     const handleSubmit = (event) => {
         event.preventDefault();

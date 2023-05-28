@@ -8,7 +8,7 @@ export default function Login() {
     const [ loading, setLoading ] = useState(false);
     const [ email, setEmail] = useState('');
     const [ password, setPassword] = useState('');
-    const baseUrl = "https://epic-games-clone-wheat.vercel.app";
+    const baseUrl = process.env.REACT_APP_API_URL;
     const errors = [
         { minLength: 'Preencha com pelo menos 3 caracteres!'},
         { authError: 'Senha ou Email estão incorretos!' }
@@ -33,6 +33,10 @@ export default function Login() {
             localStorage.setItem('userId', response.user?._id);
             localStorage.setItem('admin', response.user?.admin);
             localStorage.setItem('email', email);
+
+            const { user } = response;
+            delete user.password;
+            localStorage.setItem('user', JSON.stringify(user));
             setLoading(false);
             navigate('/home');
         } catch (error) {

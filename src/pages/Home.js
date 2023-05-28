@@ -1,11 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import io from "socket.io-client";
 import GlobeIcon from '../assets/icons/globe-grid-svgrepo-com.svg';
 import UserIcon from '../assets/icons/user-svgrepo-com.svg';
+import Chat from "../components/Chat";
 import { games, popularGames } from "../js/games-data";
 import { get } from '../js/index';
+
+const socket = io.connect(process.env.REACT_APP_API_URL);
+
 export default function Home() {
-    const baseUrl = "https://epic-games-clone-wheat.vercel.app";
+    const [ chatRoom, setChatRoom] = useState("");
+    const baseUrl = process.env.REACT_APP_API_URL;
     const email = localStorage.getItem('email');
     const [ gamesFound, setGamesFound ] = useState([]);
     const [ loading, setLoading ] = useState(false);
@@ -14,10 +20,23 @@ export default function Home() {
     const gamesData = games() || [];
     const popularGamesData = popularGames() || [];
     const isAdmin = localStorage.getItem('admin');
+    const user = JSON.parse(localStorage.getItem('user'));
     const navigate = useNavigate();
     let interval;
     const [index, setIndex] = useState(0);
     let img;
+
+    const [showChat, setShowChat] = useState(false);
+
+    const joinRoom = () => {
+        if (chatRoom !== "") {
+            socket.emit("join_room", {
+                room: chatRoom,
+                username: user.name
+            });
+            setShowChat(true);
+        }
+    };
     
     useEffect(() => {
         const gamesParent = document.getElementById("carousel-games");
@@ -234,7 +253,30 @@ export default function Home() {
                     <div className="highlight-images-main flex w-100" id="highlight-images">
                         { gameContainers }
                     </div>
-              </div>
+                    {!showChat ? (
+                        <div className="joinChatContainer">
+                            <h2 class="flex highlight">
+                                <a href="https://store-epicgames.com" target="_blank" rel="noreferrer">
+                                    Conversar com os amigos
+                                </a>
+                            </h2>
+                            <input
+                                type="text"
+                                placeholder="Insira o ID da sala"
+                                onChange={(event) => {
+                                    setChatRoom(event.target.value);
+                                }}
+                            />
+                            <button onClick={joinRoom}>Entrar na sala</button>
+                        </div>
+                        ) : (
+                            <Chat socket={ socket } user={ user } room={ chatRoom } onClose={(e) => {
+                                setShowChat(!e);
+                                setChatRoom("");
+                            }}/>
+                        )
+                    }
+                </div>
             </div>
         </>
     );
