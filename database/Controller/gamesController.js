@@ -5,11 +5,30 @@ import authMiddleware from '../Middlewares/auth.js';
 // import uploadMiddleware from '../Middlewares/upload.js';
 import Game from '../Models/Game.js';
 import Image from '../Models/Image.js';
+import cache from 'express-redis-cache';
 
 const router = express.Router();
 router.use(authMiddleware);
 
-router.post('/post', async (req, res) => {
+cache = cache({
+    prefix: 'redis-test',
+    host: 'redis',
+    port: 6379
+  });
+  
+  cache.invalidate = (name) => {
+    return (req, res, next) => {
+      const route_name = name ? name : req.url;
+      if (!cache.connected) {
+        next();
+        return ;
+      }
+      cache.del(route_name, (err) => console.log(err));
+      next();
+    };
+  };
+
+router.post('/post', cahe.invalidate(), async (req, res) => {
     const dataValidation = req.body;
     if (
         dataValidation.title.length < 3 ||
@@ -41,7 +60,7 @@ router.post('/post', async (req, res) => {
     }
 });
 
-router.get('/search/:title', async (req, res) => {
+router.get('/search/:title', cahe.route(), async (req, res) => {
     try {
         const regex = new RegExp("^" + req.params.title.toLowerCase(), "i");
         const games = await Game.find({ title: regex });
@@ -52,7 +71,7 @@ router.get('/search/:title', async (req, res) => {
     }
 });
 
-router.get('/get', async (req, res) => {
+router.get('/get', cahe.route(), async (req, res) => {
     try {
         const games = await Game.find();
         return res.send({ games });
@@ -62,7 +81,7 @@ router.get('/get', async (req, res) => {
     }
 });
 
-router.get('/find/:id', async (req, res) => {
+router.get('/find/:id', cahe.route(), async (req, res) => {
     try {
         const game = await Game.findOne({ _id: req.params.id }).populate('author image');
         const path = 'uploads/' + game.image?.image?.data;
@@ -81,7 +100,7 @@ router.get('/find/:id', async (req, res) => {
     }
 });
 
-router.patch('/update/:id', async (req, res) => {
+router.patch('/update/:id', cahe.invalidate(), async (req, res) => {
 
     try {
         const game = await Game.findOne({ _id: req.params.id }).populate('author image');
@@ -113,7 +132,7 @@ router.patch('/update/:id', async (req, res) => {
     }
 });
 
-router.delete('/remove/:id', async (req, res) => {
+router.delete('/remove/:id',cahe.invalidate(), async (req, res) => {
     try {
         const game = await Game.findOne({ _id: req.params.id }).populate('image', '_id');
         if (game.author?._id != req.userId) return res.status(401).send({ error: 'Nao autorizado' });
