@@ -7,7 +7,7 @@ import { Server } from 'socket.io';
 import authRoutes from './Controller/authController.js';
 import gamesRoutes from './Controller/gamesController.js';
 import usersRoutes from './Controller/usersController.js';
-
+import messagesRoutes from './Controller/messagesController.js';
 const app = express();
 
 dotenv.config();
@@ -18,6 +18,7 @@ app.use(bodyParser.json({ limit: '5mb' }));
 app.use('/users', usersRoutes);
 app.use('/auth', authRoutes );
 app.use('/games', gamesRoutes );
+app.use('/messages', messagesRoutes);
 app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
 app.use(express.static('/public'));
 app.use(express.static('/uploads'));
