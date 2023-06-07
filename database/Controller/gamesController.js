@@ -1,41 +1,43 @@
 import express from 'express';
+import RedisCache from 'express-redis-cache';
 import fs from 'fs';
 import authMiddleware from '../Middlewares/auth.js';
-// Na Vercel nao foi possivel realizar upload de imagem
-// import uploadMiddleware from '../Middlewares/upload.js';
 import Game from '../Models/Game.js';
 import Image from '../Models/Image.js';
-import cache from 'express-redis-cache';
 
 const router = express.Router();
 router.use(authMiddleware);
 
-cache = cache({
-    prefix: 'redis-test',
+let cache = RedisCache({
+    prefix: 'games',
     host: 'redis',
-    port: 6379
-  });
+    port: 6379,
+});
   
-  cache.invalidate = (name) => {
+cache.invalidate = (name) => {
     return (req, res, next) => {
-      const route_name = name ? name : req.url;
-      if (!cache.connected) {
+        if (!cache.connected) {
+            next();
+            return ;
+        }
+        cache.del('/games/search*', () => console.log("Cache deleted"));
+        cache.del('/games/get', () => console.log("Cache deleted"));
         next();
-        return ;
-      }
-      cache.del(route_name, (err) => console.log(err));
-      next();
-    };
-  };
+    }
+}
 
-router.post('/post', cahe.invalidate(), async (req, res) => {
+cache.on('error', function (error) {
+    throw new Error('Cache error: ' + error);
+});
+
+router.post('/post', cache.invalidate(), async (req, res) => {
     const dataValidation = req.body;
     if (
-        dataValidation.title.length < 3 ||
-        dataValidation.current_price.length < 2 ||
-        dataValidation.old_price.length < 2 ||
-        dataValidation.url.length < 3 ||
-        dataValidation.discount.length < 1
+        dataValidation.title?.length < 3 ||
+        dataValidation.current_price?.length < 2 ||
+        dataValidation.old_price?.length < 2 ||
+        dataValidation.url?.length < 3 ||
+        dataValidation.discount?.length < 1
     ) {
         return res.status(400).send({ error: 'Quantidade de caracteres preenchido nos campos insuficiente' });
     }
@@ -60,8 +62,9 @@ router.post('/post', cahe.invalidate(), async (req, res) => {
     }
 });
 
-router.get('/search/:title', cahe.route(), async (req, res) => {
+router.get('/search/:title', cache.route(), async (req, res) => {
     try {
+        console.log('buscando no banco...');
         const regex = new RegExp("^" + req.params.title.toLowerCase(), "i");
         const games = await Game.find({ title: regex });
         return res.send({ games });
@@ -71,8 +74,9 @@ router.get('/search/:title', cahe.route(), async (req, res) => {
     }
 });
 
-router.get('/get', cahe.route(), async (req, res) => {
+router.get('/get', cache.route(), async (req, res) => {
     try {
+        console.log('buscando no banco...');
         const games = await Game.find();
         return res.send({ games });
     } catch (error) {
@@ -81,7 +85,7 @@ router.get('/get', cahe.route(), async (req, res) => {
     }
 });
 
-router.get('/find/:id', cahe.route(), async (req, res) => {
+router.get('/find/:id', cache.route(), async (req, res) => {
     try {
         const game = await Game.findOne({ _id: req.params.id }).populate('author image');
         const path = 'uploads/' + game.image?.image?.data;
@@ -100,7 +104,7 @@ router.get('/find/:id', cahe.route(), async (req, res) => {
     }
 });
 
-router.patch('/update/:id', cahe.invalidate(), async (req, res) => {
+router.patch('/update/:id', cache.invalidate(), async (req, res) => {
 
     try {
         const game = await Game.findOne({ _id: req.params.id }).populate('author image');
@@ -132,7 +136,7 @@ router.patch('/update/:id', cahe.invalidate(), async (req, res) => {
     }
 });
 
-router.delete('/remove/:id',cahe.invalidate(), async (req, res) => {
+router.delete('/remove/:id', cache.invalidate(), async (req, res) => {
     try {
         const game = await Game.findOne({ _id: req.params.id }).populate('image', '_id');
         if (game.author?._id != req.userId) return res.status(401).send({ error: 'Nao autorizado' });

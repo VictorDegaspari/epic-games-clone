@@ -7,12 +7,12 @@ export class EtherealMail {
             const account = await nodemailer.createTestAccount();
 
             const transporter = nodemailer.createTransport({
-                host: "sandbox.smtp.mailtrap.io",
-                port: 2525,
-                //secure: false, // true for 465, false for other ports
+                host: "smtp.ethereal.email",
+                port: 587,
+                secure: false, // true for 465, false for other ports
                 auth: {
-                    user: 'bc42bbd4cd83d8', // generated ethereal user
-                    pass: 'bcc82861893e3f', // generated ethereal password
+                    user: account.user, // generated ethereal user
+                    pass: account.pass, // generated ethereal password
                 },
             });
             const templateFile = this.html();
@@ -301,7 +301,6 @@ export class EtherealMail {
                                         <div class="text" style="padding: 0 2.5em; text-align: center;">
                                             <h2>Olá {{ name }}, parabéns por criar um novo chat!</h2>
                                             <h3>Você criou um chat e começou a conversar com os amigos!</h3>
-                                            <p><a href="#" class="btn btn-primary">Yes! Subscribe Me</a></p>
                                         </div>
                                     </td>
                                 </tr>

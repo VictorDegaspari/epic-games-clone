@@ -2,17 +2,24 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
+import fs from 'fs';
 import { createServer } from "http";
+import morgan from 'morgan';
 import { Server } from 'socket.io';
 import authRoutes from './Controller/authController.js';
 import gamesRoutes from './Controller/gamesController.js';
-import usersRoutes from './Controller/usersController.js';
 import messagesRoutes from './Controller/messagesController.js';
+import usersRoutes from './Controller/usersController.js';
+import connectQueue from './consumer.js';
+
 const app = express();
 
 dotenv.config();
 const PORT = 3000;
+connectQueue();
+let logFile = fs.createWriteStream('./logs.log', { flags: 'a' });
 
+app.use(morgan('combined', { stream: logFile }));
 app.use(cors());
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use('/users', usersRoutes);
@@ -26,7 +33,13 @@ app.use(express.static('/uploads'));
 app.get('/', (req, res) => {
     res.send('OK');
 });
-const server = createServer(app);
+const server = createServer(    
+    // {
+    //     key: fs.readFileSync("key.pem"),
+    //     cert: fs.readFileSync("cert.pem"),
+    // }, 
+    app
+);
 
 const io = new Server(server, { 
     cors: {

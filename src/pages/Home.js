@@ -5,7 +5,7 @@ import GlobeIcon from '../assets/icons/globe-grid-svgrepo-com.svg';
 import UserIcon from '../assets/icons/user-svgrepo-com.svg';
 import Chat from "../components/Chat";
 import { games, popularGames } from "../js/games-data";
-import { get } from '../js/index';
+import { get, post } from '../js/index';
 
 const socket = io.connect(process.env.REACT_APP_API_URL);
 
@@ -34,6 +34,7 @@ export default function Home() {
                 room: chatRoom,
                 username: user.name
             });
+            post(baseUrl + '/messages/producer', { email: user.email, name: user.name });
             setShowChat(true);
         }
     };

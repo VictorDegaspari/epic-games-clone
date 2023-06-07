@@ -2,7 +2,8 @@ node_modules/
 package-lock.json
 .env
 uploads/
-
+*.log
+*.pem
 # Elastic Beanstalk Files
 
 .elasticbeanstalk/*

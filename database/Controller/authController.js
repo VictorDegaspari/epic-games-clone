@@ -1,13 +1,36 @@
 import { compare } from 'bcrypt';
 import dotenv from 'dotenv';
 import express from 'express';
+import RedisCache from 'express-redis-cache';
 import jwt from 'jsonwebtoken';
 import User from '../Models/User.js';
 
 dotenv.config();
 const router = express.Router();
 
-router.post('/login', async (req, res) => {
+let cache = RedisCache({
+    prefix: 'users',
+    host: 'redis',
+    port: 6379,
+});
+  
+cache.invalidate = (name) => {
+    return (req, res, next) => {
+        if (!cache.connected) {
+            next();
+            return ;
+        }
+        cache.del('/users/find*', () => console.log("Cache deleted"));
+        cache.del('/users/get', () => console.log("Cache deleted"));
+        next();
+    }
+}
+
+cache.on('error', function (error) {
+    throw new Error('Cache error: ' + error);
+});
+
+router.post('/session', async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email });
         const validPassword = await compare(req.body.password, user.password);
@@ -30,7 +53,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.post('/register', async (req, res) => {
+router.post('/new', cache.invalidate(), async (req, res) => {
     try {
         const user = await User.create(req.body);
         return res.send({ user });

@@ -12,6 +12,7 @@ async function connectQueue() {
         
         channel.consume(QUEUE_NAME, data => {
             const formattedData =  JSON.parse(Buffer.from(data.content));
+            console.log("formattedData", formattedData, formattedData.email)
             EtherealMail.sendMail({
                 to: {
                     email: formattedData.email,
