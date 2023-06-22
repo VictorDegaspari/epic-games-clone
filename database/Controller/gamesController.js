@@ -64,8 +64,13 @@ router.post('/post', cache.invalidate(), async (req, res) => {
 
 router.get('/search/:title', cache.route(), async (req, res) => {
     try {
+        const escapeRegex = (text) => {
+            return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        };
+          
+        const sanitizedTitle = escapeRegex(req.params.title);
         console.log('buscando no banco...');
-        const regex = new RegExp("^" + req.params.title.toLowerCase(), "i");
+        const regex = new RegExp("^" + sanitizedTitle.toLowerCase(), "i");
         const games = await Game.find({ title: regex });
         return res.send({ games });
     } catch (error) {
